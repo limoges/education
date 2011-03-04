@@ -1,0 +1,40 @@
+echo  "a 4"
+sleep 1 
+echo  "b 11"
+echo  "c 4"
+sleep 2
+echo "d 3"
+echo "e 2"
+echo "f 3"
+sleep 1
+echo "g 2"
+sleep 3
+echo "h 3"
+sleep 1
+echo "i 10"
+echo "j 4"
+sleep 2
+echo "k 4"
+echo "l 1"
+sleep 2
+echo "m 2"
+echo "n 4"
+echo "o 6"
+sleep 4
+echo "p 1"
+sleep 3
+echo "q 3"
+sleep 2
+echo "r 2"
+echo "s 4"
+echo "t 1"
+sleep 1
+echo "u 3"
+echo "v 4"
+echo "w 2"
+sleep 5
+echo "x 1"
+echo "y 4"
+sleep 3
+echo "z 2"
+

@@ -1,0 +1,52 @@
+ 0: a arrive avec  4 seaux     a/4  -  |  -   -   -   -  | 
+ 1: b arrive avec 11 seaux     a/4 b/b |  -   -   -   -  | 
+ 1: c arrive avec  4 seaux     a/4 b/b | c/4  -   -   -  | 
+ 3: d arrive avec  3 seaux     a/4 b/b | c/4 d/3  -   -  | 
+ 3: e arrive avec  2 seaux     a/4 b/b | c/4 d/3 e/2  -  | 
+ 3: f arrive avec  3 seaux     a/4 b/b | c/4 d/3 e/2 f/3 | 
+ 4: a est servi... il s'en va  b/b c/4 | d/3 e/2 f/3  -  | 
+ 4: g arrive avec  2 seaux     b/b c/4 | d/3 e/2 f/3 g/2 | 
+ 7: h arrive avec  3 seaux     b/b c/4 | d/3 e/2 f/3 g/2 | h/3 
+ 8: c est servi... il s'en va  b/b d/3 | e/2 f/3 g/2 h/3 | 
+ 8: i arrive avec 10 seaux     b/b d/3 | e/2 f/3 g/2 h/3 | i/a 
+ 8: j arrive avec  4 seaux     b/b d/3 | e/2 f/3 g/2 h/3 | i/a j/4 
+10: k arrive avec  4 seaux     b/b d/3 | e/2 f/3 g/2 h/3 | i/a j/4 k/4 
+10: l arrive avec  1 seaux     b/b d/3 | e/2 f/3 g/2 h/3 | i/a j/4 k/4 l/1 
+11: d est servi... il s'en va  b/b e/2 | f/3 g/2 h/3 i/a | j/4 k/4 l/1 
+12: b est servi... il s'en va  e/2 f/3 | g/2 h/3 i/a j/4 | k/4 l/1 
+12: m arrive avec  2 seaux     e/2 f/3 | g/2 h/3 i/a j/4 | k/4 l/1 m/2 
+12: n arrive avec  4 seaux     e/2 f/3 | g/2 h/3 i/a j/4 | k/4 l/1 m/2 n/4 
+12: o arrive avec  6 seaux     e/2 f/3 | g/2 h/3 i/a j/4 | k/4 l/1 m/2 n/4 o/6 
+13: e est servi... il s'en va  f/3 g/2 | h/3 i/a j/4 k/4 | l/1 m/2 n/4 o/6 
+15: g est servi... il s'en va  f/3 h/3 | i/a j/4 k/4 l/1 | m/2 n/4 o/6 
+15: f est servi... il s'en va  h/3 i/a | j/4 k/4 l/1 m/2 | n/4 o/6 
+16: p arrive avec  1 seaux     h/3 i/a | j/4 k/4 l/1 m/2 | n/4 o/6 p/1 
+18: h est servi... il s'en va  i/a j/4 | k/4 l/1 m/2 n/4 | o/6 p/1 
+19: q arrive avec  3 seaux     i/a j/4 | k/4 l/1 m/2 n/4 | o/6 p/1 q/3 
+21: r arrive avec  2 seaux     i/a j/4 | k/4 l/1 m/2 n/4 | o/6 p/1 q/3 r/2 
+21: s arrive avec  4 seaux     i/a j/4 | k/4 l/1 m/2 n/4 | o/6 p/1 q/3 r/2 s/4 
+21: t arrive avec  1 seaux     i/a j/4 | k/4 l/1 m/2 n/4 | o/6 p/1 q/3 r/2 s/4 t/1 
+22: j est servi... il s'en va  i/a k/4 | l/1 m/2 n/4 o/6 | p/1 q/3 r/2 s/4 t/1 
+22: u arrive avec  3 seaux     i/a k/4 | l/1 m/2 n/4 o/6 | p/1 q/3 r/2 s/4 t/1 u/3 
+22: v arrive avec  4 seaux     i/a k/4 | l/1 m/2 n/4 o/6 | p/1 q/3 r/2 s/4 t/1 u/3 v/4 
+22: w arrive avec  2 seaux     i/a k/4 | l/1 m/2 n/4 o/6 | p/1 q/3 r/2 s/4 t/1 u/3 v/4 w/2 
+25: i est servi... il s'en va  k/4 l/1 | m/2 n/4 o/6 p/1 | q/3 r/2 s/4 t/1 u/3 v/4 w/2 
+26: k est servi... il s'en va  l/1 m/2 | n/4 o/6 p/1 q/3 | r/2 s/4 t/1 u/3 v/4 w/2 
+26: l est servi... il s'en va  m/2 n/4 | o/6 p/1 q/3 r/2 | s/4 t/1 u/3 v/4 w/2 
+27: x arrive avec  1 seaux     m/2 n/4 | o/6 p/1 q/3 r/2 | s/4 t/1 u/3 v/4 w/2 x/1 
+27: y arrive avec  4 seaux     m/2 n/4 | o/6 p/1 q/3 r/2 | s/4 t/1 u/3 v/4 w/2 x/1 y/4 
+28: m est servi... il s'en va  n/4 o/6 | p/1 q/3 r/2 s/4 | t/1 u/3 v/4 w/2 x/1 y/4 
+30: n est servi... il s'en va  o/6 p/1 | q/3 r/2 s/4 t/1 | u/3 v/4 w/2 x/1 y/4 
+30: z arrive avec  2 seaux     o/6 p/1 | q/3 r/2 s/4 t/1 | u/3 v/4 w/2 x/1 y/4 z/2 
+31: p est servi... il s'en va  o/6 q/3 | r/2 s/4 t/1 u/3 | v/4 w/2 x/1 y/4 z/2 
+34: o est servi... il s'en va  q/3 r/2 | s/4 t/1 u/3 v/4 | w/2 x/1 y/4 z/2 
+34: q est servi... il s'en va  r/2 s/4 | t/1 u/3 v/4 w/2 | x/1 y/4 z/2 
+36: r est servi... il s'en va  s/4 t/1 | u/3 v/4 w/2 x/1 | y/4 z/2 
+37: t est servi... il s'en va  s/4 u/3 | v/4 w/2 x/1 y/4 | z/2 
+38: s est servi... il s'en va  u/3 v/4 | w/2 x/1 y/4 z/2 | 
+40: u est servi... il s'en va  v/4 w/2 | x/1 y/4 z/2  -  | 
+42: v est servi... il s'en va  w/2 x/1 | y/4 z/2  -   -  | 
+42: w est servi... il s'en va  x/1 y/4 | z/2  -   -   -  | 
+43: x est servi... il s'en va  y/4 z/2 |  -   -   -   -  | 
+45: z est servi... il s'en va  y/4  -  |  -   -   -   -  | 
+46: y est servi... il s'en va   -   -  |  -   -   -   -  | 

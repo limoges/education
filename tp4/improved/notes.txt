@@ -1,0 +1,15 @@
+gcc -pthread #include <pthread.h>
+
+pthread_create(&t, NULL, fonction, arg) ~ fork
+pthread_join(t, &retour/NULL) ~ waitpid
+
+pthread_mutex_init(&mutex, NULL) ~ sem_open
+pthread_mutex_lock(&mutex) ~ sem_wait
+pthread_mutex_unlock(&mutex) ~ sem_post
+pthread_mutex_destroy(&mutex) ~ sem_unlink
+
+pthread_cond_init(&c, NULL) ~ sem_open
+pthread_cond_wait(&c, &mutex) ~ sem_wait
+pthread_cond_signal(&c) ~ sem_post
+pthread_cond_broadcast(&c) ~ ?
+pthread_cond_destroy(&c) ~ ?

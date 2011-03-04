@@ -1,0 +1,38 @@
+1. Prenez connaissances des exemples sem_*.c et shm_*.c pour vous
+familiarirser avec les appels sytèmes permettant de manipuler les
+sémaphores et les segments de mémoire partagée.
+
+
+2. Lancez le programme race_condition . Vous constatez qu'il ne donne
+pas toujours le résultat attendu (le script test_race_condition.sh
+permet de le lancer en boucle).
+
+Votre travail consiste ici à améliorer ce programme (en le renommant
+race_condition1) pour obtenir à coup sûr le résultat attendu. Vous
+pouvez vérifier votre programme en passant son nom en argument du
+script test_race_condition.sh .
+
+
+3. Écrivez un programme qui effectue les tâches suivantes :
+
+  a. Il alloue une zone de mémoire partagée de 10004 entiers;
+       - les 10000 premières constituent le tableau des données "utiles",
+       - les 4 dernières servent à communiquer entre les processus?
+
+  b. Il crée 4 processus fils qui font chacun remplir un quart du tableau avec
+     des valeurs aléatoires entre 0 et 99, et stocker la somme de ces
+     valeurs dans une des dernière case du tableau (10000 pour le
+     premier fils, 10001 pour le deuxième, etc...).
+
+  c. Une fois que les fils ont fini de remplir le tableau, le père
+     doit calculer la *moyenne* des éléments du tableau, et l'écrire
+     dans la case d'indice 10000.
+
+  d. Une fois la moyenne calculée, chaque fils doit soustraire cette
+     moyenne à toutes les cases du tableau qu'il a rempli à l'étape
+     (b).
+
+Notez que le passage les transitions entre les étapes (b), (c) et (d)
+supposent une synchronisation: le père doit attendre que tous les fils
+aient fini l'étape (b) pour effectuer (c), et les fils doivent
+attendre que le père ait fini (c) pour démarrer (d).

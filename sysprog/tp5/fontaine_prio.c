@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <pthread.h>
 
+#include <limits.h>
+
 #define NB_ROBINETS 2
 #define NB_OMBRE 4
 #define TOTAL 1000
@@ -44,7 +46,7 @@ void* attendre(void* data)
     afficher(ARRIVE, time(NULL) - t_debut, *p);
     pthread_mutex_unlock(&mutex);
    
-    int rang, i;
+    int rang, i, prochain, min;
     while (1)
     {
         pthread_mutex_lock(&mutex);
@@ -55,13 +57,22 @@ void* attendre(void* data)
             sleep(p->qte); 
             pthread_mutex_lock(&mutex);
             for (rang = 0; rang < TOTAL && p->nom != paysans[rang]->nom; rang++);
-                for (i = rang; i < nb_attente; i++)
-                    paysans[i] = paysans[i+1];
-                nb_attente--;
-                afficher(QUITTE, time(NULL) - t_debut, *p);
-                free(p);
-                pthread_cond_broadcast(&cond_fontaine);
-                pthread_cond_broadcast(&cond_ombre);
+            for (i = NB_ROBINETS, min = INT_MAX; i < (NB_OMBRE + NB_ROBINETS) && i < nb_attente; i++)
+            {
+                if (paysans[i]->qte < min)
+                {
+                    min = paysans[i]->qte;
+                    prochain = i;
+                }
+            }
+            paysans[rang] = paysans[prochain];
+            for (i = prochain; i < nb_attente; i++)
+                paysans[i] = paysans[i+1];
+            nb_attente--;
+            afficher(QUITTE, time(NULL) - t_debut, *p);
+            free(p);
+            pthread_cond_broadcast(&cond_fontaine);
+            pthread_cond_broadcast(&cond_ombre);
             pthread_mutex_unlock(&mutex);
             return NULL;
         }

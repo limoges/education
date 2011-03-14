@@ -1,5 +1,5 @@
-NAME=tp5
-ARCHIVE=Makefile fontaine.c journee_type utilitaires.c fontaine.txt fontaine_prio.txt
+NAME=tp5-limoges-maret-nguyen
+ARCHIVE=Makefile fontaine_prio.c fontaine.c journee_type utilitaires.c fontaine.txt fontaine_prio.txt
 TARGETS=fontaine fontaine_prio
 
 all: ${TARGETS}

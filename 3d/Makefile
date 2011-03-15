@@ -25,12 +25,13 @@ ifeq ($(UNAME), Darwin) # DARWIN-BASED (OSX)
 CPPFLAGS += -framework OPENGL -framework GLUT
 endif
 
-GL = main.cpp
+all: exercice1 exercice2
 
-all:opengl
+exercice1 : exercice1.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o exercice1 exercice1.cpp
 
-opengl:
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(GL)
+exercice2 : exercice2.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o exercice2 exercice2.cpp
 
 #%:%.cpp
 #	$(CXX) $(CPPFLAGS) $(CXXFLAGS) "$<" -o "$@"

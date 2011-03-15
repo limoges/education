@@ -57,7 +57,7 @@ void* attendre(void* data)
             sleep(p->qte); 
             pthread_mutex_lock(&mutex);
             for (rang = 0; rang < TOTAL && p->nom != paysans[rang]->nom; rang++);
-            for (i = NB_ROBINETS, min = INT_MAX; i < (NB_OMBRE + NB_ROBINETS) && i < nb_attente; i++)
+            for (prochain = rang, i = NB_ROBINETS, min = INT_MAX; i < (NB_OMBRE + NB_ROBINETS) && i < nb_attente; i++)
             {
                 if (paysans[i]->qte < min)
                 {
@@ -65,6 +65,7 @@ void* attendre(void* data)
                     prochain = i;
                 }
             }
+            
             paysans[rang] = paysans[prochain];
             for (i = prochain; i < nb_attente; i++)
                 paysans[i] = paysans[i+1];

@@ -21,22 +21,24 @@ typedef struct rect
     rect(int w, int h) : Width(w), Height(h) {}
 } rect;
 
-typedef struct vec3f
+typedef struct vec3d
 {
-    float X;
-    float Y;
-    float Z;
-    vec3f(float x, float y, float z) : X(x), Y(y), Z(z) {}
-} vec3f;
+    GLdouble X;
+    GLdouble Y;
+    GLdouble Z;
+    vec3d(GLdouble x, GLdouble y, GLdouble z) : X(x), Y(y), Z(z) {}
+} vec3d;
 
+void Initalize();
 void Display();
 void Resize(const int x, const int y);
 void Special(int key, int x, int y);
 void Keyboard(unsigned char key, int x, int y);
 void Mouse(int button, int state, int x, int y);
+void ActiveMotion(int x, int y);
 void randomizeClearColor();
-void findClosest(int x, int y);
-vec3f getOpenGLCoordFromScreenCoord(const int x, const int y);
+void findClosest(double x, double y);
+vec3d getOpenGLCoordFromScreenCoord(const int x, const int y);
 
 float vertices[6] = { -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f };
 float size = 0.01f;
@@ -47,7 +49,7 @@ int main(int argc, char ** argv)
 {
     srand(time(NULL));
 
-    rect window(800,600);
+    rect window(500, 500);
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(window.Width, window.Height);
@@ -61,9 +63,17 @@ int main(int argc, char ** argv)
 	glutSpecialFunc(Special);
 	glutKeyboardFunc(Keyboard);
     glutMouseFunc(Mouse);
-  
-	glClearColor(1.0,0.5,1.0,1.0);
+    glutMotionFunc(ActiveMotion);
+	randomizeClearColor();
+    Initalize();
 	glutMainLoop();
+}
+
+void Initalize()
+{
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glShadeModel(GL_SMOOTH);
 }
 
 void Display()
@@ -96,7 +106,7 @@ void Display()
 	glutSwapBuffers();
 }
 
-void Resize(const int x, const int y)
+void Resize(const GLint x, const GLint y)
 {
 	glViewport(0, 0, x, y);
 	glMatrixMode(GL_PROJECTION);
@@ -104,7 +114,7 @@ void Resize(const int x, const int y)
 	gluOrtho2D(0, x, 0, y);
 }
 
-void Special(int key, int x, int y)
+void Special(int key, GLint x, GLint y)
 {
 	switch (key)
 	{
@@ -142,17 +152,28 @@ void Keyboard(unsigned char key, int x, int y)
 
 void Mouse(int button, int state, int x, int y)
 {
-    printf("(%d, %d)\n", x, y);
     if (GLUT_UP)
     {
         switch (button)
         {
             case GLUT_LEFT_BUTTON:
-                findClosest(x, y);
+                selected = false;
+                vertex = NULL;
+                vec3d mouse = getOpenGLCoordFromScreenCoord(x, y);
+                findClosest(mouse.X, mouse.Y);
                 break;
         }
         glutPostRedisplay();
     }
+}
+
+void ActiveMotion(int x, int y)
+{
+    if (vertex == NULL) return;
+    vec3d mouse = getOpenGLCoordFromScreenCoord(x, y);
+    vertex[0] = mouse.X;
+    vertex[1] = mouse.Y;
+    glutPostRedisplay();
 }
 
 float getRandomClampf()
@@ -168,41 +189,38 @@ void randomizeClearColor()
     glClearColor(red, green, blue, 1.0);
 }
 
-float distance(int ax, int ay, int bx, int by)
+GLdouble distance(GLdouble ax, GLdouble ay, GLdouble bx, GLdouble by)
 {
-    float distance = sqrt((ax - bx) * (ax - bx) + (ay - by) * (ay - by));
+    GLdouble distance = (ax - bx) * (ax - bx) + (ay - by) * (ay - by);
     return distance;
 }
 
-void findClosest(int x, int y)
+void findClosest(GLdouble x, GLdouble y)
 {
-    float min = FLT_MAX, dist = FLT_MAX;
+    GLdouble min = DBL_MAX, dist = DBL_MAX;
     int imin = 0;
 
     for (int i = 0, b = 0; b < 3; b++, i += 2)
     {
-        dist = distance(vertices[i], vertices[i], x, y);
-        if (dist < min);
+        dist = distance(vertices[i], vertices[i+1], x, y);
+        if (dist < min)
         {
-            //printf("dist:%f", dist);
             min = dist;
             imin = i;
         }
     }
-    //printf("distance(%d);", dist);
+    if (min > 0.05) return;
     selected = true;
     vertex = &vertices[imin];
-    //printf("/[%f][%f]/\n", vertex[0], vertex[1]);
-    fflush(stdout);
 }
 
-vec3f getOpenGLCoordFromScreenCoord(const int x, const int y)
+vec3d getOpenGLCoordFromScreenCoord(const int x, const int y)
 {
     GLint viewport[4];
     GLdouble modelview[16];
     GLdouble projection[16];
     GLfloat screenx, screeny, screenz;
-    GLfloat posx, posy, posz;
+    GLdouble posx, posy, posz;
 
     glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
     glGetDoublev(GL_PROJECTION_MATRIX, projection);
@@ -211,6 +229,6 @@ vec3f getOpenGLCoordFromScreenCoord(const int x, const int y)
     screenx = (GLfloat) x;
     screeny = (GLfloat) viewport[3] - (GLfloat) y;
     glReadPixels(x, (GLint) screeny, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &screenz);
-    gluUnProject(screenx, screeny, screenz, modelview, projection, viewport, posx, posy, posz);
-    return vec3f(posx, posy, posz);
+    gluUnProject(screenx, screeny, screenz, modelview, projection, viewport, &posx, &posy, &posz);
+    return vec3d(posx, posy, posz);
 }

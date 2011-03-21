@@ -1,67 +1,62 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "getline.c"
-#include "getnexti.c"
-#include "countl.c"
-#include "graphs.h"
+#include "utils.c"
 #include "limits.h"
 
 #define BUFLEN 100
 #define INFINITY INT_MAX
+#define SAY(x) printf(x);fflush(stdout)
 
 int djikstra(int ** vertices, int size, int start, int end);
-void fix(int ** vertices, int ** path, int size);
-void printl(int * vertices, int size);
+void djikstra_fix(int ** vertices, int ** path, int size);
 int explore(int * vertices, int size);
 
-int main()
+int main(int argc, char ** argv)
 {
-    FILE * file = fopen("graph1", "r");
-    FILE * stdo = fdopen(0, "rw");
+    char filename[] = "matrix";
+    FILE * file = fopen(filename, "r");
     if (file == NULL)
     {
+        printf("Couldn't open \'%s\'.", filename);
         perror("fopen");
         exit(EXIT_FAILURE);
     }
 	
-    int start, end, x, y, matsize = countl(file);
-    fseek(file, 0, SEEK_SET);
-    int ** matrix = malloc(matsize * sizeof(int *));
-    for (x = 0; x < matsize; x++)
+    int start, end, x, y, size = countl(file);
+    int ** matrix = malloc(size * sizeof(int *));
+    for (x = 0; x < size; x++)
     {
-        matrix[x] = malloc(matsize * sizeof(int));
-        for (y = 0; y < matsize; y++)
+        matrix[x] = malloc(size * sizeof(int));
+        for (y = 0; y < size; y++)
             matrix[x][y] = 0;
     }
 	
     char line[BUFLEN];
-    int id, weight, ret, curid;
+    int weight, result;
     while (getline(line, BUFLEN, file))
     {
-        getnexti(line, ':', &curid);
+        getnexti(line, ':', &x);
         do
         {
-            ret = getnexti(NULL, '.', &id);
-            if (!ret) break;
-            ret = getnexti(NULL, ';', &weight);
-            //if (weight == 0)
-            matrix[curid-1][id-1] = weight;
-            //printf("matrix[%d][%d] = %d;\n", curid-1, id-1, weight);
+            result = getnexti(NULL, '.', &y);
+            if (!result) break;
+            result = getnexti(NULL, ';', &weight);
+            matrix[x-1][y-1] = weight;
         }
-        while (ret);
+        while (result);
     }
     fclose(file);
-	
-    djikstra(matrix, matsize, 0, 5);
+
+    djikstra(matrix, size, 0, 5);
     exit(EXIT_SUCCESS);
 }
 
 int djikstra(int ** vertices, int size, int start, int end)
 {
     //printf("int djikstra( [%p], [%d], [%d], [%d]);", vertices, size, start, end);
-    int * explored = malloc(size * sizeof(int)); // explored vertices
-    int * distance = malloc(size * sizeof(int)); // shortest distance from the start
+    int * explored = malloc(size * sizeof(int));
+    int * distance = malloc(size * sizeof(int));
     int ** path = malloc(size * sizeof(int *));
     int x, y, current;
     for (x = 0; x < size; x++)
@@ -70,30 +65,20 @@ int djikstra(int ** vertices, int size, int start, int end)
         for (y = 0; y < size; y++)
             path[x][y] = -1;
     }
-    fix(vertices, path, size);
+    djikstra_fix(vertices, path, size);
     for (x = 0; x < size; x++)
     {
         explored[x] = 0; // unexplored
         distance[x] = INFINITY;
     }
-    // Print vertices
-    printf("----\nVERTICES\n");
-    for (x = 0; x < size; x++)
-    {
-        printl(vertices[x], size);
-        printf("\n");
-    }
-    printf("----\nEXPLORED ");
-    printl(explored, size);
-    printf("\n----\nDISTANCE ");
-    printl(distance, size);
-    printf("\n----\n");
+    print(vertices, size, "vertices");
+    printl(explored, size, "explored");
+    printl(distance, size, "distance");
     int ishortest, shortest, curdis, newdis;
     current = start;
     explored[start] = 1;
     distance[start] = 0;
-    ishortest = start;
-    
+    ishortest = start;    
     while (!explore(explored, size))
     {
         shortest = INFINITY;
@@ -102,19 +87,12 @@ int djikstra(int ** vertices, int size, int start, int end)
         {
             if (!explored[x])
             {
-                // to prevent integer wrap around.
                 if (vertices[current][x] == INFINITY)
                     newdis = INFINITY;
                 else
-                {
                     newdis = curdis + vertices[current][x];
-                    //path[current][x] = current;
-                }
                 if (newdis < distance[x])
-                {
                     distance[x] = newdis;
-					//path[current][x] = x;
-                }
                 if (distance[x] < shortest)
                 {
                     shortest = distance[x];
@@ -124,23 +102,9 @@ int djikstra(int ** vertices, int size, int start, int end)
         }
         current = ishortest;
         explored[current] = 1;
-        printl(distance, size);
-        printf(" {%d}", current);
-        printf("\n");
+        printl(distance, size, "distance");
     }
-    printf("----\nFINAL    ");
-    printl(distance, size);
-    printf("\n----\nPATH\n");
-    printf(" ");
-    for (x = 0; x < size; x++)        
-        printf("   %d", x);
-    printf("\n");
-    for (x = 0; x < size; x++)
-    {
-        printf(" %d", x);
-        printl(path[x], size);
-        printf("\n");
-    }
+    print(path, size, "path");
 }
 
 int explore(int * vertices, int size)
@@ -154,9 +118,8 @@ int explore(int * vertices, int size)
     return 1;
 }
 
-void fix(int ** vertices, int ** path, int size)
+void djikstra_fix(int ** vertices, int ** path, int size)
 {
-    printf("fixin");
     int x, y;
     for (x = 0; x < size; x++)
     {
@@ -169,23 +132,5 @@ void fix(int ** vertices, int ** path, int size)
             if (x == y || vertices[x][y] != INFINITY);
 			path[x][y] = x;
         }
-    }
-}
-
-void printl(int * vertices, int size)
-{
-    int x;
-    for (x = 0; x < size; x++)
-    {
-        if (vertices[x] == INFINITY)
-            printf("[i+]");
-        else if (vertices[x] == -1)
-            printf("[--]"); 
-        else if (vertices[x] < 10)
-            printf("[ %d]", vertices[x]);
-        else if (vertices[x] > 99)
-            printf("[++]");
-        else
-            printf("[%d]", vertices[x]);
     }
 }

@@ -1,9 +1,17 @@
 #include <stdlib.h>
 #include <stdio.h> // FILE
+#include <limits.h>
 
 #ifndef __UTILS__C__LIMOGES__
 #define __UTILS__C__LIMOGES__
-
+inline void ptrtest(void * ptr, char * message)
+{
+    if (ptr == NULL)
+    {
+        perror(message);
+        exit(EXIT_FAILURE);
+    }
+}
 
 static int getline(char * s, int n, FILE * f)
 {
@@ -23,13 +31,6 @@ static int getline(char * s, int n, FILE * f)
     }
 }
 
-/*
- * getnexti
- * get the next integer before the delimiter
- * [Successful conversion] int value
- * [Failed] zero value
- * [Out of range] INT_MAX or INT_MIN
- */
 static int getnexti(char * const s, const char delim, int * const result) 
 {
     static char * start, * ch;
@@ -55,6 +56,43 @@ static int getnexti(char * const s, const char delim, int * const result)
     return 0;
 }
 
+static int countl(FILE * file)
+{
+    int c, n = 0;
+    do
+    {
+        c = fgetc(file);
+        if (c == 10 || c == 13 || (c == 13 && c+1 == 10)) n++;
+    }
+    while (c != EOF);
+    fseek(file, 0, SEEK_SET);
+    return n;
+}
+
+void printl(int * vertices, int size, char * name) 
+{                                                  
+    int x;                                         
+    for (x = 0; x < size; x++)                     
+    {                                              
+        if (vertices[x] == INT_MAX)                
+            printf("[i+]");                        
+        else if (vertices[x] == -1)                
+            printf("[--]");                        
+        else if (vertices[x] < 10)                 
+            printf("[ %d]", vertices[x]);          
+        else if (vertices[x] > 99)                 
+            printf("[++]");                        
+        else                                       
+            printf("[%d]", vertices[x]);           
+    }                                              
+    printf(" %s\n", name);                         
+}                                                  
+
+void print(int ** vertices, int size, char * name)
+{
+    int x = 0;
+    printl(vertices[x], size, name);
+    for (x = 1; x < size; x++)
+        printl(vertices[x], size, "...");
+}
 #endif
-
-

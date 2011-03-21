@@ -25,7 +25,7 @@ ifeq ($(UNAME), Darwin) # DARWIN-BASED (OSX)
 CPPFLAGS += -framework OPENGL -framework GLUT
 endif
 
-TARGETS = exercice1 exercice2 exercice3 exercice4
+TARGETS = exercice1 exercice2 exercice3 exercice4 cube
 
 all: $(TARGETS)
 

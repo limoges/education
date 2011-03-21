@@ -16,9 +16,9 @@
 
 typedef struct rect 
 {
-    int Width;
-    int Height;
-    rect(int w, int h) : Width(w), Height(h) {}
+    GLint Width;
+    GLint Height;
+    rect(GLint w, GLint h) : Width(w), Height(h) {}
 } rect;
 
 typedef struct vec3d
@@ -31,21 +31,21 @@ typedef struct vec3d
 
 void Initalize();
 void Display();
-void Resize(const int x, const int y);
-void Special(int key, int x, int y);
-void Keyboard(unsigned char key, int x, int y);
-void Mouse(int button, int state, int x, int y);
-void ActiveMotion(int x, int y);
+void Resize(const GLint x, const GLint y);
+void Special(GLint key, GLint x, GLint y);
+void Keyboard(GLubyte key, GLint x, GLint y);
+void Mouse(GLint button, GLint state, GLint x, GLint y);
+void ActiveMotion(GLint x, GLint y);
 void randomizeClearColor();
-void findClosest(double x, double y);
-vec3d getOpenGLCoordFromScreenCoord(const int x, const int y);
+void findClosest(GLdouble x, GLdouble y);
+vec3d getOpenGLCoordFromScreenCoord(const GLint x, const GLint y);
 
-float vertices[6] = { -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f };
-float size = 0.01f;
+GLfloat vertices[6] = { -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f };
+GLfloat size = 0.01f;
 bool selected = false;
-float * vertex = NULL;
+GLfloat * vertex = NULL;
 
-int main(int argc, char ** argv)
+GLint main(GLint argc, char ** argv)
 {
     srand(time(NULL));
 
@@ -114,7 +114,7 @@ void Resize(const GLint x, const GLint y)
 	gluOrtho2D(0, x, 0, y);
 }
 
-void Special(int key, GLint x, GLint y)
+void Special(GLint key, GLint x, GLint y)
 {
 	switch (key)
 	{
@@ -134,7 +134,7 @@ void Special(int key, GLint x, GLint y)
     glutPostRedisplay();
 }
 
-void Keyboard(unsigned char key, int x, int y)
+void Keyboard(GLubyte key, GLint x, GLint y)
 {
 	switch (key)
 	{
@@ -150,7 +150,7 @@ void Keyboard(unsigned char key, int x, int y)
 	glutPostRedisplay();
 }
 
-void Mouse(int button, int state, int x, int y)
+void Mouse(GLint button, GLint state, GLint x, GLint y)
 {
     if (GLUT_UP)
     {
@@ -167,7 +167,7 @@ void Mouse(int button, int state, int x, int y)
     }
 }
 
-void ActiveMotion(int x, int y)
+void ActiveMotion(GLint x, GLint y)
 {
     if (vertex == NULL) return;
     vec3d mouse = getOpenGLCoordFromScreenCoord(x, y);
@@ -176,16 +176,16 @@ void ActiveMotion(int x, int y)
     glutPostRedisplay();
 }
 
-float getRandomClampf()
+GLfloat getRandomClampf()
 {
-    return rand() / (((float) RAND_MAX) + 1);
+    return rand() / (((GLfloat) RAND_MAX) + 1);
 }
 
 void randomizeClearColor()
 {
-    float red = getRandomClampf();
-    float green = getRandomClampf();
-    float blue = getRandomClampf();
+    GLfloat red = getRandomClampf();
+    GLfloat green = getRandomClampf();
+    GLfloat blue = getRandomClampf();
     glClearColor(red, green, blue, 1.0);
 }
 
@@ -198,9 +198,9 @@ GLdouble distance(GLdouble ax, GLdouble ay, GLdouble bx, GLdouble by)
 void findClosest(GLdouble x, GLdouble y)
 {
     GLdouble min = DBL_MAX, dist = DBL_MAX;
-    int imin = 0;
+    GLint imin = 0;
 
-    for (int i = 0, b = 0; b < 3; b++, i += 2)
+    for (GLint i = 0, b = 0; b < 3; b++, i += 2)
     {
         dist = distance(vertices[i], vertices[i+1], x, y);
         if (dist < min)
@@ -214,7 +214,7 @@ void findClosest(GLdouble x, GLdouble y)
     vertex = &vertices[imin];
 }
 
-vec3d getOpenGLCoordFromScreenCoord(const int x, const int y)
+vec3d getOpenGLCoordFromScreenCoord(const GLint x, const GLint y)
 {
     GLint viewport[4];
     GLdouble modelview[16];

@@ -1,34 +1,60 @@
+#if defined(__APPLE__)
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GLUT/glut.h>
+#endif
 
+#include <stdio.h>
+#include <math.h>
 #include <stdlib.h>
 #include <time.h>
-
-void Display();
-void Resize(const int x, const int y);
-void Special(int key, int x, int y);
-void Keyboard(unsigned char key, int x, int y);
-void randomizeClearColor();
+#include <float.h>
 
 typedef struct rect 
 {
-    int width;
-    int height;
-    rect(int w, int h) : width(w), height(h) {}
+    GLint Width;
+    GLint Height;
+    rect(GLint w, GLint h) : Width(w), Height(h) {}
 } rect;
 
-int main(int argc, char ** argv)
+typedef struct vec3d
+{
+    GLdouble X;
+    GLdouble Y;
+    GLdouble Z;
+    vec3d(GLdouble x, GLdouble y, GLdouble z) : X(x), Y(y), Z(z) {}
+} vec3d;
+
+void Initalize();
+void Display();
+void Resize(const GLint x, const GLint y);
+void Special(GLint key, GLint x, GLint y);
+void Keyboard(GLubyte key, GLint x, GLint y);
+void Mouse(GLint button, GLint state, GLint x, GLint y);
+void ActiveMotion(GLint x, GLint y);
+void randomizeClearColor();
+void findClosest(GLdouble x, GLdouble y);
+vec3d getOpenGLCoordFromScreenCoord(const GLint x, const GLint y);
+
+GLfloat vertices[6] = { -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f };
+GLfloat size = 0.01f;
+bool selected = false;
+GLfloat * vertex = NULL;
+
+GLint main(GLint argc, char ** argv)
 {
     srand(time(NULL));
 
-    rect window(800,600);
+    rect window(500, 500);
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize(window.width, window.height);
+    glutInitWindowSize(window.Width, window.Height);
 
 	glutInitWindowPosition(10,10);
-	glutInitWindowSize(500,500);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
 	glutCreateWindow("Exercice 3 Image");
 
@@ -36,40 +62,59 @@ int main(int argc, char ** argv)
 	glutReshapeFunc(Resize);
 	glutSpecialFunc(Special);
 	glutKeyboardFunc(Keyboard);
-    
-	glClearColor(1.0,0.5,1.0,1.0);
+    glutMouseFunc(Mouse);
+    glutMotionFunc(ActiveMotion);
+	randomizeClearColor();
+    Initalize();
 	glutMainLoop();
+}
+
+void Initalize()
+{
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glShadeModel(GL_SMOOTH);
 }
 
 void Display()
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 
-    float vertices[24] =
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glBegin(GL_TRIANGLES);
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex3f(vertices[0], vertices[1], 0.0f);
+        glColor3f(0.0f, 1.0f, 0.0f);
+        glVertex3f(vertices[2], vertices[3], 0.0f);
+        glColor3f(0.0f, 0.0f, 1.0f);
+        glVertex3f(vertices[4], vertices[5], 0.0f);
+    glEnd();
+    
+    if (selected)
     {
-        -1, 1, 0,
-        -1,-1, 0,
-         1,-1, 0,
-         1,-1, 1,
-         1, 1, 1,
-         1, 1, 0,
-        -1, 1, 1
-    };
-    vertices[23] = 1;
+        glColor3f(0.0f, 0.0f, 0.0f);
+        glBegin(GL_QUADS);
+            glVertex3f(vertex[0] - size, vertex[1] - size, 0.0f);
+            glVertex3f(vertex[0] - size, vertex[1] + size, 0.0f);
+            glVertex3f(vertex[0] + size, vertex[1] + size, 0.0f);
+            glVertex3f(vertex[0] + size, vertex[1] - size, 0.0f);
+        glEnd();
+    }
 
 	glutSwapBuffers();
 }
 
-void Resize(const int x, const int y)
+void Resize(const GLint x, const GLint y)
 {
-	glViewport(0,0,x,y);
+	glViewport(0, 0, x, y);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0,x,0,y);
+	gluOrtho2D(0, x, 0, y);
 }
 
-void Special(int key, int x, int y)
+void Special(GLint key, GLint x, GLint y)
 {
 	switch (key)
 	{
@@ -89,7 +134,7 @@ void Special(int key, int x, int y)
     glutPostRedisplay();
 }
 
-void Keyboard(unsigned char key, int x, int y)
+void Keyboard(GLubyte key, GLint x, GLint y)
 {
 	switch (key)
 	{
@@ -105,15 +150,85 @@ void Keyboard(unsigned char key, int x, int y)
 	glutPostRedisplay();
 }
 
-float getRandomClampf()
+void Mouse(GLint button, GLint state, GLint x, GLint y)
 {
-    return rand() / (((float) RAND_MAX) + 1);
+    if (GLUT_UP)
+    {
+        switch (button)
+        {
+            case GLUT_LEFT_BUTTON:
+                selected = false;
+                vertex = NULL;
+                vec3d mouse = getOpenGLCoordFromScreenCoord(x, y);
+                findClosest(mouse.X, mouse.Y);
+                break;
+        }
+        glutPostRedisplay();
+    }
+}
+
+void ActiveMotion(GLint x, GLint y)
+{
+    if (vertex == NULL) return;
+    vec3d mouse = getOpenGLCoordFromScreenCoord(x, y);
+    vertex[0] = mouse.X;
+    vertex[1] = mouse.Y;
+    glutPostRedisplay();
+}
+
+GLfloat getRandomClampf()
+{
+    return rand() / (((GLfloat) RAND_MAX) + 1);
 }
 
 void randomizeClearColor()
 {
-    float red = getRandomClampf();
-    float green = getRandomClampf();
-    float blue = getRandomClampf();
+    GLfloat red = getRandomClampf();
+    GLfloat green = getRandomClampf();
+    GLfloat blue = getRandomClampf();
     glClearColor(red, green, blue, 1.0);
+}
+
+GLdouble distance(GLdouble ax, GLdouble ay, GLdouble bx, GLdouble by)
+{
+    GLdouble distance = (ax - bx) * (ax - bx) + (ay - by) * (ay - by);
+    return distance;
+}
+
+void findClosest(GLdouble x, GLdouble y)
+{
+    GLdouble min = DBL_MAX, dist = DBL_MAX;
+    GLint imin = 0;
+
+    for (GLint i = 0, b = 0; b < 3; b++, i += 2)
+    {
+        dist = distance(vertices[i], vertices[i+1], x, y);
+        if (dist < min)
+        {
+            min = dist;
+            imin = i;
+        }
+    }
+    if (min > 0.05) return;
+    selected = true;
+    vertex = &vertices[imin];
+}
+
+vec3d getOpenGLCoordFromScreenCoord(const GLint x, const GLint y)
+{
+    GLint viewport[4];
+    GLdouble modelview[16];
+    GLdouble projection[16];
+    GLfloat screenx, screeny, screenz;
+    GLdouble posx, posy, posz;
+
+    glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+    glGetDoublev(GL_PROJECTION_MATRIX, projection);
+    glGetIntegerv(GL_VIEWPORT, viewport);
+
+    screenx = (GLfloat) x;
+    screeny = (GLfloat) viewport[3] - (GLfloat) y;
+    glReadPixels(x, (GLint) screeny, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &screenz);
+    gluUnProject(screenx, screeny, screenz, modelview, projection, viewport, &posx, &posy, &posz);
+    return vec3d(posx, posy, posz);
 }

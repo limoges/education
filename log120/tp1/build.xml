@@ -1,4 +1,4 @@
-
+<?xml version="1.0"?>
 <project name="log120-tp1" default="assemble" basedir=".">
   <description>
     Travail Pratique 1 - LOG120
@@ -8,7 +8,7 @@
   <property name="main-class" value="ApplicationSwing" />
 
   <!-- properties -->
-  <property name="name" value="tp1" />
+  <property name="name" value="tp1.jar" />
   <property name="src.dir" location="src" />
   <property name="classes.dir" location="classes" />
 
@@ -18,7 +18,7 @@
   </target>
 
   <target name="assemble" depends="compile" description="assembles file into a jar">
-    <jar jarfile="${name}.jar" basedir="${classes.dir}" >
+    <jar jarfile="${name}" basedir="${classes.dir}" >
       <manifest>
         <attribute name="Built-by" value="${user.name}" />
         <attribute name="Main-Class" value="${main-class}" />
@@ -26,7 +26,14 @@
     </jar>
   </target>
 
+  <target name="run" depends="assemble" description="runs the created jar">
+    <java jar="${name}" fork="true" />
+  </target>
   <target name="clean">
-    <delete dir="${classes.dir}" />
+    <delete verbose="true">
+      <fileset dir="${classes.dir}">
+        <exclude name="**/*.properties" />
+      </fileset>
+    </delete>
   </target>
 </project>

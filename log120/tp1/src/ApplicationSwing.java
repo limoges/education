@@ -1,4 +1,4 @@
-/******************************************************
+/*
  Cours :             LOGnnn
  Session :           Saison (été, automne, hiver) 200X
  Groupe :            n
@@ -47,7 +47,7 @@
 
  La distribution originale se trouve à 
  https://cours.ele.etsmtl.ca/academique/log120/notesdecours/exemples/lab/lab1/ApplicationSwing.zip
-********************************************************/
+*/
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -58,10 +58,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -110,40 +106,20 @@ import javax.swing.KeyStroke;
  */
 
 public class ApplicationSwing extends JFrame {
-
-	enum TYPE_DE_FORMES {
-		LIGNE,
-		RECTANGLE,
-		ELLIPSE
-	};
 	private static final int CANEVAS_HAUTEUR = 500;
-
 	private static final int CANEVAS_LARGEUR = 500;
-
 	private static final int DELAI_ENTRE_FORMES_MSEC = 1000;
-
 	private static final int DELAI_QUITTER_MSEC = 200;
-
 	private static final int FORME_MAX_HAUTEUR = 200;
-
 	private static final int FORME_MAX_LARGEUR = 200;
-
 	private static final int MARGE_H = 50;
-
 	private static final int MARGE_V = 60;
-
 	private static final int MENU_DESSIN_ARRETER_TOUCHE_MASK = ActionEvent.CTRL_MASK;
-
 	private static final char MENU_DESSIN_ARRETER_TOUCHE_RACC = KeyEvent.VK_A;
-
 	private static final int MENU_DESSIN_DEMARRER_TOUCHE_MASK = ActionEvent.CTRL_MASK;
-
 	private static final char MENU_DESSIN_DEMARRER_TOUCHE_RACC = KeyEvent.VK_D;
-
 	private static final int MENU_FICHIER_QUITTER_TOUCHE_MASK = ActionEvent.CTRL_MASK;
-
 	private static final char MENU_FICHIER_QUITTER_TOUCHE_RACC = KeyEvent.VK_Q;
-
 	private static final String
 			MENU_FICHIER_TITRE = "app.frame.menus.file.title",
 			MENU_FICHIER_QUITTER = "app.frame.menus.file.exit",
@@ -152,15 +128,10 @@ public class ApplicationSwing extends JFrame {
 			MENU_DESSIN_ARRETER = "app.frame.menus.draw.stop",
 			MENU_AIDE_TITRE = "app.frame.menus.help.title",
 			MENU_AIDE_PROPOS = "app.frame.menus.help.about";
-
 	private static final String MESSAGE_DIALOGUE_A_PROPOS = "app.frame.dialog.about";
-
 	private static final int NOMBRE_DE_FORMES = 150;
-
 	private static final long serialVersionUID = 1L;
-	
 	private Ellipse2D.Double forme;
-	private Shapes shapesArray[] = {};
 	private boolean workerActif;
 	private JMenuItem arreterMenuItem, demarrerMenuItem;
 	
@@ -199,17 +170,11 @@ public class ApplicationSwing extends JFrame {
 		}
 		
 		protected void dessinerFormes() {
-			
 			for (int i = 0; i < NOMBRE_DE_FORMES && workerActif; i++) {
-				/*forme = new Ellipse2D.Double(Math.random() * CANEVAS_LARGEUR,
+				forme = new Ellipse2D.Double(Math.random() * CANEVAS_LARGEUR,
 						Math.random() * CANEVAS_HAUTEUR, Math.random()
 								* FORME_MAX_LARGEUR, Math.random()
-								* FORME_MAX_HAUTEUR);*/
-				if(shapesArray.length > 10) {
-					for(int j = 0; j < 10; j++) {
-						shapesArray[j] = shapesArray[j+1];
-					}
-				}
+								* FORME_MAX_HAUTEUR);
 				repaint();
 				try {
 					Thread.sleep(DELAI_ENTRE_FORMES_MSEC);
@@ -251,69 +216,27 @@ public class ApplicationSwing extends JFrame {
 
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			/*if (forme != null) {
+			if (forme != null) {
 				Graphics2D g2d = (Graphics2D) g;
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 						RenderingHints.VALUE_ANTIALIAS_ON);
 				g2d.draw(forme);
 				g2d.fill(forme);
-			}*/
-			
-			Graphics2D g2d = (Graphics2D) g;
-			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);
-			
-			stringToShape("45060 <CERCLE> 170 10 190 </CERCLE>");
-			
-			for(int j = 0; j< shapesArray.length; j++) {
-				if(shapesArray[j] instanceof RectangleShape) {
-					RectangleShape tmp = (RectangleShape)shapesArray[j];
-					int x = tmp.getX();
-					int y = tmp.getY();
-					int width = tmp.getWidth();
-					int height = tmp.getHeight();
-					if(tmp.isSquare())
-						g2d.setColor(Color.blue);
-					else
-						g2d.setColor(Color.red);
-					g2d.drawRect(x,y, width, height);
-					g2d.fillRect(x, y, width, height);
-				}
-				else if(shapesArray[j] instanceof ElipseShape) {
-					ElipseShape tmp = (ElipseShape)shapesArray[j];
-					int x = tmp.getCentreX();
-					int y = tmp.getCentreY();
-					int width = tmp.getRayonH();
-					int height = tmp.getRayonV();
-					if(tmp.isCircle())	
-						g2d.setColor(Color.orange);
-					else
-						g2d.setColor(Color.pink);
-					g2d.drawOval(x, y, width, height);
-					g2d.fillOval(x, y, width, height);
-				}
-				else if(shapesArray[j] instanceof LineShape) {
-					LineShape tmp = (LineShape)shapesArray[j];
-					int x1 = tmp.getX1();
-					int y1 = tmp.getY1();
-					int x2 = tmp.getX2();
-					int y2 = tmp.getY2();
-					g2d.setColor(Color.green);
-					g2d.drawLine(x1, y1, x2, y2);
-				}
-				
 			}
-			
-			/*for(int i = 0; i< test.length; i++) {
-				
-			}*/
 		}
 	}
 	
-	/* - Constructeur - Créer le cadre dans lequel les formes sont dessinées. */
 	public ApplicationSwing() {
 		getContentPane().add(new JScrollPane(new CustomCanvas()));
+    init();
 	}
+
+  private void init() {
+		frame.creerMenuFichier();
+		frame.creerMenuDessiner();
+		frame.creerMenuAide();
+		frame.rafraichirMenus();
+  }
 
 	/* Créer le menu "Draw". */
 	private JMenu creerMenuDessiner() {
@@ -364,50 +287,13 @@ public class ApplicationSwing extends JFrame {
 		arreterMenuItem.setEnabled(workerActif);
 	}
 	
-	public Shapes stringToShape(String shape) {
-		Pattern p = Pattern.compile("([0-9]*)");
-		Matcher m = p.matcher(shape);
-		m.find();
-		String nseq = m.group(0); //code nseq
-		
-		p = Pattern.compile("<(.*)> (.*)</\\1>");
-		m = p.matcher(shape);
-		m.find();
-		String nomForme = m.group(1); //nom de la forme
-		String[] a = m.group(2).split("[ ]");// a[0]=val1, a[1]=val2, a[2]=val3, a[3]=val4
-		if(nomForme.equals("CARRE"))
-			return new RectangleShape(Integer.parseInt(nseq),Integer.parseInt(a[0]), //faudra m'expliquer pour ton truc de enum ou ben fait le
-					Integer.parseInt(a[1]),Integer.parseInt(a[2]),Integer.parseInt(a[3]));
-		else if(nomForme.equals("RECTANGLE"))
-			return new RectangleShape(Integer.parseInt(nseq),Integer.parseInt(a[0]),
-					Integer.parseInt(a[1]),Integer.parseInt(a[2]),Integer.parseInt(a[3]));
-		else if(nomForme.equals("OVALE"))
-			return new ElipseShape(Integer.parseInt(nseq),Integer.parseInt(a[0]),  
-				Integer.parseInt(a[1]),Integer.parseInt(a[2]),Integer.parseInt(a[3]));		
-		else if(nomForme.equals("CERCLE"))
-			return new ElipseShape(Integer.parseInt(nseq),Integer.parseInt(a[0]),
-					Integer.parseInt(a[1]),Integer.parseInt(a[2]),Integer.parseInt(a[2])); //quatrième paramètre inexistant pour le cercle
-		else if(nomForme.equals("LIGNE"))
-			return new LineShape(Integer.parseInt(nseq),Integer.parseInt(a[0]),
-					Integer.parseInt(a[1]),Integer.parseInt(a[2]),Integer.parseInt(a[3]));
-		
-		return null;
-	}
-	
-	/* Lancer l'exécution de l'application. */
 	public static void main(String[] args) {
-		/* Créer la fenêtre de l'application. */
-		ApplicationSwing cadre = new ApplicationSwing();
-		cadre.creerMenuFichier();
-		cadre.creerMenuDessiner();
-		cadre.creerMenuAide();
-		cadre.rafraichirMenus();
+		ApplicationSwing frame = new ApplicationSwing();
 
-		/* Centrer la fenêtre. */
-		cadre.setLocationRelativeTo(null);
 
-		/* Lancer l'application. */
-		ApplicationSupport.launch(cadre, ApplicationSupport
+		frame.setLocationRelativeTo(null);
+
+		ApplicationSupport.launch(frame, ApplicationSupport
 				.getResource("app.frame.title"), 0, 0, CANEVAS_LARGEUR
 				+ MARGE_H, CANEVAS_HAUTEUR + MARGE_V);
 	}

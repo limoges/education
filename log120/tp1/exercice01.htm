@@ -1,0 +1,529 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="fr-ca">
+
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+  <title>LOG120 - Lab 1 : Exercice 1, L'environnement de travail</title>
+
+  <link rel="stylesheet" type="text/css" href="../../htm/doc/styleNN.css">
+
+  <style type="text/css"> 
+
+      @import url(../../htm/doc/style.css); /*IE and NN6x styles*/
+
+  </style>
+
+
+
+</head>
+
+<body>
+
+<h1>Lab 1, Exercice 1&nbsp;: l'environnement de travail</h1>
+
+
+
+<h2>But de l'exercice</h2>
+
+<p>Le but de cet exercice est de vous familiariser avec l'environnement de travail pour LOG120&nbsp;:</p>
+
+<ul>
+
+  <li>le compilateur de Java</li>
+
+<!-- Début de la modification -->  
+<!-- Modifié le (dim) 2003-09-07 par Alain Lemay -->
+<!-- Changé "make" pour "nmake" -->
+  <li>l'outil de compilation <tt>nmake</tt></li>
+<!-- Fin de la modification -->  
+
+  <li>l'environnement Eclipse pour Java</li>
+
+  <li>le style de commentaire en-t&ecirc;te obligatoire pour tout fichier source</li>
+
+  <li>le gabarit pour les rapports de laboratoire</li>
+
+  <li>la proc&eacute;dure de remise des travaux</li>
+
+</ul>
+
+
+
+<h1>&Eacute;tape 1&nbsp;: Cr&eacute;er un nouveau projet en Eclipse</h1>
+<ol type="a">
+  <li>Loguez-vous sur votre compte Novell, et cr&eacute;ez un r&eacute;pertoire 
+<!-- Début de la modification -->  
+<!-- Modifié le (dim) 2003-09-07 par Alain Lemay -->
+<!-- Changé "sur" pour "dans" -->
+    (un dossier) qui s'appelle <span class="invert">LOG120_labs</span> dans votre
+<!-- Fin de la modification -->
+    compte sur le serveur. </li>
+<!-- Début de la modification -->  
+<!-- Ajouté le (dim) 2003-09-07 par Alain Lemay -->    
+  <li>&Agrave; l'int&eacute;rieur de ce r&eacute;pertoire, cr&eacute;ez un sous-r&eacute;pertoire
+    nomm&eacute; <span class="invert">Exercice 1</span> qui
+  contiendra les fichiers de votre projet.</li>
+  <!-- Fin de la modification -->
+  <li>D&eacute;marrez l'outil Eclipse.</li>
+  <li>S&eacute;lectionnez le menu &quot;File -&gt; New -&gt; Project&quot;</li>
+  <li>Choisissez &quot;Java&quot; (&agrave; gauche) et puis &quot;Java Project&quot; 
+    (&agrave; droite), et cliquez sur le bouton &quot;Next &gt;&quot;.</li>
+  <li>Donnez un nom au projet, par exemple <span class="invert">Exercice 1</span>, 
+    pour le &quot;Project Name&quot;. </li>
+  <li>D&eacute;s&eacute;lectionnez l'option &quot;Use default&quot; pour le &quot;Project 
+    contents&quot;, puis cliquez sur &quot;Browse...&quot; et s&eacute;lectionnez 
+<!-- Début de la modification -->  
+<!-- Modifié le (dim) 2003-09-07 par Alain Lemay -->    
+<!-- rajouté le répertoire Exercice 1 -->
+    le r&eacute;pertoire &quot;LOG120_labs\Exercice 1&quot; que vous avez cr&eacute;&eacute; 
+<!-- Fin de la modification -->  
+    sur votre compte Novell plus t&ocirc;t.</li>
+  <li>Cliquez sur le bouton &quot;Finish&quot;.</li>
+</ol>
+<h1>&Eacute;tape 2: Cr&eacute;er une classe dans un fichier source Java</h1>
+
+<ol type="a">
+  <li>S&eacute;lectionnez le menu &quot;File -&gt; New -&gt; Class&quot;</li>
+  <li>Dans la fen&ecirc;tre qui s'ouvre, entrez le nom de la classe <span class="invert">Bonjour</span> 
+    dans le champs &quot;Name&quot;, puis cliquez sur le bouton &quot;Finish&quot;.</li>
+  <li>Remarquez que Eclipse vous a cr&eacute;&eacute; un fichier texte avec du 
+    code Java d&eacute;j&agrave; fait, y compris m&ecirc;mes des commentaires.</li>
+  <li>Modifiez le fichier texte pour qu'il ressemble au texte suivant :<tt> 
+    <form action="" method="post" name="form1">
+      <textarea name="Bonjour.java" cols="80" rows="27" readonly="readonly" wrap="virtual" class="codeExample" dir="ltr">/******************************************************
+ Cours :             LOG120
+ Session :           saison ann&eacute;e
+ Groupe :            0x
+ Projet :            Laboratoire #n
+ &Eacute;tudiant(e)(s) :    Marcel Marceau
+                     Edith Piaf
+ Code(s) perm. :     MARM987341987
+                     PIAE324398724
+ Professeur :        Groucho Marx
+ Nom du fichier :    Bonjour.java
+ Date cr&eacute;e :         aaaa-mm-jj
+ Date dern. modif.   aaaa-mm-jj
+*******************************************************
+ Historique des modifications
+*******************************************************
+  2002-mm-jj         Version initiale
+*******************************************************/
+
+public class Bonjour
+{
+  public static void main(String[] argv) 
+  { 
+    System.out.println("Bonjour tout le monde !");
+  } 
+}</textarea>
+    </form>
+    </tt> <br>
+    <strong>Notez l'ent&ecirc;te (commentaire) obligatoire pour le code 
+    source -- tout programme que vous soumettez pour un travail dans un cours
+     des baccalaur&eacute;ats en g&eacute;nie logiciel ou des TI &agrave; l'&Eacute;TS
+     DOIT avoir une ent&ecirc;te comme cet exemple. Un fichier sans commentaire
+     ent&ecirc;te
+       de ce genre sera refus&eacute; !!</strong> <br>
+    <br>
+  </li>
+  <li>Sauvegardez le fichier avec le menu &quot;File -&gt; Save Bonjour.java&quot;.
+     Notez qu'un fichier source Java doit toujours porter le nom de la (premi&egrave;re)
+      classe qu'il contient. Eclipse facilite cette t&acirc;che car il g&eacute;n&egrave;re
+       le code et le nom de la classe pour vous automatiquement. </li>
+</ol>
+
+<h2>&Eacute;tape 3 : Compiler un fichier source Java avec Eclipse</h2>
+<ol type="a">
+  <li>Faites compiler Bonjour.java avec le menu &quot;Project -&gt; Rebuild all&quot;</li>
+  <li>Les r&eacute;sultats de la compilation s'afficheront dans la fen&ecirc;tre 
+    &quot;Tasks&quot; qui est accessible avec le menu &quot;Window -&gt; Show 
+    View -&gt; Tasks&quot;. S'il y a des erreurs de syntaxe, vous pouvez les corriger 
+    une &agrave; la fois en cliquant sur les ic&ocirc;nes d'ampoule ou de X rouge 
+    qui apparaissent dans la marge &agrave; gauche.</li>
+  <li>En fait, vous pouvez voir que Eclipse compile un fichier source au fur
+    et 
+    &agrave; mesure que vous le r&eacute;digez. Pour un projet avec un seul fichier
+     source, l'&eacute;tape compilation &quot;Project -&gt; Rebuild all&quot; est
+      presque inutile.</li>
+</ol>
+
+<h2>&Eacute;tape 3bis&nbsp;: Compiler un fichier source Java avec le JDK</h2>
+<ol type="a">
+  <li>Bien que l'outil Eclipse facilite &eacute;norm&eacute;ment le d&eacute;veloppement
+     Java, il est quand m&ecirc;me essentiel de savoir utiliser les commandes
+     de  base pour compiler un fichier Java avec le JDK de Sun. Alors nous vous
+     donnons 
+    des instructions ici pour ce faire.</li>
+  <li>Ouvrez une fen&ecirc;tre de commande MS-DOS&nbsp;: &quot;D&eacute;marrer -&gt; Ex&eacute;cuter...&quot;,
+     puis dans le champ&quot;Ouvrir:&quot; tapez <span class="invert">cmd</span></li>
+  <li>Placez-vous dans le r&eacute;pertoire &quot;LOG120_labs\Exercice 1&quot;
+<!-- Début de la modification -->  
+<!-- Modifié le (dim) 2003-09-07 par Alain Lemay -->
+<!-- rajouté "dans votre compte Novell -->
+    de votre compte Novell (demandez &agrave; un charg&eacute; de lab si
+<!-- Fin de la modification -->
+    n&eacute;cessaire).</li>
+  <li>Tapez la commande <span class="invert">more Bonjour.java</span> pour visualiser 
+    le fichier que vous avez cr&eacute;&eacute; avec Eclipse dans l'&eacute;tape 
+    pr&eacute;c&eacute;dente, et pour v&eacute;rifier que vous &ecirc;tes dans 
+    le bon r&eacute;pertoire.</li>
+  <li>Pour compiler votre fichier Java, tapez la commande <span class="invert">javac 
+    Bonjour.java</span> -- si vous avez des erreurs de compilation, vous devez 
+    les corriger avec l'&eacute;diteur de texte.</li>
+  <li>D&egrave;s que vous avez compil&eacute; correctement votre fichier, vous 
+    devriez voir un nouveau fichier Bonjour.class dans le m&ecirc;me r&eacute;pertoire. 
+    Tapez la commande <span class="invert">dir</span> pour confirmer que ce fichier 
+    existe.</li>
+</ol>
+<h2>&Eacute;tape 4&nbsp;: Faire tourner un programme Java avec Eclipse</h2>
+
+<ol type="a">
+  <li>Lancez votre programme en Eclipse avec le menu &quot;Run -&gt; Run as -&gt; 
+    Java Application&quot;. Eclipse vous rappellera si vous n'avez pas sauvegard&eacute; 
+    le fichier source. </li>
+  <li>Vous verrez les sorties (println) de votre programme dans la fen&ecirc;tre 
+    console en bas.</li>
+</ol>
+
+<h2>&Eacute;tape 4bis&nbsp;: Faire tourner un programme Java avec le JDK</h2>
+<ol type="a">
+  <li>Dans la fen&ecirc;tre DOS, tapez la commande <span class="invert">java Bonjour</span> 
+    pour lancer votre programme.</li>
+  <li>Vous verrez les sorties (println) de votre programme dans la fen&ecirc;tre 
+    DOS.</li>
+</ol>
+<h2>&Eacute;tape 5&nbsp;: Cr&eacute;er un fichier makefile</h2>
+
+<ol type="a">
+
+  <li>Avec l'&eacute;diteur de texte (Eclipse), cr&eacute;ez un nouveau fichier 
+    &quot;File -&gt; New -&gt; File&quot; avec le nom <span class="invert">makefile</span> 
+    qui contient le texte suivant. <strong>Attention</strong> -- au lieu du texte 
+    &lt;tab&gt; il faut taper le caract&egrave;re tab : <font face="Courier New, Courier, mono"> 
+    <form action="" method="post" name="form1">
+
+      <textarea name="Bonjour.java" cols="80" rows="27" readonly="readonly" wrap="virtual" class="codeExample" dir="ltr">######################################################
+# Cours :             LOG120
+# Session :           saison ann&eacute;e
+# Groupe :            0x
+# Projet :            Laboratoire #n
+# &Eacute;tudiant(e)(s) :    Marcel Marceau
+#                     Edith Piaf
+# Code(s) perm. :     MARM987341987
+#                     PIAE324398724
+# Professeur :        Groucho Marx
+# Nom du fichier :    makefile
+# Date cr&eacute;e :         aaaa-mm-jj
+# Date dern. modif.   aaaa-mm-jj
+######################################################
+# Historique des modifications
+######################################################
+#  2002-mm-jj         Version initiale
+######################################################
+
+all: Bonjour.class
+
+Bonjour.class: Bonjour.java
+<tab>javac Bonjour.java
+
+clean:
+<tab>del *.class</textarea>
+
+    </form>
+
+    </font> </li>
+
+</ol>
+
+<!-- Début de la modification -->  
+<!-- Modifié le (dim) 2003-09-07 par Alain Lemay -->
+<!-- changé "make" pour "nmake" -->
+<h2>&Eacute;tape 6&nbsp;: Faire un build en DOS avec la commande nmake</h2>
+<!-- Fin de la modification -->
+
+<ol type="a">
+
+  <li>Dans la fen&ecirc;tre DOS, tapez la commande <span class="invert">nmake clean</span> 
+
+    -- ceci devrait effacer tous les fichiers .class g&eacute;n&eacute;r&eacute;s 
+
+    par le compilateur.</li>
+
+  <li>Ensuite tapez la commande <span class="invert">nmake all</span> -- ceci devrait 
+
+    faire compiler le fichier Bonjour.java produisant de nouveau le fichier Bonjour.class.</li>
+
+</ol>
+
+<h2>&Eacute;tape 7&nbsp;: Rajouter une classe au projet</h2>
+
+<ol type="a">
+
+  <li>Cr&eacute;ez une nouvelle classe qui s'appelle <span class="invert">MessageMondial</span> 
+    contenant le texte suivant : <font face="Courier New, Courier, mono"> 
+    <form action="" method="post" name="form1">
+
+      <textarea name="Bonjour.java" cols="80" rows="36" readonly="readonly" wrap="virtual" class="codeExample" dir="ltr">/******************************************************
+ Cours :             LOG120
+ Session :           saison ann&eacute;e
+ Groupe :            0x
+ Projet :            Laboratoire #n
+ &Eacute;tudiant(e)(s) :    Marcel Marceau
+                     Edith Piaf
+ Code(s) perm. :     MARM987341987
+                     PIAE324398724
+ Professeur :        Groucho Marx
+ Nom du fichier :    MessageMondial.java
+ Date cr&eacute;e :         aaaa-mm-jj
+ Date dern. modif.   aaaa-mm-jj
+*******************************************************
+ Historique des modifications
+*******************************************************
+  2002-mm-jj         Version initiale
+*******************************************************/
+
+import java.io.*; 
+
+public class MessageMondial
+{ 
+  PrintWriter pw;
+
+  MessageMondial(PrintWriter writer) 
+  { 
+    pw = writer; 
+  } 
+
+  public void print() 
+  { 
+    pw.println("Bonjour tout le monde !");
+  }
+}</textarea>
+
+    </form>
+
+    </font> </li>
+
+  <li>Modifiez la classe principale Bonjour.java pour utiliser la nouvelle classe 
+    <em>(nous avons omis l'ent&ecirc;te commentaire afin de m&eacute;nager l'espace)</em>&nbsp;: 
+    <font face="Courier New, Courier, mono"> 
+    <form action="" method="post" name="form1">
+
+      <textarea name="Bonjour.java" cols="80" rows="13" readonly="readonly" wrap="virtual" class="codeExample" dir="ltr">import java.io.*;
+
+public class Bonjour
+{
+  public static void main(String[] argv) 
+  {
+    PrintWriter pw = new PrintWriter(System.out);
+    MessageMondial msg = new MessageMondial(pw);
+
+    msg.print();
+    pw.close();
+  }
+}</textarea>
+
+    </form>
+
+    </font> 
+
+  <li>Modifiez le makefile pour la nouvelle classe et la d&eacute;pendance entre 
+    les classes. N'oubliez pas qu'au lieu du texte &lt;tab&gt; il faut taper le 
+    caract&egrave;re tab <em>(nous avons omis l'ent&ecirc;te commentaire afin 
+    de m&eacute;nager l'espace)</em>&nbsp;: <font face="Courier New, Courier, mono"> 
+    <form action="" method="post" name="form1">
+
+      <textarea name="Bonjour.java" cols="80" rows="10" readonly="readonly" wrap="virtual" class="codeExample" dir="ltr">all: Bonjour.class
+
+Bonjour.class: Bonjour.java MessageMondial.class
+&lt;tab&gt;javac Bonjour.java
+
+MessageMondial.class: MessageMondial.java
+&lt;tab&gt;javac MessageMondial.java
+
+clean:
+&lt;tab&gt;del *.class</textarea>
+    </form>
+
+    </font> 
+
+Remarquez que Bonjour.class a une nouvelle d&eacute;pendance&nbsp;: la classe 
+
+    MessageMondial.class de laquelle Bonjour.class tire une d&eacute;finition 
+
+    de classe. &Agrave; cause de cette d&eacute;pendance, l'outil nmake va savoir 
+
+    qu'il faut g&eacute;n&eacute;rer MessageMondial.class avant de g&eacute;n&eacute;rer 
+
+    Bonjour.class (en fait, nmake utilise la date de modification de fichier pour 
+
+    d&eacute;cider quand une destination doit &ecirc;tre r&eacute;g&eacute;n&eacute;r&eacute;e 
+
+    parce qu'elle est plus ancienne que sa d&eacute;pendance).</li>
+
+</ol>
+
+<h2>&Eacute;tape 8&nbsp;: Refaire un build en DOS avec la commande nmake</h2>
+
+<ol type="a">
+
+  <li>Dans la fen&ecirc;tre DOS, tapez la commande <span class="invert">nmake clean</span> 
+
+    encore pour effacer les fichiers .class.</li>
+
+  <li>Ensuite tapez la commande <span class="invert">nmake all</span> -- cette 
+
+    fois-ci, cela devrait faire compiler les fichiers MessageMondial.java et puis 
+
+    Bonjour.java produisant leurs fichiers .class. La commande nmake g&eacute;n&egrave;re 
+
+    les fichiers dans le bon ordre, selon les r&egrave;gles du makefile.</li>
+
+</ol>
+
+<h2>&Eacute;tape 9&nbsp;: Exp&eacute;rimenter avec Eclipse</h2>
+
+<ol type="a">
+  <li>Si vous n'avez pas encore fait de fautes dans l'un des fichiers source Java, 
+    essayez maintenant d'introduire une erreur de syntaxe dans le programme. Par 
+    exemple, changer le mot &quot;println&quot; &agrave; &quot;prntln&quot; en 
+    supprimant le &quot;i&quot;. </li>
+  <li>Voyez-vous l'ampoule jaune qui s'allume &agrave; gauche de la ligne o&ugrave; 
+    se trouve l'erreur&nbsp;? Cliquez une fois sur l'ampoule et vous verrez que
+    Eclipse vous propose une solution.</li>
+  <li>S&eacute;lectionnez la solution dans la bo&icirc;te qui appara&icirc;t pour 
+    corriger l'erreur que vous avez introduite. &Agrave; force de travailler avec 
+    Eclipse, vous verrez que cet outil est vraiment commode.</li>
+</ol>
+
+<p>Eclipse vous fournit &eacute;galement d'autres raccourcis. Par exemple, pour rentrer
+  une instruction de println, tapez le texte <span class="invert">sysout</span>  puis
+  CTRL-espace. Eclipse compl&egrave;te automatiquement l'instruction en Java. Pour en
+  savoir plus, il y a <a href="http://jmdoudoux.developpez.com/java/eclipse/?page=Chap_006#L6.4" target="_blank">ce
+  document en fran&ccedil;ais sur Eclipse</a>. </p>
+<h2>&Eacute;tape 9bis&nbsp;: Exp&eacute;rimenter avec nmake en DOS</h2>
+<ol type="a">
+  <li>Cette &eacute;tape consiste &agrave; exp&eacute;rimenter avec votre environnement 
+    en DOS, sans utiliser Eclipse. Faites d'abord une modification du message 
+    imprim&eacute; par la classe MessageMondial. Sauvegardez la modification -- 
+    cela changera la date de modification du fichier. </li>
+  <li>Tapez la commande <span class="invert">nmake all</span> -- qu'est-ce que 
+    vous observez&nbsp;?</li>
+  <li>Faites une modification du fichier Bonjour.java, en rajoutant un commentaire, 
+    par exemple. Sauvegardez la modification.</li>
+  <li>Tapez la commande <span class="invert">nmake all</span> -- qu'est-ce que 
+    vous observez&nbsp;?</li>
+  <li>Tapez la commande <span class="invert">nmake clean</span> puis la commande 
+    <span class="invert">nmake</span> tout seul (sans all) -- remarquez que nmake 
+    traitera la premi&egrave;re cible dans le fichier &quot;makefile&quot; qui 
+    est donc &quot;all&quot;.</li>
+</ol>
+<h2>&Eacute;tape 10&nbsp;: Documenter</h2>
+
+<ol type="a">
+
+  <li>Pour tous les laboratoires, il faut &eacute;crire un rapport. Vous devez respecter 
+
+     le format d&eacute;crit dans <a href="../../htm/doc/travaux/GabaritRapportGL.dot" target="Rapport">ce gabarit (Microsoft 
+
+  Word)</a>.</li> 
+
+  <li>Ouvrez le gabarit en Microsoft Word (cliquez sur le hyperlien ci-dessus), remplissez la 
+
+  premi&egrave;re page, et sauvegardez votre rapport dans
+
+  le m&ecirc;me dossier que votre code source.</li>
+
+</ol>
+
+  
+
+<h2>&Eacute;tape 11&nbsp;: Faire une remise &eacute;lectronique</h2>
+
+  
+<p>Pour chaque laboratoire il faut remettre le travail (code source, documentation, 
+  etc.) &eacute;lectroniquement en suivant la <a href="../../htm/doc/travaux/remise.shtml" target="Remise">proc&eacute;dure 
+  de remise des travaux</a>. Ceci nous facilite la correction ainsi que le contr&ocirc;le 
+  de plagiat. </p>
+
+<ol type="a">
+
+  <li>Faites la remise &eacute;lectronique pour le travail que vous avez r&eacute;alis&eacute; 
+    pour cet exercice. Suivez les instructions <a href="../../htm/doc/travaux/remise.shtml" target="Remise">de 
+    la proc&eacute;dure</a>. Sachez que pour cette remise, il s'agit du <strong>laboratoire 
+    #0</strong>.</li>
+
+</ol>
+
+
+
+<h2>R&eacute;sum&eacute;</h2>
+
+<p>Dans cet exercice, vous avez utilis&eacute; les outils suivants&nbsp;:</p>
+
+<ul>
+  <li>Eclipse : pour d&eacute;velopper une application Java (cr&eacute;ation de 
+    classe en Java, r&eacute;daction de fichier source, compilation).</li>
+  <li><span class="invert">javac&nbsp;LaClasse.java</span> : pour compiler le 
+    fichier LaClasse.java -- cela produit le fichier LaClasse.class</li>
+  <li><span class="invert">java LaClasse</span> : pour ex&eacute;cuter le programme 
+    principal du fichier LaClasse.class</li>
+  <li><span class="invert">nmake &lt;cible&gt;</span> : pour g&eacute;n&eacute;rer 
+    la cible &lt;cible&gt; &agrave; l'int&eacute;rieur du fichier makefile. Utile 
+    pour les projets qui contiennent plusieurs fichiers qui d&eacute;pendent les 
+    uns des autres.</li>
+</ul>
+
+<p>Vous avez &eacute;galement vu le gabarit pour les rapports de laboratoire, et vous
+
+avez fait une remise &eacute;lectronique de votre travail. </p>
+
+<p><strong>F&eacute;licitations ! Maintenant vous connaissez bien l'environnement de 
+
+travail pour le cours LOG120, et vous &ecirc;tes pr&ecirc;t &agrave; vous attaquer au 
+
+<a href="../../htm/doc/travaux/travail01/index.shtml">premier laboratoire</a>.</strong></p>
+
+
+
+<p class="noindent" style="border-bottom-width: 2pt; border-bottom-style: solid; border-color: #A0A0FF; padding: 1pt"></p>
+<table dir="ltr" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td align="center">
+      <p class="noindent"> 
+	      <a href="https://cours.ele.etsmtl.ca/academique/log120/index.shtml" target="_top"> Accueil
+          du cours LOG120
+        </a> </p>
+    </td>
+    <td align="center">
+      <p class="noindent"> &nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.logti.etsmtl.ca/" target="_top">D&eacute;partement
+          de g&eacute;nie logiciel et des TI</a>&nbsp;&nbsp;&nbsp;&nbsp; </p>
+    </td>
+    <td><a href="http://www.etsmtl.ca/" target="_top"><img src="/images/logo2.gif" border="0" width="188" height="25" alt="&Eacute;cole de technologie sup&eacute;rieure"></a>
+    </td>
+  </tr>
+</table>
+
+<p class="noindent" style="border-bottom-width: 2pt; border-bottom-style: solid; border-color: #A0A0FF; padding: 1pt"></p>
+<address>
+Derni&egrave;re mise &agrave; jour : 
+
+2007-05-02
+</address>
+
+
+</body>
+
+
+
+</html>
+
+
+
+
+
+
+
+

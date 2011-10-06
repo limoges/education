@@ -1,0 +1,6 @@
+
+To compile the lab :
+  ant
+
+To run the lab :
+  java -jar tp1.jar

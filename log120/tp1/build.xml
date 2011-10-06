@@ -1,0 +1,32 @@
+
+<project name="log120-tp1" default="assemble" basedir=".">
+  <description>
+    Travail Pratique 1 - LOG120
+  </description>
+
+  <!-- program entry point -->
+  <property name="main-class" value="ApplicationSwing" />
+
+  <!-- properties -->
+  <property name="name" value="tp1" />
+  <property name="src.dir" location="src" />
+  <property name="classes.dir" location="classes" />
+
+  <!-- targets-->
+  <target name="compile">
+    <javac includeantruntime="false" srcdir="${src.dir}" destdir="${classes.dir}" />
+  </target>
+
+  <target name="assemble" depends="compile" description="assembles file into a jar">
+    <jar jarfile="${name}.jar" basedir="${classes.dir}" >
+      <manifest>
+        <attribute name="Built-by" value="${user.name}" />
+        <attribute name="Main-Class" value="${main-class}" />
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="clean">
+    <delete dir="${classes.dir}" />
+  </target>
+</project>

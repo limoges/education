@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>LOG120 - Travail 1 : Exemple d'expressions rationnelles</title>
+<link rel="stylesheet" type="text/css" href="../../../css/styles_base.css">
+<link rel="stylesheet" type="text/css" href="../../../css/liens.css">
+</head>
+<body>
+<h1>D&eacute;corticage de balises avec expressions rationnelles</h1>
+<p>
+<table width="80%" border="1">
+  <tr>
+    <td><pre>/*
+ * Exemple pour les expressions rationnelles (LOG120)
+ * Code provenant de l'article:
+ * "Using Regular Expressions in J2SE 1.4," de David Weller
+ * http://jdj.sys-con.com/read/36811.htm
+ * Commentaires additionnels par Christopher Fuhrman, Oct 2006
+ */
+package lab1regex;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public final class TagParser {
+	public static final void main(String args[]) {
+		// La syntaxe d'une expression rationnelle est complexe et puissante :<br>		// http://www.commentcamarche.net/php/phpreg.php3<br>		// &lt;(.*)&gt; signifie un ensemble de caract&egrave;res se trouvant entre un &lt; et un &gt;<br>		// &lt;/\\1&gt; signifie l'&eacute;quivalent du premier argument, entre &lt;/ et &gt; <br>		Pattern p = Pattern.compile(&quot;&lt;(.*)&gt;(.*)&lt;/\\1&gt;&quot;);
+		String input = &quot;This is &lt;bold&gt;&lt;italic&gt;bold-italic&lt;/italic&gt;&lt;/bold&gt;&quot;;
+		findTag(p, input);
+	}
+
+	private static final void findTag(Pattern p, String in) {
+		Matcher m = p.matcher(in);
+		boolean result = m.find();
+		while (result) {
+			// m.group(1) prend le premier &eacute;l&eacute;ment trouv&eacute; par le pattern p
+			// m.group(2) prend le deuxi&egrave;me &eacute;l&eacute;ment (entre les balises)
+			// la boucle permet de trouver des balises imbriquées
+			System.out.println("Found tag: " + m.group(1) + ", inner string = "
+					+ m.group(2));
+			findTag(p, m.group(2));
+			result = m.find();
+		}
+	}
+}</pre></td>
+  </tr>
+</table>
+</p>
+<p>Les &quot;regex&quot; sont une technologie ind&eacute;pendante support&eacute;e
+  par plusieurs environnements de programmation&nbsp;: perl, ASP, Java, etc.
+  Pour les d&eacute;tails
+  sur la syntaxe d'une expression rationnelle,
+  voir la page de <a href="http://fr.wikipedia.org/wiki/Expressions_rationnelles">Wikipedia</a>  ou <a href="http://www.siteduzero.com/tuto-3-168-1-les-expressions-regulieres-partie-1-2.html">ce
+tutoriel</a>.</p>
+</body>
+</html>

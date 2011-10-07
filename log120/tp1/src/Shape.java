@@ -1,5 +1,6 @@
+import java.awt.Graphics2D;
 
-public class Shape {
+public abstract class Shape {
 
 	private long id;
 	
@@ -15,5 +16,5 @@ public class Shape {
 		this.id = id;
 	}
 
-  public abstract void draw();
+  public abstract void draw(Graphics2D g);
 }

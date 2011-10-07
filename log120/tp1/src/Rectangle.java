@@ -1,35 +1,43 @@
 import java.awt.Point;
+import java.awt.Dimension;
 
-public class Rectangle extends Shape {
+public abstract class Rectangle extends Shape {
 
-  private Point p1, p2;
+  private Point point;
+  private Dimension dimension;
 	
 	public Rectangle(long id, int x1, int y1, int x2, int y2) {
 		super(id);
-    this.p1 = new Point(x1, y1);
-    this.p2 = new Point(x2, y2);
+    this.point = new Point(x1, y1);
+    this.dimension = new Dimension(x2, y2);
 	}
 
-  public Rectangle(long id, Point p1, Point p2) {
+  public Rectangle(long id, Point point, Dimension dimension) {
     super(id);
-    this.p1 = p1;
-    this.p2 = p2;
+    this.point = point;
+    this.dimension = dimension;
   }
 
-  public void setP1(Point p1) {
-    this.p1 = p1;
+  public Point getPoint() { 
+    return point;           
+  }                         
+
+  public void setPoint(Point point) {
+    this.point = point;
   }
 
-  public void setP2(Point p2) {
-    this.p2 = p2;
+  public Dimension getDimension() { 
+    return dimension;               
+  }                                 
+
+  public void setDimension(Dimension dimension) {
+    this.dimension = dimension;
   }
 
-  public Point getP1() {
-    return p1;
+  public void draw(Graphics2D g) {
+    g.setColor(Color.BLACK);
+    g.drawRect(point.x, point.y, dimension.width, dimension.height);
+    g.setColor(Color.RED);
+    g.fillRect(point.x, point.y, dimension.width, dimension.height);
   }
-
-  public Point getP2() {
-    return p2;
-  }
-
 }

@@ -106,34 +106,12 @@ import javax.swing.KeyStroke;
  */
 
 public class ApplicationSwing extends JFrame {
-	private static final int CANEVAS_HAUTEUR = 500;
-	private static final int CANEVAS_LARGEUR = 500;
-	private static final int DELAI_ENTRE_FORMES_MSEC = 1000;
-	private static final int DELAI_QUITTER_MSEC = 200;
-	private static final int FORME_MAX_HAUTEUR = 200;
-	private static final int FORME_MAX_LARGEUR = 200;
-	private static final int MARGE_H = 50;
-	private static final int MARGE_V = 60;
-	private static final int MENU_DESSIN_ARRETER_TOUCHE_MASK = ActionEvent.CTRL_MASK;
-	private static final char MENU_DESSIN_ARRETER_TOUCHE_RACC = KeyEvent.VK_A;
-	private static final int MENU_DESSIN_DEMARRER_TOUCHE_MASK = ActionEvent.CTRL_MASK;
-	private static final char MENU_DESSIN_DEMARRER_TOUCHE_RACC = KeyEvent.VK_D;
-	private static final int MENU_FICHIER_QUITTER_TOUCHE_MASK = ActionEvent.CTRL_MASK;
-	private static final char MENU_FICHIER_QUITTER_TOUCHE_RACC = KeyEvent.VK_Q;
-	private static final String
-			MENU_FICHIER_TITRE = "app.frame.menus.file.title",
-			MENU_FICHIER_QUITTER = "app.frame.menus.file.exit",
-			MENU_DESSIN_TITRE = "app.frame.menus.draw.title",
-			MENU_DESSIN_DEMARRER = "app.frame.menus.draw.start",
-			MENU_DESSIN_ARRETER = "app.frame.menus.draw.stop",
-			MENU_AIDE_TITRE = "app.frame.menus.help.title",
-			MENU_AIDE_PROPOS = "app.frame.menus.help.about";
-	private static final String MESSAGE_DIALOGUE_A_PROPOS = "app.frame.dialog.about";
-	private static final int NOMBRE_DE_FORMES = 150;
-	private static final long serialVersionUID = 1L;
-	private Ellipse2D.Double forme;
+	
+  private Ellipse2D.Double forme;
 	private boolean workerActif;
 	private JMenuItem arreterMenuItem, demarrerMenuItem;
+  private SwingWorker worker; 
+  private ShapeCanvas canvas;
 	
 	/* Traiter l'item "About...". */
 	class AProposDeListener implements ActionListener {
@@ -156,15 +134,17 @@ public class ApplicationSwing extends JFrame {
 	/* Traiter l'item "Start". */
 	class DemarrerListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
-			final SwingWorker worker = new SwingWorker() {
+			//final SwingWorker worker = new SwingWorker() {
+      workerDisplay = new SwingWorker() {
 				public Object construct() {
+          //canvas.repaint();
 					dessinerFormes();
 					workerActif = false;
 					rafraichirMenus();
 					return new Integer(0);
 				}
 			};
-			worker.start();
+			workerDisplay.start();
 			workerActif = true;
 			rafraichirMenus();
 		}
@@ -227,15 +207,18 @@ public class ApplicationSwing extends JFrame {
 	}
 	
 	public ApplicationSwing() {
+    CustomCanvas canvas = new CustomCanvas();
+    canvas.setPreferredSize(new Dimension(CANEVAS_LARGEUR, CANEVAS_HAUTEUR));
 		getContentPane().add(new JScrollPane(new CustomCanvas()));
     init();
 	}
 
   private void init() {
-		frame.creerMenuFichier();
-		frame.creerMenuDessiner();
-		frame.creerMenuAide();
-		frame.rafraichirMenus();
+		creerMenuFichier();
+		creerMenuDessiner();
+		creerMenuAide();
+		rafraichirMenus();
+		setLocationRelativeTo(null);
   }
 
 	/* Créer le menu "Draw". */
@@ -281,17 +264,40 @@ public class ApplicationSwing extends JFrame {
 		return menu;
 	}
 
-	/* Activer ou désactiver les items du menu selon la sélection. */
 	private void rafraichirMenus() {
 		demarrerMenuItem.setEnabled(!workerActif);
 		arreterMenuItem.setEnabled(workerActif);
 	}
 	
+  /* Constants */
+  private static final int CANEVAS_HAUTEUR = 500;                                     
+  private static final int CANEVAS_LARGEUR = 500;                                     
+  private static final int DELAI_ENTRE_FORMES_MSEC = 1000;                            
+  private static final int DELAI_QUITTER_MSEC = 200;                                  
+  private static final int FORME_MAX_HAUTEUR = 200;                                   
+  private static final int FORME_MAX_LARGEUR = 200;                                   
+  private static final int MARGE_H = 50;                                              
+  private static final int MARGE_V = 60;                                              
+  private static final int MENU_DESSIN_ARRETER_TOUCHE_MASK = ActionEvent.CTRL_MASK;   
+  private static final char MENU_DESSIN_ARRETER_TOUCHE_RACC = KeyEvent.VK_A;          
+  private static final int MENU_DESSIN_DEMARRER_TOUCHE_MASK = ActionEvent.CTRL_MASK;  
+  private static final char MENU_DESSIN_DEMARRER_TOUCHE_RACC = KeyEvent.VK_D;         
+  private static final int MENU_FICHIER_QUITTER_TOUCHE_MASK = ActionEvent.CTRL_MASK;  
+  private static final char MENU_FICHIER_QUITTER_TOUCHE_RACC = KeyEvent.VK_Q;         
+  private static final String                                                         
+  		MENU_FICHIER_TITRE = "app.frame.menus.file.title",                              
+  		MENU_FICHIER_QUITTER = "app.frame.menus.file.exit",                             
+  		MENU_DESSIN_TITRE = "app.frame.menus.draw.title",                               
+  		MENU_DESSIN_DEMARRER = "app.frame.menus.draw.start",                            
+  		MENU_DESSIN_ARRETER = "app.frame.menus.draw.stop",                              
+  		MENU_AIDE_TITRE = "app.frame.menus.help.title",                                 
+  		MENU_AIDE_PROPOS = "app.frame.menus.help.about";                                
+  private static final String MESSAGE_DIALOGUE_A_PROPOS = "app.frame.dialog.about";   
+  private static final int NOMBRE_DE_FORMES = 150;                                    
+  private static final long serialVersionUID = 1L;                                    
+ 
 	public static void main(String[] args) {
 		ApplicationSwing frame = new ApplicationSwing();
-
-
-		frame.setLocationRelativeTo(null);
 
 		ApplicationSupport.launch(frame, ApplicationSupport
 				.getResource("app.frame.title"), 0, 0, CANEVAS_LARGEUR

@@ -1,4 +1,6 @@
 import java.awt.Point;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Dimension;
 
 public abstract class Rectangle extends Shape {

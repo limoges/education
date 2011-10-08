@@ -59,6 +59,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Ellipse2D;
 
+// Exceptions
+import java.lang.NumberFormatException;
+import java.net.UnknownHostException;
+import java.net.ConnectException; 
+import java.lang.ArrayIndexOutOfBoundsException;
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -112,6 +120,8 @@ public class ApplicationSwing extends JFrame {
 	private JMenuItem arreterMenuItem, demarrerMenuItem;
   private SwingWorker worker; 
   private ShapeCanvas canvas;
+  private ClientShape client;
+  private JFrame pointer;
 	
 	/* Traiter l'item "About...". */
 	class AProposDeListener implements ActionListener {
@@ -133,36 +143,79 @@ public class ApplicationSwing extends JFrame {
 	
 	/* Traiter l'item "Start". */
 	class DemarrerListener implements ActionListener {
-		public void actionPerformed(ActionEvent arg0) {
-			//final SwingWorker worker = new SwingWorker() {
-      workerDisplay = new SwingWorker() {
-				public Object construct() {
-          //canvas.repaint();
-					dessinerFormes();
-					workerActif = false;
-					rafraichirMenus();
-					return new Integer(0);
-				}
-			};
-			workerDisplay.start();
-			workerActif = true;
-			rafraichirMenus();
-		}
-		
-		protected void dessinerFormes() {
-			for (int i = 0; i < NOMBRE_DE_FORMES && workerActif; i++) {
-				forme = new Ellipse2D.Double(Math.random() * CANEVAS_LARGEUR,
-						Math.random() * CANEVAS_HAUTEUR, Math.random()
-								* FORME_MAX_LARGEUR, Math.random()
-								* FORME_MAX_HAUTEUR);
-				repaint();
-				try {
-					Thread.sleep(DELAI_ENTRE_FORMES_MSEC);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+    
+	 public void actionPerformed(ActionEvent arg0) {
+	 	//final SwingWorker worker = new SwingWorker() {
+     boolean validServer = false;
+     client = new ClientShape();
+     while (!validServer) {
+       try {
+         // ask user for address
+        String address = JOptionPane.showInputDialog("Adresse");
+
+        if (address == null) {
+          return;
+        }
+
+        String[] infos = address.split(":");
+        String hostname = infos[0];
+        int port = Integer.parseInt(infos[1]);
+        client.init(hostname, port);
+        validServer = true;
+       }
+       catch (ArrayIndexOutOfBoundsException aiooe) {
+         JOptionPane.showMessageDialog(pointer, "L'adresse entrée est invalide. (hostname:port)");
+       }
+       catch (NumberFormatException nfe) {
+         // parsing int error
+         JOptionPane.showMessageDialog(pointer, "Le port spécifié est invalide.");
+       }
+       catch (UnknownHostException uhe) {
+         // dns error
+         JOptionPane.showMessageDialog(pointer, "Le nom d'hôte spécifié est introuvable.");
+       }
+       catch (ConnectException ce) {
+         // server not present on host
+         JOptionPane.showMessageDialog(pointer, "L'hôte ne réponds pas sur le port spécifié.");
+       }
+       catch (IOException ioe) {
+         ioe.printStackTrace();
+       }
+       catch (Exception e) {
+         JOptionPane.showMessageDialog(pointer, "Erreur générique (" + e.getMessage() + ").");
+       }
+     }
+
+     worker = new SwingWorker() {
+	 		public Object construct() {
+         //canvas.repaint();
+	 			dessinerFormes();
+	 			workerActif = false;
+	 			rafraichirMenus();
+	 			return new Integer(0);
+	 		}
+	 	};
+	 	worker.start();
+	 	workerActif = true;
+	 	rafraichirMenus();
+     System.out.println("worker");
+
+	 }
+	 
+	 protected void dessinerFormes() {
+	 	for (int i = 0; i < NOMBRE_DE_FORMES && workerActif; i++) {
+	 		forme = new Ellipse2D.Double(Math.random() * CANEVAS_LARGEUR,
+	 				Math.random() * CANEVAS_HAUTEUR, Math.random()
+	 						* FORME_MAX_LARGEUR, Math.random()
+	 						* FORME_MAX_HAUTEUR);
+	 		repaint();
+	 		try {
+	 			Thread.sleep(DELAI_ENTRE_FORMES_MSEC);
+	 		} catch (InterruptedException e) {
+	 			e.printStackTrace();
+	 		}
+	 	}
+	 }
 	}
 	
 	/* Traiter l'item "Exit". */
@@ -180,36 +233,13 @@ public class ApplicationSwing extends JFrame {
 		}
 	}
 
-	/* Créer le panneau sur lequel les formes sont dessinées. */
-	class CustomCanvas extends JPanel {
-		private static final long serialVersionUID = 1L;
-
-		public CustomCanvas() {
-			setSize(getPreferredSize());
-			setMinimumSize(getPreferredSize());
-			CustomCanvas.this.setBackground(Color.white);
-		}
-
-		public Dimension getPreferredSize() {
-			return new Dimension(CANEVAS_LARGEUR, CANEVAS_HAUTEUR);
-		}
-
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			if (forme != null) {
-				Graphics2D g2d = (Graphics2D) g;
-				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-						RenderingHints.VALUE_ANTIALIAS_ON);
-				g2d.draw(forme);
-				g2d.fill(forme);
-			}
-		}
-	}
-	
 	public ApplicationSwing() {
-    CustomCanvas canvas = new CustomCanvas();
+    //CustomCanvas canvas = new CustomCanvas();
+    canvas = new ShapeCanvas();
     canvas.setPreferredSize(new Dimension(CANEVAS_LARGEUR, CANEVAS_HAUTEUR));
-		getContentPane().add(new JScrollPane(new CustomCanvas()));
+		//getContentPane().add(new JScrollPane(new CustomCanvas()));
+    getContentPane().add(new JScrollPane(canvas));
+    pointer = this;
     init();
 	}
 

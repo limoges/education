@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.RenderingHints;
 
 class ShapeCanvas extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -20,7 +21,8 @@ class ShapeCanvas extends JPanel {
      * fixed maximum size to prevent getting an infinite amount of
      * allocated memory as the time goes to infinity
      */
-    shapes = new Vector(10, 10); 
+    shapes = new Vector<Shape>(10, 10); 
+ 		this.setBackground(Color.white);  
 	}
 
 	public void paintComponent(Graphics g) {

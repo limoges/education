@@ -4,12 +4,20 @@ import java.net.*;
 
 class ClientShape implements Runnable {
   private Socket socket;
+  private boolean running;
+  private int sleep;
+  private ShapeCanvas canvas;
 
   ClientShape() {
+    running = false;
   }
 
   public void init(String hostname, int port) throws UnknownHostException, ConnectException, IOException {
     this.socket = new Socket(hostname, port);
+  }
+
+  public void setCanvas(ShapeCanvas canvas) {
+    this.canvas = canvas;
   }
 
   public void run() {
@@ -25,10 +33,11 @@ class ClientShape implements Runnable {
     
     Scanner input = new Scanner(System.in); 
     String command = "GET";
-    while (true) {
+    running = true;
+    while (running) {
       try {
         out.println(command);
-        Thread.sleep(1000);
+        Thread.sleep(400);
         line = (in.readLine()).trim();
         if (line.compareToIgnoreCase("commande>") == 0)
         {
@@ -50,6 +59,10 @@ class ClientShape implements Runnable {
         System.out.println("Read failed");
       }
     }
+  }
+
+  public void stop() {
+    running = false;
   }
 
 }

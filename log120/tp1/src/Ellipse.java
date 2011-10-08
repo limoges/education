@@ -7,6 +7,11 @@ public class Ellipse extends Shape {
   private Point center;
   private Dimension dimension;
 	
+  public Ellipse(long id, int x, int y, int width, int height) {
+    super(id);
+    this.center = new Point(x, y);
+    this.dimension = new Dimension(width, height);
+  }
   public Ellipse(long id, Point center, Dimension dimension) {
     super(id);
     this.center = center;

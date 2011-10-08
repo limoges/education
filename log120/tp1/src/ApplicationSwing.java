@@ -118,7 +118,7 @@ public class ApplicationSwing extends JFrame {
   private Ellipse2D.Double forme;
 	private boolean workerActif;
 	private JMenuItem arreterMenuItem, demarrerMenuItem;
-  private SwingWorker worker; 
+  private Thread worker; 
   private ShapeCanvas canvas;
   private ClientShape client;
   private JFrame pointer;
@@ -186,16 +186,22 @@ public class ApplicationSwing extends JFrame {
        }
      }
 
-     worker = new SwingWorker() {
+     client.setCanvas(canvas);
+    /* worker = new SwingWorker() {
+       public Object construct() {
+       }
+     }
+     /*worker = new SwingWorker() {
 	 		public Object construct() {
-         //canvas.repaint();
 	 			dessinerFormes();
 	 			workerActif = false;
 	 			rafraichirMenus();
 	 			return new Integer(0);
 	 		}
-	 	};
-	 	worker.start();
+	 	};*/
+
+    new Thread(client).start();
+    //worker = new ClientShape();
 	 	workerActif = true;
 	 	rafraichirMenus();
      System.out.println("worker");

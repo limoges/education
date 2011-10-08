@@ -3,7 +3,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Dimension;
 
-public abstract class Rectangle extends Shape {
+public class Rectangle extends Shape {
 
   private Point point;
   private Dimension dimension;

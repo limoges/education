@@ -37,13 +37,16 @@ class ClientShape implements Runnable {
     while (running) {
       try {
         out.println(command);
-        Thread.sleep(400);
+        Thread.sleep(100);
         line = (in.readLine()).trim();
         if (line.compareToIgnoreCase("commande>") == 0)
         {
           line = null;
           continue;
         }
+        Shape s = ShapeFactory.create(line);
+        if (s != null)
+          canvas.addShape(s);
         System.out.println(line);
       }
       catch (InterruptedException e) {

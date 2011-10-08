@@ -142,21 +142,21 @@ public class ApplicationSwing extends JFrame {
 	}
 	
 	/* Traiter l'item "Start". */
-	class DemarrerListener implements ActionListener {
-    
-	 public void actionPerformed(ActionEvent arg0) {
-	 	//final SwingWorker worker = new SwingWorker() {
-     boolean validServer = false;
-     client = new ClientShape();
-     while (!validServer) {
-       try {
+class DemarrerListener implements ActionListener {
+  
+  public void actionPerformed(ActionEvent arg0) {
+    //final SwingWorker worker = new SwingWorker() {
+    boolean validServer = false;
+    client = new ClientShape();
+    while (!validServer) {
+      try {
          // ask user for address
         String address = JOptionPane.showInputDialog("Adresse");
-
+  
         if (address == null) {
           return;
         }
-
+  
         String[] infos = address.split(":");
         String hostname = infos[0];
         int port = Integer.parseInt(infos[1]);
@@ -183,46 +183,45 @@ public class ApplicationSwing extends JFrame {
        }
        catch (Exception e) {
          JOptionPane.showMessageDialog(pointer, "Erreur générique (" + e.getMessage() + ").");
-       }
-     }
+      }
+    }
 
-     client.setCanvas(canvas);
+    client.setCanvas(canvas);
     /* worker = new SwingWorker() {
        public Object construct() {
        }
      }
      /*worker = new SwingWorker() {
-	 		public Object construct() {
-	 			dessinerFormes();
-	 			workerActif = false;
-	 			rafraichirMenus();
-	 			return new Integer(0);
-	 		}
-	 	};*/
+ 	  	public Object construct() {
+ 	  		dessinerFormes();
+ 	  		workerActif = false;
+ 	  		rafraichirMenus();
+ 	  		return new Integer(0);
+ 	  	}
+ 	  };*/
 
     new Thread(client).start();
     //worker = new ClientShape();
-	 	workerActif = true;
-	 	rafraichirMenus();
-     System.out.println("worker");
-
-	 }
-	 
-	 protected void dessinerFormes() {
-	 	for (int i = 0; i < NOMBRE_DE_FORMES && workerActif; i++) {
-	 		forme = new Ellipse2D.Double(Math.random() * CANEVAS_LARGEUR,
-	 				Math.random() * CANEVAS_HAUTEUR, Math.random()
-	 						* FORME_MAX_LARGEUR, Math.random()
-	 						* FORME_MAX_HAUTEUR);
-	 		repaint();
-	 		try {
-	 			Thread.sleep(DELAI_ENTRE_FORMES_MSEC);
-	 		} catch (InterruptedException e) {
-	 			e.printStackTrace();
-	 		}
-	 	}
-	 }
-	}
+ 	  workerActif = true;
+ 	  rafraichirMenus();
+    System.out.println("worker");
+  }
+ 
+  protected void dessinerFormes() {
+  	for (int i = 0; i < NOMBRE_DE_FORMES && workerActif; i++) {
+  		forme = new Ellipse2D.Double(Math.random() * CANEVAS_LARGEUR,
+  				Math.random() * CANEVAS_HAUTEUR, Math.random()
+  						* FORME_MAX_LARGEUR, Math.random()
+  						* FORME_MAX_HAUTEUR);
+  		repaint();
+  		try {
+  			Thread.sleep(DELAI_ENTRE_FORMES_MSEC);
+  		} catch (InterruptedException e) {
+  			e.printStackTrace();
+  		}
+  	}
+  }
+}
 	
 	/* Traiter l'item "Exit". */
 	class QuitterListener implements ActionListener {

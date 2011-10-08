@@ -15,7 +15,7 @@ class ShapeFactory {
     m.find();
 
     String shape = m.group(1);
-    String[] strData = m.group(2).split("[]");
+    String[] strData = m.group(2).split("[ ]");
 
     // we don't want ArrayIndexOutOfBound exceptions
     if (strData.length < 4)
@@ -34,12 +34,13 @@ class ShapeFactory {
       e.printStackTrace();
     }
 
-    if (shape.equals("LINE"))
+    System.out.println(shape);
+    if (shape.equals("LIGNE"))
       return new Line(id, data[0], data[1], data[2], data[3]);
     if (shape.equals("CARRE") || shape.equals("RECTANGLE"))
       return new Rectangle(id, data[0], data[1], data[2], data[3]);
-    if (shape.equals("CERCLE") || shape.equals("ELLIPSE"))
-      return new Ellipse(id, data[0], data[1], data[2], data[3]);
+    if (shape.equals("CERCLE") || shape.equals("OVAL"))
+      return new Oval(id, data[0], data[1], data[2], data[3]);
 
     return null;
   }

@@ -43,5 +43,6 @@ class ShapeCanvas extends JPanel {
 
   public void addShape(Shape s) {
     shapes.add(s);
+    repaint();
   }
 }

@@ -3,16 +3,16 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Color;
 
-public class Ellipse extends Shape {
+public class Oval extends Shape {
   private Point center;
   private Dimension dimension;
 	
-  public Ellipse(long id, int x, int y, int width, int height) {
+  public Oval(long id, int x, int y, int width, int height) {
     super(id);
     this.center = new Point(x, y);
     this.dimension = new Dimension(width, height);
   }
-  public Ellipse(long id, Point center, Dimension dimension) {
+  public Oval(long id, Point center, Dimension dimension) {
     super(id);
     this.center = center;
     this.dimension = dimension;

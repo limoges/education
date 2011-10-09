@@ -7,13 +7,13 @@ public class Oval extends Shape {
   private Point center;
   private Dimension dimension;
 	
-  public Oval(long id, int x, int y, int width, int height) {
-    super(id);
+  public Oval(long id, Color color, int x, int y, int width, int height) {
+    super(id, color);
     this.center = new Point(x, y);
     this.dimension = new Dimension(width, height);
   }
-  public Oval(long id, Point center, Dimension dimension) {
-    super(id);
+  public Oval(long id, Color color, Point center, Dimension dimension) {
+    super(id, color);
     this.center = center;
     this.dimension = dimension;
   }
@@ -35,10 +35,10 @@ public class Oval extends Shape {
   }
 
   public void draw(Graphics2D g) {
+    g.setColor(getColor());
+    g.fillOval(center.x, center.y, dimension.width, dimension.height);
     g.setColor(Color.BLACK);
     g.drawOval(center.x, center.y, dimension.width, dimension.height);
-    g.setColor(Color.CYAN);
-    g.fillOval(center.x, center.y, dimension.width, dimension.height);
   }
 
 }

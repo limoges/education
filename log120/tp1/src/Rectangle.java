@@ -8,14 +8,14 @@ public class Rectangle extends Shape {
   private Point point;
   private Dimension dimension;
 	
-	public Rectangle(long id, int x1, int y1, int x2, int y2) {
-		super(id);
-    this.point = new Point(x1, y1);
-    this.dimension = new Dimension(x2, y2);
+	public Rectangle(long id, Color color, int x, int y, int width, int height) {
+		super(id, color);
+    this.point = new Point(x, y);
+    this.dimension = new Dimension(width, height);
 	}
 
-  public Rectangle(long id, Point point, Dimension dimension) {
-    super(id);
+  public Rectangle(long id, Color color, Point point, Dimension dimension) {
+    super(id, color);
     this.point = point;
     this.dimension = dimension;
   }
@@ -37,9 +37,9 @@ public class Rectangle extends Shape {
   }
 
   public void draw(Graphics2D g) {
+    g.setColor(getColor());
+    g.fillRect(point.x, point.y, dimension.width, dimension.height);
     g.setColor(Color.BLACK);
     g.drawRect(point.x, point.y, dimension.width, dimension.height);
-    g.setColor(Color.RED);
-    g.fillRect(point.x, point.y, dimension.width, dimension.height);
   }
 }

@@ -118,7 +118,6 @@ public class ApplicationSwing extends JFrame {
   private Ellipse2D.Double forme;
 	private boolean workerActif;
 	private JMenuItem arreterMenuItem, demarrerMenuItem;
-  private Thread worker; 
   private ShapeCanvas canvas;
   private ClientShape client;
   private JFrame pointer;
@@ -141,19 +140,20 @@ public class ApplicationSwing extends JFrame {
 		}
 	}
 	
-	/* Traiter l'item "Start". */
 class DemarrerListener implements ActionListener {
   
   public void actionPerformed(ActionEvent arg0) {
-    //final SwingWorker worker = new SwingWorker() {
     boolean validServer = false;
-    client = new ClientShape();
+    client = ClientShape.getInstance();
+
     while (!validServer) {
       try {
          // ask user for address
-        String address = JOptionPane.showInputDialog("Adresse");
+        String address = JOptionPane.showInputDialog("Quel est nom d'hôte et le port du serveur de formes?", "localhost:10000");
   
         if (address == null) {
+          // don't like memory leaks even with a gc
+          client = null;
           return;
         }
   
@@ -187,39 +187,35 @@ class DemarrerListener implements ActionListener {
     }
 
     client.setCanvas(canvas);
-    /* worker = new SwingWorker() {
-       public Object construct() {
-       }
-     }
-     /*worker = new SwingWorker() {
- 	  	public Object construct() {
- 	  		dessinerFormes();
- 	  		workerActif = false;
- 	  		rafraichirMenus();
- 	  		return new Integer(0);
- 	  	}
- 	  };*/
-
-    new Thread(client).start();
-    //worker = new ClientShape();
- 	  workerActif = true;
- 	  rafraichirMenus();
-    System.out.println("worker");
-  }
+    workerActif = false; 
  
-  protected void dessinerFormes() {
-  	for (int i = 0; i < NOMBRE_DE_FORMES && workerActif; i++) {
-  		forme = new Ellipse2D.Double(Math.random() * CANEVAS_LARGEUR,
-  				Math.random() * CANEVAS_HAUTEUR, Math.random()
-  						* FORME_MAX_LARGEUR, Math.random()
-  						* FORME_MAX_HAUTEUR);
-  		repaint();
-  		try {
-  			Thread.sleep(DELAI_ENTRE_FORMES_MSEC);
-  		} catch (InterruptedException e) {
-  			e.printStackTrace();
-  		}
-  	}
+    // This worker listens to the socket input for incoming commands
+    final SwingWorker workerSender = new SwingWorker() {
+      public Object construct() {
+        client.receive();
+        workerActif = false;
+        System.out.println("receive call");
+        return new Integer(0);
+      }
+    };
+
+    // This worker sends GET requests on a timer
+    final SwingWorker workerReceiver = new SwingWorker() {
+      public Object construct() {
+        client.send();
+        workerActif = false;
+        System.out.println("send call");
+        return new Integer(0);
+      }
+    };
+    // Ensure we don't put the class in an invalid state even for a millisecond
+ 	  workerActif = true;
+    // We start the receiver first because it must be ready to receive something before
+    // we any request is sent!
+    workerReceiver.start();
+    workerSender.start();
+
+ 	  rafraichirMenus();
   }
 }
 	
@@ -239,10 +235,8 @@ class DemarrerListener implements ActionListener {
 	}
 
 	public ApplicationSwing() {
-    //CustomCanvas canvas = new CustomCanvas();
     canvas = new ShapeCanvas();
     canvas.setPreferredSize(new Dimension(CANEVAS_LARGEUR, CANEVAS_HAUTEUR));
-		//getContentPane().add(new JScrollPane(new CustomCanvas()));
     getContentPane().add(new JScrollPane(canvas));
     pointer = this;
     init();

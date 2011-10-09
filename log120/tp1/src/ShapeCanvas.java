@@ -1,4 +1,3 @@
-import java.util.Vector;
 import java.util.Enumeration;
 import java.awt.Graphics;
 import javax.swing.JPanel;
@@ -8,7 +7,9 @@ import java.awt.RenderingHints;
 
 class ShapeCanvas extends JPanel {
 	private static final long serialVersionUID = 1L;
-  private Vector<Shape> shapes;
+  private final int allocated = 30;
+  private int used;
+  private Shape[] shapes;
 
 	public ShapeCanvas() {
 		setSize(getPreferredSize());
@@ -21,28 +22,39 @@ class ShapeCanvas extends JPanel {
      * fixed maximum size to prevent getting an infinite amount of
      * allocated memory as the time goes to infinity
      */
-    shapes = new Vector<Shape>(10, 10); 
+    shapes = new Shape[allocated]; 
+    used = 0;
  		this.setBackground(Color.white);  
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-    if (shapes.isEmpty())
+    System.out.println("painting");
+    if (used == 0) {
+      System.out.println(used);
       return;
+    }
 
-    Enumeration<Shape> e = shapes.elements();
 	  Graphics2D g2d = (Graphics2D) g;
 	  g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
       RenderingHints.VALUE_ANTIALIAS_ON);
 
-    while (e.hasMoreElements()) {
-      (e.nextElement()).draw(g2d);
+    int i = 0;
+    System.out.println("decided to paint");
+    while (i < used) {
+      shapes[i].draw(g2d);
     }
 	}
 
   public void addShape(Shape s) {
-    shapes.add(s);
+    System.out.println("added a shape");
+    if (used >= allocated) {
+      used = 0;
+      System.out.println("used = 0");
+    }
+    shapes[used++] = s;
     repaint();
+    System.out.println("repainted");
   }
 }

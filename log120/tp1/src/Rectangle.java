@@ -8,13 +8,13 @@ public class Rectangle extends Shape {
   private Point point;
   private Dimension dimension;
 	
-	public Rectangle(long id, Color color, int x, int y, int width, int height) {
+	public Rectangle(int id, Color color, int x, int y, int width, int height) {
 		super(id, color);
     this.point = new Point(x, y);
     this.dimension = new Dimension(width, height);
 	}
 
-  public Rectangle(long id, Color color, Point point, Dimension dimension) {
+  public Rectangle(int id, Color color, Point point, Dimension dimension) {
     super(id, color);
     this.point = point;
     this.dimension = dimension;

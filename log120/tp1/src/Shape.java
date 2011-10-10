@@ -3,19 +3,19 @@ import java.awt.Color;
 
 public abstract class Shape {
 
-	private long id;
+	private int id;
   private Color color;
 	
-	public Shape(long id, Color color) {
+	public Shape(int id, Color color) {
 		this.id = id;
     this.color = color;
 	}
 
-	public long getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

@@ -115,33 +115,46 @@ import javax.swing.KeyStroke;
 
 public class ApplicationSwing extends JFrame {
 	
-  private Ellipse2D.Double forme;
 	private boolean workerActif;
 	private JMenuItem arreterMenuItem, demarrerMenuItem;
+  // The canvas is handles the ShapesBuffer and display shapes
   private ShapeCanvas canvas;
+  // Client for the Shape protocol
+  // This client should be multithreaded for sending and receiving
   private ClientShape client;
+  // Used to allow reference to the this pointer in internal classes
   private JFrame pointer;
 	
-	/* Traiter l'item "About...". */
+  /*
+   * Handles About event
+   */
 	class AProposDeListener implements ActionListener {
-		public void actionPerformed(ActionEvent arg0) {
+		
+    public void actionPerformed(ActionEvent arg0) {
 			JOptionPane.showMessageDialog(null, ApplicationSupport
 					.getResource(MESSAGE_DIALOGUE_A_PROPOS), ApplicationSupport
 					.getResource(MENU_AIDE_PROPOS),
 					JOptionPane.INFORMATION_MESSAGE);
 		}
+
 	}
 
-	/* Traiter l'item "Stop". */
+	/*
+   * Handles Stop requesting shapes event
+   */
 	class ArreterListener implements ActionListener {
-		public void actionPerformed(ActionEvent arg0) {
+		
+    public void actionPerformed(ActionEvent arg0) {
       client.stop();
       workerActif = false;
-      System.out.println("");
 			rafraichirMenus();
 		}
+
 	}
 	
+  /*
+   * Handles Start requesting shapes event
+   */
 class DemarrerListener implements ActionListener {
   
   public void actionPerformed(ActionEvent arg0) {
@@ -228,7 +241,9 @@ class DemarrerListener implements ActionListener {
   }
 }
 	
-	/* Traiter l'item "Exit". */
+  /*
+   * Handles Quit event
+   */
 	class QuitterListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 			if (workerActif) {
@@ -243,6 +258,9 @@ class DemarrerListener implements ActionListener {
 		}
 	}
 
+  /*
+   * Default Constructor
+   */
 	public ApplicationSwing() {
     canvas = new ShapeCanvas();
     canvas.setPreferredSize(new Dimension(CANEVAS_LARGEUR, CANEVAS_HAUTEUR));
@@ -251,6 +269,9 @@ class DemarrerListener implements ActionListener {
     init();
 	}
 
+  /*
+   * Initialises the menu, filling it with submenus and actions
+   */
   private void init() {
 		creerMenuFichier();
 		creerMenuDessiner();
@@ -259,7 +280,10 @@ class DemarrerListener implements ActionListener {
 		setLocationRelativeTo(null);
   }
 
-	/* Créer le menu "Draw". */
+  /*
+   * Creates the Draw menu
+   * @return A JMenu containing the Start and Stop actions bound to their respective ActionListener
+   */
 	private JMenu creerMenuDessiner() {
 		JMenu menu = ApplicationSupport.addMenu(this, MENU_DESSIN_TITRE,
 				new String[] { MENU_DESSIN_DEMARRER, MENU_DESSIN_ARRETER });
@@ -279,7 +303,10 @@ class DemarrerListener implements ActionListener {
 		return menu;
 	}
 
-	/* Créer le menu "File". */
+  /*
+   * Creates the File menu
+   * @return A JMenu containing the Quit action bound to an ActionListener
+   */
 	private JMenu creerMenuFichier() {
 		JMenu menu = ApplicationSupport.addMenu(this, MENU_FICHIER_TITRE,
 				new String[] { MENU_FICHIER_QUITTER });
@@ -292,7 +319,10 @@ class DemarrerListener implements ActionListener {
 		return menu;
 	}
 
-	/* Créer le menu "Help". */
+	/*
+   * Creates the Help menu
+   * @return A JMenu containing the About action bound to an ActionListener
+   */
 	private JMenu creerMenuAide() {
 		JMenu menu = ApplicationSupport.addMenu(this, MENU_AIDE_TITRE,
 				new String[] { MENU_AIDE_PROPOS });
@@ -302,12 +332,18 @@ class DemarrerListener implements ActionListener {
 		return menu;
 	}
 
+  /*
+   * Refresh the menu selection to reflect the current operation state
+   */
 	private void rafraichirMenus() {
 		demarrerMenuItem.setEnabled(!workerActif);
 		arreterMenuItem.setEnabled(workerActif);
 	}
 	
-  /* Constants */
+
+  /*
+   * Constants
+   */
   private static final int CANEVAS_HAUTEUR = 500;                                     
   private static final int CANEVAS_LARGEUR = 500;                                     
   private static final int DELAI_ENTRE_FORMES_MSEC = 1000;                            

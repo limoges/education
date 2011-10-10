@@ -39,7 +39,8 @@ class ClientShape/* implements Runnable*/ {
 
   public void init(String hostname, int port) throws UnknownHostException, ConnectException, IOException {
     this.socket = new Socket(hostname, port);
-    done = false;
+    socket.setSoTimeout(1000);
+    //socket.getChannel().configureBlocking(true);
   }
 
   public void setCanvas(ShapeCanvas canvas) {
@@ -58,6 +59,7 @@ class ClientShape/* implements Runnable*/ {
     }
 
     sendRunning = true;
+    done = false;
     while (sendRunning) {
       out.println(command);
       try {
@@ -76,21 +78,33 @@ class ClientShape/* implements Runnable*/ {
   public void receive() throws Exception {
     String command = "";
     in = null;
+    InputStream is = socket.getInputStream();
 
-    try {
-      in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-    }
-    catch (IOException ioe) {
+    //try {
+      in = new BufferedReader(new InputStreamReader(is));
+    //}
+    /*catch (IOException ioe) {
       ioe.printStackTrace();
-    }
+    }*/
 
     receiveRunning = true;
+    done = false;
+    int failedReads = 0;
     while (receiveRunning) { 
-      if (!socket.isConnected() || socket.isInputShutdown()) {
-        throw new Exception("Server has disconnected.");
+      if (failedReads > 50) {
+        stop();
+        finish(); 
+        throw new Exception("Server does not respond");
       }
       try {
-        command = (in.readLine()).trim();
+        // hack to handle server disconnection
+        command = in.readLine();
+
+        if (command == null) {
+          ++failedReads;
+          continue;
+        }
+        command = command.trim();
 
         if (command.equals("commande>")) {
           command = null;
@@ -102,14 +116,12 @@ class ClientShape/* implements Runnable*/ {
         // new data arrive through the socket
         Thread.sleep(1);
       }
-      catch (NullPointerException npe) {
-        npe.printStackTrace();
-        receiveRunning = false;
+      catch (SocketTimeoutException ste) {
+        stop();
         finish();
         throw new Exception("Server has disconnected.");
       }
       catch (Exception e) {
-        System.out.println("exception while in receiveRunning");
         e.printStackTrace();
         receiveRunning = false;
       }
@@ -119,7 +131,6 @@ class ClientShape/* implements Runnable*/ {
       in.close();
     }
     catch (Exception e) {
-      System.out.println("exception while closing");
       e.printStackTrace();
     }
 
@@ -137,6 +148,7 @@ class ClientShape/* implements Runnable*/ {
 
   public void stop() {
     out.println("END");
+    out.flush();
     sendRunning = false;
     receiveRunning = false;
   }

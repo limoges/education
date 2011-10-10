@@ -8,7 +8,8 @@ import java.awt.RenderingHints;
 
 class ShapeCanvas extends JPanel {
 	private static final long serialVersionUID = 1L;
-  private Vector<Shape> shapes;
+  private Shape[] shapes;
+  private int used, current;
 
 	public ShapeCanvas() {
 		setSize(getPreferredSize());
@@ -21,28 +22,40 @@ class ShapeCanvas extends JPanel {
      * fixed maximum size to prevent getting an infinite amount of
      * allocated memory as the time goes to infinity
      */
-    shapes = new Vector<Shape>(10, 10); 
+    shapes = new Shape[10]; 
+    current = used = 0;
  		this.setBackground(Color.white);  
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-    if (shapes.isEmpty())
+    if (used == 0)
       return;
 
-    Enumeration<Shape> e = shapes.elements();
 	  Graphics2D g2d = (Graphics2D) g;
 	  g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
       RenderingHints.VALUE_ANTIALIAS_ON);
 
-    while (e.hasMoreElements()) {
-      (e.nextElement()).draw(g2d);
-    }
+    int i = 0;
+    while (i < used)
+      shapes[i++].draw(g2d);
 	}
 
   public void addShape(Shape s) {
-    shapes.add(s);
+    if (current == shapes.length)
+      current = 0;
+    if (used < shapes.length)
+      ++used;
+    // TODO is this necessary? there is a definite vagueness with memory leaks in java
+    // Memory leak can happen here
+    if (shapes[current] != null) {
+      Shape a = shapes[current];
+      // The object reference is removed
+      a = null;
+    }
+    // The reference to the object reference is overwrote
+    shapes[current++] = s;
     repaint();
   }
 }

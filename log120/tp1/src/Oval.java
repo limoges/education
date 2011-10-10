@@ -7,12 +7,12 @@ public class Oval extends Shape {
   private Point center;
   private Dimension dimension;
 	
-  public Oval(long id, Color color, int x, int y, int width, int height) {
+  public Oval(int id, Color color, int x, int y, int width, int height) {
     super(id, color);
     this.center = new Point(x, y);
     this.dimension = new Dimension(width, height);
   }
-  public Oval(long id, Color color, Point center, Dimension dimension) {
+  public Oval(int id, Color color, Point center, Dimension dimension) {
     super(id, color);
     this.center = center;
     this.dimension = dimension;

@@ -2,10 +2,15 @@
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.awt.Color;
+import ca.etsmtl.log.util.IDLogger;
 
 class ShapeFactory {
 
+  private static IDLogger logger;
+
   public static Shape create(String command) {
+    if (logger == null)
+      logger = IDLogger.getInstance();
     // Technically, a well made command would be [0] <[1]> [2] [3] [4] [5] </[1]>
     String[] strings = ShapeParser.parse(command);
 
@@ -14,10 +19,10 @@ class ShapeFactory {
     if (strings.length < 4)
       return null;
 
-    long id = 0;
+    int id = 0;
     int[] data = new int[strings.length - 2];
     try {
-      id = Long.parseLong(strings[0]);
+      id = Integer.parseInt(strings[0]);
       data[0] = Integer.parseInt(strings[2]);
       data[1] = Integer.parseInt(strings[3]);
       data[2] = Integer.parseInt(strings[4]);
@@ -30,6 +35,7 @@ class ShapeFactory {
       e.printStackTrace();
     }
 
+    logger.logID(id);
     // Line uses 2 points
     if (strings[1].equals("LIGNE")) {
       return new Line(id, Color.CYAN, data[0], data[1], data[2], data[3]);

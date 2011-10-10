@@ -12,11 +12,22 @@
   <property name="src.dir" location="src" />
   <property name="build.dir" location="build" />
   <property name="docs.dir" location="docs" />
+  <property name="lib.dir" location="lib" />
+
+
+  <!-- external dependencies -->
+  <path id="external">
+    <fileset dir="${lib.dir}">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
 
   <!-- targets-->
   <target name="compile">
     <mkdir dir="${build.dir}" />
-    <javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}" />
+    <javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}">
+      <classpath refid="external" />
+    </javac>
   </target>
 
   <target name="assemble" depends="compile" description="assembles file into a jar">
@@ -25,6 +36,7 @@
         <attribute name="Built-by" value="${user.name}" />
         <attribute name="Main-Class" value="${main-class}" />
       </manifest>
+      <zipgroupfileset dir="${lib.dir}" />
     </jar>
   </target>
 
@@ -35,6 +47,7 @@
   </target>
 
   <target name="run" depends="assemble" description="runs the created jar">
+    <delete file="IDLogger" />
     <java jar="${name}" fork="true" />
   </target>
   <target name="clean">

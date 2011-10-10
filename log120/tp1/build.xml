@@ -10,15 +10,17 @@
   <!-- properties -->
   <property name="name" value="tp1.jar" />
   <property name="src.dir" location="src" />
-  <property name="classes.dir" location="classes" />
+  <property name="build.dir" location="build" />
+  <property name="docs.dir" location="docs" />
 
   <!-- targets-->
   <target name="compile">
-    <javac includeantruntime="false" srcdir="${src.dir}" destdir="${classes.dir}" />
+    <mkdir dir="${build.dir}" />
+    <javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}" />
   </target>
 
   <target name="assemble" depends="compile" description="assembles file into a jar">
-    <jar jarfile="${name}" basedir="${classes.dir}" >
+    <jar jarfile="${name}" basedir="${build.dir}" >
       <manifest>
         <attribute name="Built-by" value="${user.name}" />
         <attribute name="Main-Class" value="${main-class}" />
@@ -26,12 +28,18 @@
     </jar>
   </target>
 
+  <target name="docs" description="builds documentation from javadocs in source">
+    <mkdir dir="${docs.dir}" />
+    <javadoc sourcepath="src.dir" destdir="docs.dir" Public="true" Overview="true" Locale="en_US">
+    </javadoc>
+  </target>
+
   <target name="run" depends="assemble" description="runs the created jar">
     <java jar="${name}" fork="true" />
   </target>
   <target name="clean">
     <delete verbose="true">
-      <fileset dir="${classes.dir}">
+      <fileset dir="${build.dir}">
         <exclude name="**/*.properties" />
       </fileset>
     </delete>

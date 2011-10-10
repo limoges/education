@@ -135,7 +135,9 @@ public class ApplicationSwing extends JFrame {
 	/* Traiter l'item "Stop". */
 	class ArreterListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
-			workerActif = false;
+      client.stop();
+      workerActif = false;
+      System.out.println("");
 			rafraichirMenus();
 		}
 	}
@@ -149,7 +151,8 @@ class DemarrerListener implements ActionListener {
     while (!validServer) {
       try {
          // ask user for address
-        String address = JOptionPane.showInputDialog("Quel est nom d'hôte et le port du serveur de formes?", "localhost:10000");
+        String address = JOptionPane.showInputDialog(
+            "Quel est nom d'hôte et le port du serveur de formes?", "localhost:10000");
   
         if (address == null) {
           // don't like memory leaks even with a gc
@@ -187,28 +190,34 @@ class DemarrerListener implements ActionListener {
     }
 
     client.setCanvas(canvas);
-    workerActif = false; 
  
     // This worker listens to the socket input for incoming commands
-    final SwingWorker workerSender = new SwingWorker() {
+    final SwingWorker workerReceiver = new SwingWorker() {
       public Object construct() {
-        client.receive();
+        try {
+          client.receive();
+        }
+        catch (Exception e) {
+          JOptionPane.showMessageDialog(pointer, "Terminaison imprévue du serveur.");
+          client.stop();
+        }
+        System.out.println("workerReceiver stopped successfully.");
         workerActif = false;
-        System.out.println("receive call");
+        rafraichirMenus();
         return new Integer(0);
       }
     };
 
     // This worker sends GET requests on a timer
-    final SwingWorker workerReceiver = new SwingWorker() {
+    final SwingWorker workerSender = new SwingWorker() {
       public Object construct() {
         client.send();
+        System.out.println("workerSender stopped successfully.");
         workerActif = false;
-        System.out.println("send call");
+        rafraichirMenus();
         return new Integer(0);
       }
     };
-    // Ensure we don't put the class in an invalid state even for a millisecond
  	  workerActif = true;
     // We start the receiver first because it must be ready to receive something before
     // we any request is sent!
@@ -223,7 +232,7 @@ class DemarrerListener implements ActionListener {
 	class QuitterListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 			if (workerActif) {
-				workerActif = false;
+        client.stop();
 				try {
 					Thread.sleep(DELAI_QUITTER_MSEC);
 				} catch (InterruptedException e) {

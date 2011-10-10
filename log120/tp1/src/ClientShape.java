@@ -8,10 +8,26 @@ class ClientShape/* implements Runnable*/ {
   private boolean sendRunning, receiveRunning;;
   private int sleep;
   private ShapeCanvas canvas;
+  private boolean done;
+  private PrintWriter out;
+  private BufferedReader in;
 
   protected ClientShape() {
     sendRunning = false;
     receiveRunning = false;
+  }
+
+  private void finish() {
+    try {                  
+      if (done)              
+        socket.close();      
+      else                   
+        done = true;         
+    }                      
+    catch (Exception e) {  
+      System.out.println("exception while in finish()");
+      e.printStackTrace(); 
+    }                      
   }
 
   public static ClientShape getInstance() {
@@ -23,6 +39,7 @@ class ClientShape/* implements Runnable*/ {
 
   public void init(String hostname, int port) throws UnknownHostException, ConnectException, IOException {
     this.socket = new Socket(hostname, port);
+    done = false;
   }
 
   public void setCanvas(ShapeCanvas canvas) {
@@ -31,13 +48,13 @@ class ClientShape/* implements Runnable*/ {
 
   public void send() {
     String command = "GET";
-    PrintWriter out = null;
+    out = null;
 
     try {
       out = new PrintWriter(socket.getOutputStream(), true);
     }
     catch (IOException ioe) {
-      System.out.println("out failed");
+      ioe.printStackTrace();
     }
 
     sendRunning = true;
@@ -51,21 +68,27 @@ class ClientShape/* implements Runnable*/ {
       }
     }
 
+    // We end the conversation with the server
+    out.close();
+    finish();
   }
 
-  public void receive() {
+  public void receive() throws Exception {
     String command = "";
-    BufferedReader in = null;
+    in = null;
 
     try {
       in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
-    catch (IOException e) {
-      System.out.println("in failed");
+    catch (IOException ioe) {
+      ioe.printStackTrace();
     }
 
     receiveRunning = true;
-    while (receiveRunning) {
+    while (receiveRunning) { 
+      if (!socket.isConnected() || socket.isInputShutdown()) {
+        throw new Exception("Server has disconnected.");
+      }
       try {
         command = (in.readLine()).trim();
 
@@ -79,10 +102,28 @@ class ClientShape/* implements Runnable*/ {
         // new data arrive through the socket
         Thread.sleep(1);
       }
+      catch (NullPointerException npe) {
+        npe.printStackTrace();
+        receiveRunning = false;
+        finish();
+        throw new Exception("Server has disconnected.");
+      }
       catch (Exception e) {
+        System.out.println("exception while in receiveRunning");
         e.printStackTrace();
+        receiveRunning = false;
       }
     }
+
+    try {
+      in.close();
+    }
+    catch (Exception e) {
+      System.out.println("exception while closing");
+      e.printStackTrace();
+    }
+
+    finish();
   }
 
   private void executeCommand(String command) {
@@ -94,50 +135,8 @@ class ClientShape/* implements Runnable*/ {
     canvas.addShape(s);
   }
 
-  /*public void run() {
-    String line;
-    BufferedReader in = null;
-    PrintWriter out = null;
-    try {
-      in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      out = new PrintWriter(socket.getOutputStream(), true);
-    } catch (IOException e) {
-      System.out.println("in or out failed");
-    }
-    
-    String command = "GET";
-    running = true;
-    while (running) {
-      try {
-        out.println(command);
-        Thread.sleep(100);
-        line = (in.readLine()).trim();
-        if (line.compareToIgnoreCase("commande>") == 0)
-        {
-          line = null;
-          continue;
-        }
-        Shape s = ShapeFactory.create(line);
-        if (s != null)
-          canvas.addShape(s);
-        System.out.println(line);
-      }
-      catch (InterruptedException e) {
-        try {
-          socket.close();
-          System.out.println("Interrupted. Socket closed successfully.");
-        }
-        catch (IOException ioe) {
-          System.out.println("Blocked thread I/O failed due to socket closing");
-        }
-      }
-      catch (IOException e) {
-        System.out.println("Read failed");
-      }
-    }
-  }*/
-
   public void stop() {
+    out.println("END");
     sendRunning = false;
     receiveRunning = false;
   }

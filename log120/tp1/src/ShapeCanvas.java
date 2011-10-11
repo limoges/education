@@ -11,7 +11,7 @@ class ShapeCanvas extends JPanel {
   private Shape[] shapes;
   private int used, current;
 
-	public ShapeCanvas() {
+	public ShapeCanvas(int maxShapes) {
 		setSize(getPreferredSize());
 		setMinimumSize(getPreferredSize());
 		ShapeCanvas.this.setBackground(Color.white);
@@ -22,8 +22,9 @@ class ShapeCanvas extends JPanel {
      * fixed maximum size to prevent getting an infinite amount of
      * allocated memory as the time goes to infinity
      */
-    shapes = new Shape[10]; 
+    shapes = new Shape[maxShapes]; 
     current = used = 0;
+
  		this.setBackground(Color.white);  
 	}
 

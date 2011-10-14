@@ -155,7 +155,7 @@ public class ApplicationSwing extends JFrame {
         try {
            // ask user for address
           String address = JOptionPane.showInputDialog(
-              "Quel est nom d'hôte et le port du serveur de formes?", "localhost:10000");
+              "Please enter the hostname and port.", "localhost:10000");
     
           if (address == null) {
             // don't like memory leaks even with a gc
@@ -170,25 +170,25 @@ public class ApplicationSwing extends JFrame {
           validServer = true;
          }
          catch (ArrayIndexOutOfBoundsException aiooe) {
-           JOptionPane.showMessageDialog(pointer, "L'adresse entrée est invalide. (hostname:port)");
+           JOptionPane.showMessageDialog(pointer, "Invalid server address.");
          }
          catch (NumberFormatException nfe) {
            // parsing int error
-           JOptionPane.showMessageDialog(pointer, "Le port spécifié est invalide.");
+           JOptionPane.showMessageDialog(pointer, "The entered port is invalid.");
          }
          catch (UnknownHostException uhe) {
            // dns error
-           JOptionPane.showMessageDialog(pointer, "Le nom d'hôte spécifié est introuvable.");
+           JOptionPane.showMessageDialog(pointer, "Hostname cannot be found.");
          }
          catch (ConnectException ce) {
            // server not present on host
-           JOptionPane.showMessageDialog(pointer, "L'hôte ne réponds pas sur le port spécifié.");
+           JOptionPane.showMessageDialog(pointer, "Host does not seem to respond on the given port.");
          }
          catch (IOException ioe) {
            ioe.printStackTrace();
          }
          catch (Exception e) {
-           JOptionPane.showMessageDialog(pointer, "Erreur générique (" + e.getMessage() + ").");
+           JOptionPane.showMessageDialog(pointer, "Error: " + e.getMessage() + ".");
         }
       }
   
@@ -201,7 +201,7 @@ public class ApplicationSwing extends JFrame {
             client.receive();
           }
           catch (Exception e) {
-            JOptionPane.showMessageDialog(pointer, "Terminaison imprévue du serveur.");
+            JOptionPane.showMessageDialog(pointer, "The host has terminated the connexion.");
             client.stop();
           }
           workerActif = false;

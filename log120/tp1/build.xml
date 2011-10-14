@@ -23,6 +23,8 @@
   </path>
 
   <!-- targets-->
+  <target name="all" depends="assemble,doc">
+  </target>
   <target name="compile">
     <mkdir dir="${build.dir}" />
     <javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}">
@@ -40,9 +42,10 @@
     </jar>
   </target>
 
-  <target name="docs" description="builds documentation from javadocs in source">
+  <target name="doc" description="builds documentation from javadocs in source">
     <mkdir dir="${docs.dir}" />
-    <javadoc sourcepath="src.dir" destdir="docs.dir" Public="true" Overview="true" Locale="en_US">
+    <javadoc destdir="${docs.dir}" Public="true" Overview="true" Locale="en_US">
+      <fileset dir="${src.dir}" includes="**/*.java" />
     </javadoc>
   </target>
 

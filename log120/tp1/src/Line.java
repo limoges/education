@@ -6,31 +6,27 @@ public class Line extends Shape {
 	
   private Point p1, p2;
 	
+  /*
+   * Constructor
+   * @param x1 The first point's x-coordinate
+   * @param y1 The first point's y-coordinate
+   * @param x2 The second point's x-coordinate
+   * @param y2 The second point's y-coordinate
+   */
 	public Line(int id, Color color, int x1, int y1, int x2, int y2) {
 		super(id, color);
     this.p1 = new Point(x1, y1);
     this.p2 = new Point(x2, y2);
 	}
 
+  /*
+   * Constructor
+   * @param p1 The first point
+   * @param p2 The second point
+   */
   public Line(int id, Color color, Point p1, Point p2) {
     super(id, color);
     this.p1 = p1;
-    this.p2 = p2;
-  }
-
-  public Point getP1() { 
-    return p1;           
-  }                      
-
-  public void setP1(Point p1) {
-    this.p1 = p1;
-  }
-
-  public Point getP2() { 
-    return p2;           
-  }                      
-
-  public void setP2(Point p2) {
     this.p2 = p2;
   }
 

@@ -3,6 +3,11 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 class ShapeParser {
+
+  /*
+   * Parses the given string for a shape
+   * @return An array of decomposed strings. [0] id, [1] shape, [n] data
+   */
   public static final String[] parse(String command) {
     Pattern p = Pattern.compile("([0-9]*)");    
     Matcher m = p.matcher(command);             

@@ -2,11 +2,9 @@
 To compile the lab :
   ant
 
+To generate the javadoc :
+  ant doc
+
 To run the lab :
   java -jar tp1.jar
 
-
-TODO
-  -add javadoc
-  -translate everything to english
-  -fix early client termination issue

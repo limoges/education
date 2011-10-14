@@ -8,6 +8,10 @@ class ShapeFactory {
 
   private static IDLogger logger;
 
+  /*
+   * Creates a shape object given the shape command
+   * @return A shape corresponding to the command given
+   */
   public static Shape create(String command) {
     if (logger == null)
       logger = IDLogger.getInstance();

@@ -7,30 +7,27 @@ public class Oval extends Shape {
   private Point center;
   private Dimension dimension;
 	
+  /*
+   * Constructor
+   * @param x The x-coordinate of the center
+   * @param y The y-coordinate of the center
+   * @param width The horizontal diameter
+   * @param height The vertical diameter
+   */
   public Oval(int id, Color color, int x, int y, int width, int height) {
     super(id, color);
     this.center = new Point(x, y);
     this.dimension = new Dimension(width, height);
   }
+
+  /*
+   * Constructor
+   * @param center The center point
+   * @param dimension The dimensions
+   */
   public Oval(int id, Color color, Point center, Dimension dimension) {
     super(id, color);
     this.center = center;
-    this.dimension = dimension;
-  }
-
-  public Point getCenter() {
-    return center;
-  }
-
-  public void setCenter(Point center) {
-    this.center = center;
-  }
-
-  public Dimension getDimension() {
-    return dimension;
-  }
-
-  public void setDimension(Dimension Dimension) {
     this.dimension = dimension;
   }
 

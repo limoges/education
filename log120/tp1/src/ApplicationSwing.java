@@ -1,16 +1,4 @@
 /*
- Cours :             LOGnnn
- Session :           Saison (été, automne, hiver) 200X
- Groupe :            n
- Projet :            Laboratoire #n
- Étudiant(e)(s) :    Marcel Marceau
-                     Edith Piaf
- Code(s) perm. :     MARM987341987
-                     PIAE324398724
- Professeur :        Groucho Marx
- Date créée :        2002-05-28
- Date dern. modif. : 2005-05-01
- 
 *******************************************************
  Historique des modifications
 *******************************************************
@@ -56,6 +44,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Ellipse2D;
 
@@ -155,91 +145,89 @@ public class ApplicationSwing extends JFrame {
   /*
    * Handles Start requesting shapes event
    */
-class DemarrerListener implements ActionListener {
+  class DemarrerListener implements ActionListener {
+    
+    public void actionPerformed(ActionEvent arg0) {
+      boolean validServer = false;
+      client = ClientShape.getInstance();
   
-  public void actionPerformed(ActionEvent arg0) {
-    boolean validServer = false;
-    client = ClientShape.getInstance();
-
-    while (!validServer) {
-      try {
-         // ask user for address
-        String address = JOptionPane.showInputDialog(
-            "Quel est nom d'hôte et le port du serveur de formes?", "localhost:10000");
-  
-        if (address == null) {
-          // don't like memory leaks even with a gc
-          client = null;
-          return;
-        }
-  
-        String[] infos = address.split(":");
-        String hostname = infos[0];
-        int port = Integer.parseInt(infos[1]);
-        client.init(hostname, port);
-        validServer = true;
-       }
-       catch (ArrayIndexOutOfBoundsException aiooe) {
-         JOptionPane.showMessageDialog(pointer, "L'adresse entrée est invalide. (hostname:port)");
-       }
-       catch (NumberFormatException nfe) {
-         // parsing int error
-         JOptionPane.showMessageDialog(pointer, "Le port spécifié est invalide.");
-       }
-       catch (UnknownHostException uhe) {
-         // dns error
-         JOptionPane.showMessageDialog(pointer, "Le nom d'hôte spécifié est introuvable.");
-       }
-       catch (ConnectException ce) {
-         // server not present on host
-         JOptionPane.showMessageDialog(pointer, "L'hôte ne réponds pas sur le port spécifié.");
-       }
-       catch (IOException ioe) {
-         ioe.printStackTrace();
-       }
-       catch (Exception e) {
-         JOptionPane.showMessageDialog(pointer, "Erreur générique (" + e.getMessage() + ").");
-      }
-    }
-
-    client.setCanvas(canvas);
- 
-    // This worker listens to the socket input for incoming commands
-    final SwingWorker workerReceiver = new SwingWorker() {
-      public Object construct() {
+      while (!validServer) {
         try {
-          client.receive();
+           // ask user for address
+          String address = JOptionPane.showInputDialog(
+              "Quel est nom d'hôte et le port du serveur de formes?", "localhost:10000");
+    
+          if (address == null) {
+            // don't like memory leaks even with a gc
+            client = null;
+            return;
+          }
+    
+          String[] infos = address.split(":");
+          String hostname = infos[0];
+          int port = Integer.parseInt(infos[1]);
+          client.init(hostname, port);
+          validServer = true;
+         }
+         catch (ArrayIndexOutOfBoundsException aiooe) {
+           JOptionPane.showMessageDialog(pointer, "L'adresse entrée est invalide. (hostname:port)");
+         }
+         catch (NumberFormatException nfe) {
+           // parsing int error
+           JOptionPane.showMessageDialog(pointer, "Le port spécifié est invalide.");
+         }
+         catch (UnknownHostException uhe) {
+           // dns error
+           JOptionPane.showMessageDialog(pointer, "Le nom d'hôte spécifié est introuvable.");
+         }
+         catch (ConnectException ce) {
+           // server not present on host
+           JOptionPane.showMessageDialog(pointer, "L'hôte ne réponds pas sur le port spécifié.");
+         }
+         catch (IOException ioe) {
+           ioe.printStackTrace();
+         }
+         catch (Exception e) {
+           JOptionPane.showMessageDialog(pointer, "Erreur générique (" + e.getMessage() + ").");
         }
-        catch (Exception e) {
-          JOptionPane.showMessageDialog(pointer, "Terminaison imprévue du serveur.");
-          client.stop();
+      }
+  
+      client.setCanvas(canvas);
+   
+      // This worker listens to the socket input for incoming commands
+      final SwingWorker workerReceiver = new SwingWorker() {
+        public Object construct() {
+          try {
+            client.receive();
+          }
+          catch (Exception e) {
+            JOptionPane.showMessageDialog(pointer, "Terminaison imprévue du serveur.");
+            client.stop();
+          }
+          workerActif = false;
+          rafraichirMenus();
+          return new Integer(0);
         }
-        System.out.println("workerReceiver stopped successfully.");
-        workerActif = false;
-        rafraichirMenus();
-        return new Integer(0);
-      }
-    };
-
-    // This worker sends GET requests on a timer
-    final SwingWorker workerSender = new SwingWorker() {
-      public Object construct() {
-        client.send();
-        System.out.println("workerSender stopped successfully.");
-        workerActif = false;
-        rafraichirMenus();
-        return new Integer(0);
-      }
-    };
- 	  workerActif = true;
-    // We start the receiver first because it must be ready to receive something before
-    // we any request is sent!
-    workerReceiver.start();
-    workerSender.start();
-
- 	  rafraichirMenus();
+      };
+  
+      // This worker sends GET requests on a timer
+      final SwingWorker workerSender = new SwingWorker() {
+        public Object construct() {
+          client.send();
+          workerActif = false;
+          rafraichirMenus();
+          return new Integer(0);
+        }
+      };
+   	  workerActif = true;
+      // We start the receiver first because it must be ready to receive something before
+      // we any request is sent!
+      workerReceiver.start();
+      workerSender.start();
+  
+   	  rafraichirMenus();
+    }
   }
-}
 	
   /*
    * Handles Quit event
@@ -262,10 +250,26 @@ class DemarrerListener implements ActionListener {
    * Default Constructor
    */
 	public ApplicationSwing() {
-    canvas = new ShapeCanvas();
+    canvas = new ShapeCanvas(10);
     canvas.setPreferredSize(new Dimension(CANEVAS_LARGEUR, CANEVAS_HAUTEUR));
     getContentPane().add(new JScrollPane(canvas));
     pointer = this;
+    addWindowListener(new WindowAdapter() {
+      public void windowClosing(WindowEvent e)
+      {
+        if (workerActif) {
+          client.stop();
+          try {
+            Thread.sleep(1000);
+          }
+          catch (InterruptedException ie) {
+            // do nothing
+          }
+        }
+        dispose();
+        System.exit(0);
+      }
+    });
     init();
 	}
 

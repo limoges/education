@@ -6,11 +6,18 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.RenderingHints;
 
+/*
+ * A panel used to draw and store shapes
+ */
 class ShapeCanvas extends JPanel {
 	private static final long serialVersionUID = 1L;
   private Shape[] shapes;
   private int used, current;
 
+  /*
+   * Constructor
+   * @param maxShapes The maximum number of shape that should be stored
+   */
 	public ShapeCanvas(int maxShapes) {
 		setSize(getPreferredSize());
 		setMinimumSize(getPreferredSize());
@@ -28,6 +35,10 @@ class ShapeCanvas extends JPanel {
  		this.setBackground(Color.white);  
 	}
 
+  /*
+   * Draws the component
+   * @param g The graphic context
+   */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
@@ -43,6 +54,11 @@ class ShapeCanvas extends JPanel {
       shapes[i++].draw(g2d);
 	}
 
+  /*
+   * Adds a shape to the storage and clears the extra shapes
+   * Works in FIFO mode.
+   * @param s The shape to add to the storage
+   */
   public void addShape(Shape s) {
     if (current == shapes.length)
       current = 0;

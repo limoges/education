@@ -48,14 +48,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Ellipse2D;
-
-// Exceptions
 import java.lang.NumberFormatException;
 import java.net.UnknownHostException;
 import java.net.ConnectException; 
 import java.lang.ArrayIndexOutOfBoundsException;
 import java.io.IOException;
-
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;

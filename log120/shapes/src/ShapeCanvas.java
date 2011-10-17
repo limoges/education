@@ -6,12 +6,15 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.RenderingHints;
 
+import java.util.LinkedList;
+
 /*
  * A panel used to draw and store shapes
  */
 class ShapeCanvas extends JPanel {
 	private static final long serialVersionUID = 1L;
-  private Shape[] shapes;
+  //private Shape[] shapes;
+  private LinkedList<Shape> shapes;
   private int used, current;
 
   /*
@@ -29,7 +32,7 @@ class ShapeCanvas extends JPanel {
      * fixed maximum size to prevent getting an infinite amount of
      * allocated memory as the time goes to infinity
      */
-    shapes = new Shape[maxShapes]; 
+    shapes = new LinkedList<Shape>(); 
     current = used = 0;
 
  		this.setBackground(Color.white);  

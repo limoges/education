@@ -2,7 +2,8 @@ import java.util.Scanner;
 import java.io.*;
 import java.net.*;
 
-class ClientShape/* implements Runnable*/ {
+class ClientShape {
+
   private static ClientShape instance = null;
   private Socket socket;
   private boolean sendRunning, receiveRunning;;

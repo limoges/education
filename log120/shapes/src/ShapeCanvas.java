@@ -6,8 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.RenderingHints;
 
-import java.util.LinkedList;
-
 /*
  * A panel used to draw and store shapes
  */
@@ -54,7 +52,7 @@ class ShapeCanvas extends JPanel {
 
     int i = 0;
     while (i < used)
-      shapes[i++].draw(g2d);
+      shapes.get(i).draw(g2d);
 	}
 
   /*
@@ -63,19 +61,19 @@ class ShapeCanvas extends JPanel {
    * @param s The shape to add to the storage
    */
   public void addShape(Shape s) {
-    if (current == shapes.length)
+    if (current == shapes.size())
       current = 0;
-    if (used < shapes.length)
+    if (used < shapes.size())
       ++used;
     // TODO is this necessary? there is a definite vagueness with memory leaks in java
     // Memory leak can happen here
-    if (shapes[current] != null) {
-      Shape a = shapes[current];
+    if (shapes.get(current) != null) {
+      Shape a = shapes.get(current);
       // The object reference is removed
       a = null;
     }
     // The reference to the object reference is overwrote
-    shapes[current++] = s;
+    shapes.set(current++, s);
     repaint();
   }
 }

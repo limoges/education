@@ -41,7 +41,7 @@ class ClientShape {
   public void init(String hostname, int port) throws UnknownHostException, ConnectException, IOException {
     this.socket = new Socket(hostname, port);
     socket.setSoTimeout(1000);
-    //socket.getChannel().configureBlocking(true);
+    socket.getChannel().configureBlocking(true);
   }
 
   public void setCanvas(ShapeCanvas canvas) {

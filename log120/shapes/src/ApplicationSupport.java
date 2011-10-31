@@ -73,6 +73,7 @@ public final class ApplicationSupport {
    public static Locale getLocale() {
       return locale;
    }
+
    public static JMenu addMenu(final JFrame jFrame, String titleKey,
                                String[] itemKeys) {
 

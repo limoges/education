@@ -56,11 +56,14 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButtonMenuItem;
 
 
 /**
@@ -103,6 +106,7 @@ import javax.swing.KeyStroke;
 public class ApplicationSwing extends JFrame {
 	
 	private boolean workerActif;
+  private String lastHost;
 	private JMenuItem arreterMenuItem, demarrerMenuItem;
   // The canvas is handles the ShapesBuffer and display shapes
   private ShapeCanvas canvas;
@@ -146,24 +150,34 @@ public class ApplicationSwing extends JFrame {
     
     public void actionPerformed(ActionEvent arg0) {
       boolean validServer = false;
+      // We only want a single instance of the client
       client = ClientShape.getInstance();
-  
+      String address = lastHost;
+
       while (!validServer) {
         try {
            // ask user for address
-          String address = JOptionPane.showInputDialog(
-              "Please enter the hostname and port.", "localhost:10000");
+          address = JOptionPane
+            .showInputDialog("Please enter the hostname and port.", lastHost);
     
+          // Didn't enter anything
           if (address == null) {
             // don't like memory leaks even with a gc
             client = null;
             return;
           }
     
+          // Let us extract our address and convert it to a valid type.
+          // We assume a "hostname:port" format.
+          // Any error will end up as an exception.
           String[] infos = address.split(":");
           String hostname = infos[0];
           int port = Integer.parseInt(infos[1]);
+
+          // Initialise our client's socket for the specified host
           client.init(hostname, port);
+
+          // If we reached this point, we have a valid host...
           validServer = true;
          }
          catch (ArrayIndexOutOfBoundsException aiooe) {
@@ -188,6 +202,7 @@ public class ApplicationSwing extends JFrame {
            JOptionPane.showMessageDialog(pointer, "Error: " + e.getMessage() + ".");
         }
       }
+      lastHost = address; // We have a valid host, let's store it for reuse
   
       client.setCanvas(canvas);
    
@@ -251,6 +266,7 @@ public class ApplicationSwing extends JFrame {
     canvas.setPreferredSize(new Dimension(CANEVAS_LARGEUR, CANEVAS_HAUTEUR));
     getContentPane().add(new JScrollPane(canvas));
     pointer = this;
+    lastHost = "localhost:10000";
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e)
       {
@@ -276,6 +292,7 @@ public class ApplicationSwing extends JFrame {
   private void init() {
 		creerMenuFichier();
 		creerMenuDessiner();
+    creerMenuOrdre();
 		creerMenuAide();
 		rafraichirMenus();
 		setLocationRelativeTo(null);
@@ -321,6 +338,35 @@ public class ApplicationSwing extends JFrame {
 		return menu;
 	}
 
+  private JMenu creerMenuOrdre() {
+    String[] itemKeys = new String[] {
+          MENU_ORDRE_NUMERO_CROISSANT,
+          MENU_ORDRE_NUMERO_DECROISSANT,
+          MENU_ORDRE_AIRE_CROISSANT,
+          MENU_ORDRE_AIRE_DECROISSANT,
+          MENU_ORDRE_TYPE,
+          MENU_ORDRE_TYPE_INVERSE,
+          MENU_ORDRE_DISTANCE
+    };
+
+    JMenuBar menuBar = this.getJMenuBar();                                             
+    if (menuBar == null) {                                                                
+      menuBar = new JMenuBar();                                                         
+      this.setJMenuBar(menuBar);                                                      
+    }                                                                                    
+                                                                                          
+    JMenu menu = new JMenu(ApplicationSupport.getResource(MENU_ORDRE_TITRE));                    
+    ButtonGroup group = new ButtonGroup();
+    for (int i = 0; i < itemKeys.length; ++i) {
+       JRadioButtonMenuItem b = new JRadioButtonMenuItem(ApplicationSupport.getResource(itemKeys[i])); 
+       menu.add(b);
+       group.add(b);
+    }                                                                                    
+    menuBar.add(menu);                                                                   
+    
+    return menu;
+  }
+
 	/*
    * Creates the Help menu
    * @return A JMenu containing the About action bound to an ActionListener
@@ -364,6 +410,14 @@ public class ApplicationSwing extends JFrame {
   		MENU_FICHIER_TITRE = "app.frame.menus.file.title",                              
       MENU_FICHIER_OBTENIRFORMES = "app.frame.menus.file.obtainshapes",
   		MENU_FICHIER_QUITTER = "app.frame.menus.file.exit",                             
+      MENU_ORDRE_TITRE = "app.frame.menus.order.title",
+      MENU_ORDRE_NUMERO_CROISSANT = "app.frame.menus.order.by_id_increase",
+      MENU_ORDRE_NUMERO_DECROISSANT = "app.frame.menus.order.by_id_decrease",
+      MENU_ORDRE_AIRE_CROISSANT = "app.frame.menus.order.by_area_increase",
+      MENU_ORDRE_AIRE_DECROISSANT = "app.frame.menus.order.by_area_decrease",
+      MENU_ORDRE_TYPE = "app.frame.menus.order.by_type",
+      MENU_ORDRE_TYPE_INVERSE = "app.frame.menus.order.by_type_reverse",
+      MENU_ORDRE_DISTANCE = "app.frame.menus.order.by_distance",
   		MENU_DESSIN_TITRE = "app.frame.menus.draw.title",                               
   		MENU_DESSIN_DEMARRER = "app.frame.menus.draw.start",                            
   		MENU_DESSIN_ARRETER = "app.frame.menus.draw.stop",                              

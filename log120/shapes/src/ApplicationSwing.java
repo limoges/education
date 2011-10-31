@@ -310,10 +310,11 @@ public class ApplicationSwing extends JFrame {
    */
 	private JMenu creerMenuFichier() {
 		JMenu menu = ApplicationSupport.addMenu(this, MENU_FICHIER_TITRE,
-				new String[] { MENU_FICHIER_QUITTER });
+				new String[] { MENU_FICHIER_OBTENIRFORMES, MENU_FICHIER_QUITTER });
 
-		menu.getItem(0).addActionListener(new QuitterListener());
-		menu.getItem(0).setAccelerator(
+    menu.getItem(0).addActionListener(new DemarrerListener());
+		menu.getItem(1).addActionListener(new QuitterListener());
+		menu.getItem(1).setAccelerator(
 				KeyStroke.getKeyStroke(MENU_FICHIER_QUITTER_TOUCHE_RACC,
 						MENU_FICHIER_QUITTER_TOUCHE_MASK));
 
@@ -361,6 +362,7 @@ public class ApplicationSwing extends JFrame {
   private static final char MENU_FICHIER_QUITTER_TOUCHE_RACC = KeyEvent.VK_Q;         
   private static final String                                                         
   		MENU_FICHIER_TITRE = "app.frame.menus.file.title",                              
+      MENU_FICHIER_OBTENIRFORMES = "app.frame.menus.file.obtainshapes",
   		MENU_FICHIER_QUITTER = "app.frame.menus.file.exit",                             
   		MENU_DESSIN_TITRE = "app.frame.menus.draw.title",                               
   		MENU_DESSIN_DEMARRER = "app.frame.menus.draw.start",                            

@@ -13,7 +13,6 @@ class ShapeCanvas extends JPanel {
 	private static final long serialVersionUID = 1L;
   //private Shape[] shapes;
   private LinkedList<Shape> shapes;
-  private int used, current;
 
   /*
    * Constructor
@@ -31,7 +30,6 @@ class ShapeCanvas extends JPanel {
      * allocated memory as the time goes to infinity
      */
     shapes = new LinkedList<Shape>(); 
-    current = used = 0;
 
  		this.setBackground(Color.white);  
 	}
@@ -43,7 +41,8 @@ class ShapeCanvas extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-    if (used == 0)
+    // No need to go further if we have nothing to draw
+    if (shapes.size() == 0)
       return;
 
 	  Graphics2D g2d = (Graphics2D) g;
@@ -51,8 +50,12 @@ class ShapeCanvas extends JPanel {
       RenderingHints.VALUE_ANTIALIAS_ON);
 
     int i = 0;
-    while (i < used)
-      shapes.get(i).draw(g2d);
+    Link<Shape> en = shapes.getFirst();
+    do {
+      en.get().draw(g2d);
+      en = en.next();
+    }
+    while (en.hasNext());
 	}
 
   /*
@@ -61,19 +64,7 @@ class ShapeCanvas extends JPanel {
    * @param s The shape to add to the storage
    */
   public void addShape(Shape s) {
-    if (current == shapes.size())
-      current = 0;
-    if (used < shapes.size())
-      ++used;
-    // TODO is this necessary? there is a definite vagueness with memory leaks in java
-    // Memory leak can happen here
-    if (shapes.get(current) != null) {
-      Shape a = shapes.get(current);
-      // The object reference is removed
-      a = null;
-    }
-    // The reference to the object reference is overwrote
-    shapes.set(current++, s);
+    shapes.add(s);
     repaint();
   }
 }

@@ -19,16 +19,16 @@ class ClientShape {
   }
 
   private void finish() {
-    try {                  
-      if (done)              
-        socket.close();      
-      else                   
-        done = true;         
-    }                      
-    catch (Exception e) {  
+    try {
+      if (done)
+        socket.close();
+      else
+        done = true;
+    }
+    catch (Exception e) {
       System.out.println("exception while in finish()");
-      e.printStackTrace(); 
-    }                      
+      e.printStackTrace();
+    }
   }
 
   public static ClientShape getInstance() {
@@ -40,12 +40,59 @@ class ClientShape {
 
   public void init(String hostname, int port) throws UnknownHostException, ConnectException, IOException {
     this.socket = new Socket(hostname, port);
-    socket.setSoTimeout(1000);
-    socket.getChannel().configureBlocking(true);
+    //socket.getChannel().configureBlocking(true);
   }
 
   public void setCanvas(ShapeCanvas canvas) {
     this.canvas = canvas;
+  }
+
+  public void sendAndReceive() {
+    final String command = "GET";
+    out = null;
+    in = null;
+    InputStream is = socket.getInputStream();
+
+    try {
+      out = new PrintWriter(socket.getOutputStream(), true);
+    }
+    catch (IOException ioe) {
+      //ioe.printStackStrace();
+    }
+
+    in = new BufferedReader(new InputStreamReader(is));
+
+    done = false;
+    // GET
+    out.println(command);
+    String received = "";
+    try {
+      // hack to handle server disconnection
+      received = in.readLine();
+      received = received.trim();
+      if (received.equals("commande>")) {
+        received = null;
+      }
+      executeCommand(received);
+    }
+    catch (SocketTimeoutException ste) {
+      stop();
+      finish();
+      throw new Exception("Server has disconnected.");
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    try {
+      in.close();
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    out.close();
+    finish();
   }
 
   public void send() {
@@ -64,7 +111,7 @@ class ClientShape {
     while (sendRunning) {
       out.println(command);
       try {
-        Thread.sleep(500);
+        Thread.sleep(100);
       }
       catch (InterruptedException ie) {
         ie.printStackTrace();
@@ -91,10 +138,10 @@ class ClientShape {
     receiveRunning = true;
     done = false;
     int failedReads = 0;
-    while (receiveRunning) { 
+    while (receiveRunning) {
       if (failedReads > 50) {
         stop();
-        finish(); 
+        finish();
         throw new Exception("Server does not respond");
       }
       try {
@@ -140,7 +187,7 @@ class ClientShape {
 
   private void executeCommand(String command) {
     Shape s = ShapeFactory.create(command);
-    
+
     if (s == null)
       return;
 

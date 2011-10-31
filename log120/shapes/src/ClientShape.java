@@ -10,6 +10,7 @@ class ClientShape {
   private int sleep;
   private ShapeCanvas canvas;
   private boolean done;
+
   private PrintWriter out;
   private BufferedReader in;
 
@@ -38,56 +39,43 @@ class ClientShape {
     return instance;
   }
 
-  public void init(String hostname, int port) throws UnknownHostException, ConnectException, IOException {
+  public void init(String hostname, int port)
+    throws UnknownHostException, ConnectException, IOException {
+
     this.socket = new Socket(hostname, port);
     //socket.getChannel().configureBlocking(true);
+    out = new PrintWriter(socket.getOutputStream(), true);
+    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+  }
+
+  public Shape getShape() throws IOException {
+    final String command = "GET";
+    String received = null;
+    Shape s = null;
+
+    // Send a request
+    out.println(command);
+    try {
+      // Until we have received something useful
+      do {
+        received = null;
+        // Read from the socket
+        received = in.readLine();
+        // Remove whitespace
+        received = received.trim();
+      }
+      while (received == null || received.equals("commande>"));
+      s = ShapeFactory.create(received);
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return s;
   }
 
   public void setCanvas(ShapeCanvas canvas) {
     this.canvas = canvas;
-  }
-
-  public void sendAndReceive() throws IOException, Exception {
-    final String command = "GET";
-    out = null;
-    in = null;
-    InputStream is = null;
-    is = socket.getInputStream();
-    out = new PrintWriter(socket.getOutputStream(), true);
-
-    in = new BufferedReader(new InputStreamReader(is));
-
-    done = false;
-    // GET
-    out.println(command);
-    String received = "";
-    try {
-      // hack to handle server disconnection
-      received = in.readLine();
-      received = received.trim();
-      if (received.equals("commande>")) {
-        received = null;
-      }
-      executeCommand(received);
-    }
-    catch (SocketTimeoutException ste) {
-      stop();
-      finish();
-      throw new Exception("Server has disconnected.");
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    try {
-      in.close();
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    out.close();
-    finish();
   }
 
   public void send() {

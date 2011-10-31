@@ -43,7 +43,7 @@ public class Line extends Shape {
   public double getDistance() {
     double dx = p2.getX() - p1.getX();
     double dy = p2.getY() - p1.getY();
-    return Math.sqrt(dx + dy);
+    return Math.sqrt( Math.pow(dx, 2) + Math.pow(dy, 2) );
   }
 
 }

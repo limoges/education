@@ -143,51 +143,28 @@ public class ApplicationSwing extends JFrame {
 
 	}
 
-  class Obtain10Listener implements ActionListener {
+  class ObtainShapesListener implements ActionListener {
 
     public void actionPerformed(ActionEvent ae) {
-      initializeClient();                                                                     
-      client.setCanvas(canvas);                                                                                    
+      initializeClient();
+      client.setCanvas(canvas);
 
       final SwingWorker worker = new SwingWorker() {
         public Object construct() {
-          // send 10 request
-          // receive 10 objects
-          // offload those 10 objects to renderer
+          for (int i = 0; i < 10; ++i) {
+            try {
+              Shape s = client.getShape();
+            } catch (IOException ioe) {
+              System.err.println("getShape: " + ioe.getMessage());
+            }
+          }
+          workerActif = false;
+          return new Integer(0);
         }
       };
 
-      final SwingWorker workerReceiver = new SwingWorker() {                                  
-        public Object construct() {                                                           
-          try {                                                                               
-            client.receive();                                                                 
-          }                                                                                   
-          catch (Exception e) {                                                               
-            JOptionPane.showMessageDialog(pointer, "The host has terminated the connexion."); 
-            client.stop();                                                                    
-          }                                                                                   
-          workerActif = false;                                                                
-          rafraichirMenus();                                                                  
-          return new Integer(0);                                                              
-        }                                                                                     
-      };                                                                                      
-                                                                                              
-      // This worker sends GET requests on a timer                                            
-      final SwingWorker workerSender = new SwingWorker() {                                    
-        public Object construct() {                                                           
-          client.send();                                                                      
-          workerActif = false;                                                                
-          rafraichirMenus();                                                                  
-          return new Integer(0);                                                              
-        }                                                                                     
-      };                                                                                      
-      workerActif = true;                                                                     
-      // We start the receiver first because it must be ready to receive something before     
-      // we any request is sent!                                                              
-      workerReceiver.start();                                                                 
-      workerSender.start();                                                                   
-                                                                                              
-      rafraichirMenus();                                                                      
+      workerActif = true;
+      worker.start();
     }
 
   }
@@ -381,7 +358,7 @@ public class ApplicationSwing extends JFrame {
 		JMenu menu = ApplicationSupport.addMenu(this, MENU_FICHIER_TITRE,
 				new String[] { MENU_FICHIER_OBTENIRFORMES, MENU_FICHIER_QUITTER });
 
-    menu.getItem(0).addActionListener(new DemarrerListener());
+    menu.getItem(0).addActionListener(new ObtainShapesListener());
 		menu.getItem(1).addActionListener(new QuitterListener());
 		menu.getItem(1).setAccelerator(
 				KeyStroke.getKeyStroke(MENU_FICHIER_QUITTER_TOUCHE_RACC,

@@ -62,4 +62,8 @@ public abstract class Shape {
   public ShapeType getShapeType() {
     return shapeType;
   }
+
+  public String toString() {
+    return "Shape(" + color.toString() + ")";
+  }
 }

@@ -2,6 +2,7 @@ import java.awt.Point;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Dimension;
+import java.lang.Math;
 
 public class Rectangle extends Shape {
 
@@ -16,7 +17,12 @@ public class Rectangle extends Shape {
    * @param height The rectangle's height
    */
 	public Rectangle(int id, Color color, int x, int y, int width, int height) {
-		super(id, color);
+    // Validate a shapetype
+    if (width == height)
+		  super(id, color, ShapeType.Square);
+    else
+      super(id, color, ShapeType.Rectangle);
+
     this.point = new Point(x, y);
     this.dimension = new Dimension(width, height);
 	}
@@ -38,4 +44,13 @@ public class Rectangle extends Shape {
     g.setColor(Color.BLACK);
     g.drawRect(point.x, point.y, dimension.width, dimension.height);
   }
+
+  public double getArea() {
+    return width * height;
+  }
+
+  public double getDistance() {
+    return Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
+  }
+
 }

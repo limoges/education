@@ -2,6 +2,7 @@ import java.awt.Point;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.lang.Math;
 
 public class Oval extends Shape {
   private Point center;
@@ -15,7 +16,11 @@ public class Oval extends Shape {
    * @param height The vertical diameter
    */
   public Oval(int id, Color color, int x, int y, int width, int height) {
-    super(id, color);
+    if (width == height)
+      super(id, color, ShapeType.Circle);
+    else
+      super(id, color, ShapeType.Oval);
+
     this.center = new Point(x, y);
     this.dimension = new Dimension(width, height);
   }
@@ -36,6 +41,12 @@ public class Oval extends Shape {
     g.fillOval(center.x, center.y, dimension.width, dimension.height);
     g.setColor(Color.BLACK);
     g.drawOval(center.x, center.y, dimension.width, dimension.height);
+  }
+
+  public double getArea() {
+    double a = width / 2;
+    double b = height / 2;
+    return Math.PI * a * b;
   }
 
 }

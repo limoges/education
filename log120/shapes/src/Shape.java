@@ -3,18 +3,28 @@ import java.awt.Color;
 
 public abstract class Shape {
 
-  // You shouldnt change a id
+  enum ShapeType {
+    Square,
+    Rectangle,
+    Circle,
+    Oval,
+    Line
+  };
+
+  // You shouldnt change an id
 	private final int id;
   private Color color;
+  private ShapeType shapeType;
 	
   /*
    * Constructor
    * @param id The IDLogger id
    * @param color The color to draw the shape with
    */
-	public Shape(int id, Color color) {
+	public Shape(int id, Color color, ShapeType shapeType) {
 		this.id = id;
     this.color = color;
+    this.shapeType = shapeType;
 	}
 
   /*
@@ -46,4 +56,10 @@ public abstract class Shape {
    * @param g The graphic context to draw on
    */
   public abstract void draw(Graphics2D g);
+  public abstract double getDistance();
+  public abstract double getArea();
+
+  public ShapeType getShapeType() {
+    return shapeType;
+  }
 }

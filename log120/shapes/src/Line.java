@@ -41,7 +41,9 @@ public class Line extends Shape {
   }
 
   public double getDistance() {
-    return Math.sqrt(Math.pow(x2-x1) + Math.pow(y2-y1));
+    double dx = p2.getX() - p1.getX();
+    double dy = p2.getY() - p1.getY();
+    return Math.sqrt(dx + dy);
   }
 
 }

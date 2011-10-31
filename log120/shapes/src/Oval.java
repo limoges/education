@@ -16,11 +16,7 @@ public class Oval extends Shape {
    * @param height The vertical diameter
    */
   public Oval(int id, Color color, int x, int y, int width, int height) {
-    if (width == height)
-      super(id, color, ShapeType.Circle);
-    else
-      super(id, color, ShapeType.Oval);
-
+    super(id, color, (width == height?ShapeType.Circle:ShapeType.Oval));
     this.center = new Point(x, y);
     this.dimension = new Dimension(width, height);
   }
@@ -31,7 +27,10 @@ public class Oval extends Shape {
    * @param dimension The dimensions
    */
   public Oval(int id, Color color, Point center, Dimension dimension) {
-    super(id, color);
+    super(id, color,
+        (dimension.width == dimension.height?
+         ShapeType.Square:ShapeType.Rectangle)
+    );
     this.center = center;
     this.dimension = dimension;
   }
@@ -44,10 +43,13 @@ public class Oval extends Shape {
   }
 
   public double getArea() {
-    double a = width / 2;
-    double b = height / 2;
+    double a = dimension.getWidth() / 2;
+    double b = dimension.getHeight() / 2;
     return Math.PI * a * b;
   }
 
+  public double getDistance() {
+    return Math.max(dimension.getWidth(), dimension.getHeight());
+  }
 }
 

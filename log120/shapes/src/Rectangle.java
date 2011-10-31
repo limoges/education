@@ -17,11 +17,7 @@ public class Rectangle extends Shape {
    * @param height The rectangle's height
    */
 	public Rectangle(int id, Color color, int x, int y, int width, int height) {
-    // Validate a shapetype
-    if (width == height)
-		  super(id, color, ShapeType.Square);
-    else
-      super(id, color, ShapeType.Rectangle);
+		super(id, color, (width == height?ShapeType.Square:ShapeType.Rectangle));
 
     this.point = new Point(x, y);
     this.dimension = new Dimension(width, height);
@@ -33,7 +29,10 @@ public class Rectangle extends Shape {
    * @param dimension The rectangle's dimensions
    */
   public Rectangle(int id, Color color, Point point, Dimension dimension) {
-    super(id, color);
+    super(id, color,
+        (dimension.width == dimension.height?
+         ShapeType.Square:ShapeType.Rectangle)
+    );
     this.point = point;
     this.dimension = dimension;
   }
@@ -46,11 +45,13 @@ public class Rectangle extends Shape {
   }
 
   public double getArea() {
-    return width * height;
+    return dimension.getWidth() * dimension.getHeight();
   }
 
   public double getDistance() {
-    return Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
+    double dx = Math.pow(dimension.getWidth(), 2);
+    double dy = Math.pow(dimension.getHeight(), 2);
+    return Math.sqrt(dx + dy);
   }
 
 }

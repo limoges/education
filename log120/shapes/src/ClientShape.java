@@ -47,18 +47,13 @@ class ClientShape {
     this.canvas = canvas;
   }
 
-  public void sendAndReceive() {
+  public void sendAndReceive() throws IOException, Exception {
     final String command = "GET";
     out = null;
     in = null;
-    InputStream is = socket.getInputStream();
-
-    try {
-      out = new PrintWriter(socket.getOutputStream(), true);
-    }
-    catch (IOException ioe) {
-      //ioe.printStackStrace();
-    }
+    InputStream is = null;
+    is = socket.getInputStream();
+    out = new PrintWriter(socket.getOutputStream(), true);
 
     in = new BufferedReader(new InputStreamReader(is));
 

@@ -147,7 +147,16 @@ public class ApplicationSwing extends JFrame {
 
     public void actionPerformed(ActionEvent ae) {
       initializeClient();                                                                     
-      client.setCanvas(canvas);                                                                                          // This worker listens to the socket input for incoming commands                        
+      client.setCanvas(canvas);                                                                                    
+
+      final SwingWorker worker = new SwingWorker() {
+        public Object construct() {
+          // send 10 request
+          // receive 10 objects
+          // offload those 10 objects to renderer
+        }
+      };
+
       final SwingWorker workerReceiver = new SwingWorker() {                                  
         public Object construct() {                                                           
           try {                                                                               

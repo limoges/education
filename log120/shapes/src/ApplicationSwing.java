@@ -151,13 +151,17 @@ public class ApplicationSwing extends JFrame {
 
       final SwingWorker worker = new SwingWorker() {
         public Object construct() {
-          for (int i = 0; i < 10; ++i) {
-            try {
+          LinkedList<Shape> list = new LinkedList<Shape>();
+          try {
+            for (int i = 0; i < 10; ++i) {
               Shape s = client.getShape();
-            } catch (IOException ioe) {
-              System.err.println("getShape: " + ioe.getMessage());
+              list.add(s);
             }
+          } catch (IOException ioe) {
+            System.err.println("getShape: " + ioe.getMessage());
           }
+          client.terminate();
+          canvas.setShapes(list);
           workerActif = false;
           return new Integer(0);
         }

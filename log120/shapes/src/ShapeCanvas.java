@@ -67,4 +67,9 @@ class ShapeCanvas extends JPanel {
     shapes.add(s);
     repaint();
   }
+
+  public void setShapes(LinkedList<Shape> shapes) {
+    this.shapes = shapes;
+    repaint();
+  }
 }

@@ -177,9 +177,13 @@ class ClientShape {
     canvas.addShape(s);
   }
 
-  public void stop() {
+  public void terminate() {
     out.println("END");
     out.flush();
+  }
+
+  public void stop() {
+    terminate();
     sendRunning = false;
     receiveRunning = false;
   }

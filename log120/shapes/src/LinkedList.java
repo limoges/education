@@ -3,7 +3,7 @@ public class LinkedList<T> {
   private Link<T> first;
   private int length;
 
-  public void LinkedList() {
+  public LinkedList() {
     length = 0;
     first = null;
   }
@@ -63,6 +63,13 @@ public class LinkedList<T> {
 
     Link<T> e = getLink(index);
     return e.get();
+  }
+
+  public T set(int index, T obj) {
+    Link<T> link = getLink(index);
+    T replaced = link.get();
+    link.set(obj);  
+    return replaced;
   }
 
   public int size() {

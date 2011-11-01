@@ -13,6 +13,10 @@ public class Link<T> {
     return "Link(" + obj.toString() +")";       
   }                                             
                                                 
+  public void set(T obj) {
+    this.obj = obj;
+  }
+
   public void setNext(Link<T> next) {           
     this.next = next;                           
   }                                             

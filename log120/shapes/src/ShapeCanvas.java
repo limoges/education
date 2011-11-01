@@ -13,6 +13,18 @@ class ShapeCanvas extends JPanel {
 	private static final long serialVersionUID = 1L;
   //private Shape[] shapes;
   private LinkedList<Shape> shapes;
+  private SortType sortType;
+  private boolean ascending;
+  private boolean sorted;
+  private boolean sortActivated;
+
+  public void setSort(boolean activated, boolean ascending, SortType type) {
+    this.ascending = ascending;
+    this.sortActivated = activated;
+    this.sortType = type;
+    sorted = false;
+    repaint();
+  }
 
   /*
    * Constructor
@@ -22,6 +34,11 @@ class ShapeCanvas extends JPanel {
 		setSize(getPreferredSize());
 		setMinimumSize(getPreferredSize());
 		ShapeCanvas.this.setBackground(Color.white);
+
+    sortType = SortType.ORIGINAL;
+    ascending = true;
+    sorted = false;
+    sortActivated = false;
     /* 
      * Assuming that we receive ~1 shape per second, we allocate enough
      * memory for the next 10 seconds each increment.
@@ -49,13 +66,25 @@ class ShapeCanvas extends JPanel {
 	  g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
       RenderingHints.VALUE_ANTIALIAS_ON);
 
-    int i = 0;
-    Link<Shape> en = shapes.getFirst();
-    do {
-      en.get().draw(g2d);
-      en = en.next();
+    if (!sortActivated) {
+      int i = 0;
+      Link<Shape> en = shapes.getFirst();
+      do {
+        en.get().draw(g2d);
+        en = en.next();
+      }
+      while (en.hasNext());
+      return;
     }
-    while (en.hasNext());
+
+    if (!sorted) {
+      ShapeSort.sort(shapes, sortType, ascending);
+      sorted = true;
+    }
+
+    Link<Shape> en = shapes.getFirst();
+    for (int x = 0, y = 0; en.hasNext(); en = en.next(), y += 40, x += 40)
+      en.get().drawAt(g2d, x, y);
 	}
 
   /*
@@ -70,6 +99,7 @@ class ShapeCanvas extends JPanel {
 
   public void setShapes(LinkedList<Shape> shapes) {
     this.shapes = shapes;
+    sorted = false;
     repaint();
   }
 }

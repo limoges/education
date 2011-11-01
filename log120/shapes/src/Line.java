@@ -36,6 +36,13 @@ public class Line extends Shape {
     g.drawLine(p1.x, p1.y, p2.x, p2.y);
   }
 
+  public void drawAt(Graphics2D g, int x, int y) {
+    g.setColor(getColor());
+    int dx = p2.x - p1.x;
+    int dy = p2.y - p1.y;
+    g.drawLine(x, y, dx, dy);
+  }
+
   public double getArea() {
     return 0;
   }
@@ -44,6 +51,14 @@ public class Line extends Shape {
     double dx = p2.getX() - p1.getX();
     double dy = p2.getY() - p1.getY();
     return Math.sqrt( Math.pow(dx, 2) + Math.pow(dy, 2) );
+  }
+
+  public int getWidth() {
+    return Math.abs((int) (p2.getX() - p1.getX()));
+  }
+
+  public int getHeight() {
+    return Math.abs((int) (p2.getY() - p1.getY()));
   }
 
 }

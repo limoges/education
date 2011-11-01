@@ -156,6 +156,7 @@ public class ApplicationSwing extends JFrame {
             for (int i = 0; i < 10; ++i) {
               Shape s = client.getShape();
               list.add(s);
+              s.debug();
             }
           } catch (IOException ioe) {
             System.err.println("getShape: " + ioe.getMessage());
@@ -371,6 +372,55 @@ public class ApplicationSwing extends JFrame {
 		return menu;
 	}
 
+  private class OrderByIDAscending implements ActionListener {
+    public void actionPerformed(ActionEvent ae) {
+      canvas.setSort(true, true, SortType.SEQUENCE);    
+    }
+  }
+
+  private class OrderByIDDescending implements ActionListener {
+    public void actionPerformed(ActionEvent ae) {
+      canvas.setSort(true, false, SortType.SEQUENCE);    
+    }
+  }
+
+
+  private class OrderByAreaAscending implements ActionListener { 
+    public void actionPerformed(ActionEvent ae) {               
+      canvas.setSort(true, true, SortType.AREA);    
+    }                                                           
+  }                                                             
+
+  private class OrderByAreaDescending implements ActionListener { 
+    public void actionPerformed(ActionEvent ae) {               
+      canvas.setSort(true, false, SortType.AREA);    
+    }                                                           
+  }
+
+  private class OrderByType implements ActionListener { 
+    public void actionPerformed(ActionEvent ae) {               
+      canvas.setSort(true, true, SortType.TYPE);    
+    }                                                           
+  }
+
+  private class OrderByTypeInverse implements ActionListener { 
+    public void actionPerformed(ActionEvent ae) {               
+      canvas.setSort(true, false, SortType.TYPE);    
+    }                                                           
+  }
+
+  private class OrderByDistance implements ActionListener { 
+    public void actionPerformed(ActionEvent ae) {               
+      canvas.setSort(true, true, SortType.DISTANCE);    
+    }                                                           
+  }                                                             
+
+  private class OrderByHeight implements ActionListener { 
+    public void actionPerformed(ActionEvent ae) {               
+      canvas.setSort(true, false, SortType.HEIGHT);    
+    }                                                           
+  }                                                             
+
   private JMenu creerMenuOrdre() {
     String[] itemKeys = new String[] {
           MENU_ORDRE_NUMERO_CROISSANT,
@@ -381,7 +431,6 @@ public class ApplicationSwing extends JFrame {
           MENU_ORDRE_TYPE_INVERSE,
           MENU_ORDRE_DISTANCE
     };
-
     JMenuBar menuBar = this.getJMenuBar();
     if (menuBar == null) {
       menuBar = new JMenuBar();
@@ -395,6 +444,13 @@ public class ApplicationSwing extends JFrame {
        menu.add(b);
        group.add(b);
     }
+		menu.getItem(0).addActionListener(new OrderByIDAscending());        
+		menu.getItem(1).addActionListener(new OrderByIDDescending());        
+		menu.getItem(2).addActionListener(new OrderByAreaAscending());        
+		menu.getItem(3).addActionListener(new OrderByAreaDescending());        
+		menu.getItem(4).addActionListener(new OrderByType());        
+		menu.getItem(5).addActionListener(new OrderByTypeInverse());        
+		menu.getItem(6).addActionListener(new OrderByDistance());        
     menuBar.add(menu);
 
     return menu;

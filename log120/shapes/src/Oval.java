@@ -42,6 +42,13 @@ public class Oval extends Shape {
     g.drawOval(center.x, center.y, dimension.width, dimension.height);
   }
 
+  public void drawAt(Graphics2D g, int x, int y) {
+    g.setColor(getColor());
+    g.fillOval(x, y, dimension.width, dimension.height);
+    g.setColor(Color.BLACK);
+    g.drawOval(x, y, dimension.width, dimension.height);
+  }
+
   public double getArea() {
     double a = dimension.getWidth() / 2;
     double b = dimension.getHeight() / 2;
@@ -50,6 +57,14 @@ public class Oval extends Shape {
 
   public double getDistance() {
     return Math.max(dimension.getWidth(), dimension.getHeight());
+  }
+
+  public int getWidth() {
+    return dimension.width;
+  }
+
+  public int getHeight() {
+    return dimension.height;
   }
 }
 

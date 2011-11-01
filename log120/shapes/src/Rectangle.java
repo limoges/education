@@ -43,6 +43,12 @@ public class Rectangle extends Shape {
     g.setColor(Color.BLACK);
     g.drawRect(point.x, point.y, dimension.width, dimension.height);
   }
+  public void drawAt(Graphics2D g, int x, int y) {
+    g.setColor(getColor());
+    g.fillRect(x, y, dimension.width, dimension.height);
+    g.setColor(Color.BLACK);
+    g.drawRect(x, y, dimension.width, dimension.height);
+  }
 
   public double getArea() {
     return dimension.getWidth() * dimension.getHeight();
@@ -52,6 +58,14 @@ public class Rectangle extends Shape {
     double dx = Math.pow(dimension.getWidth(), 2);
     double dy = Math.pow(dimension.getHeight(), 2);
     return Math.sqrt(dx + dy);
+  }
+
+  public int getWidth() {
+    return dimension.width;
+  }
+
+  public int getHeight() {
+    return dimension.height;
   }
 
 }

@@ -85,8 +85,8 @@ public abstract class Shape {
 
   public void debug() {
     System.out.printf
-      ("Shape(id %d, order %d, dist %d, area %d, width %d, height %d)\n",
-       id, orderOfArrival, (int) getDistance(),
+      ("Shape(class %9s id %d, order %d, dist %d, area %d, width %d, height %d)\n",
+       shapeType, id, orderOfArrival, (int) getDistance(),
        (int) getArea(), getWidth(), getHeight());
   }
 

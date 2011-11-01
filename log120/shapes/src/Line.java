@@ -38,9 +38,9 @@ public class Line extends Shape {
 
   public void drawAt(Graphics2D g, int x, int y) {
     g.setColor(getColor());
-    int dx = p2.x - p1.x;
-    int dy = p2.y - p1.y;
-    g.drawLine(x, y, dx, dy);
+    int width = p2.x - p1.x;
+    int height = p2.y - p1.y;
+    g.drawLine(x, y, x+width, y+height);
   }
 
   public double getArea() {

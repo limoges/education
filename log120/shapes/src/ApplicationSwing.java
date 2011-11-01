@@ -415,11 +415,35 @@ public class ApplicationSwing extends JFrame {
     }                                                           
   }                                                             
 
-  private class OrderByHeight implements ActionListener { 
+  private class OrderByWidthAscending implements ActionListener {      
+    public void actionPerformed(ActionEvent ae) {                
+      canvas.setSort(true, true, SortType.WIDTH);             
+    }                                                            
+  }                                                              
+
+  private class OrderByWidthDescending implements ActionListener {      
+    public void actionPerformed(ActionEvent ae) {                
+      canvas.setSort(true, true, SortType.WIDTH);             
+    }                                                            
+  }
+
+  private class OrderByHeightAscending implements ActionListener {
     public void actionPerformed(ActionEvent ae) {               
-      canvas.setSort(true, false, SortType.HEIGHT);    
+      canvas.setSort(true, true, SortType.HEIGHT);    
     }                                                           
   }                                                             
+
+  private class OrderByHeightDescending implements ActionListener { 
+    public void actionPerformed(ActionEvent ae) {                  
+      canvas.setSort(true, false, SortType.HEIGHT);                
+    }                                                              
+  }                                                                
+
+  private class OrderByOriginal implements ActionListener { 
+    public void actionPerformed(ActionEvent ae) {                  
+      canvas.setSort(false, false, SortType.ORIGINAL);                
+    }                                                              
+  }                                                                
 
   private JMenu creerMenuOrdre() {
     String[] itemKeys = new String[] {
@@ -429,7 +453,12 @@ public class ApplicationSwing extends JFrame {
           MENU_ORDRE_AIRE_DECROISSANT,
           MENU_ORDRE_TYPE,
           MENU_ORDRE_TYPE_INVERSE,
-          MENU_ORDRE_DISTANCE
+          MENU_ORDRE_DISTANCE,
+          MENU_ORDRE_LARGEUR_CROISSANT,
+          MENU_ORDRE_LARGEUR_DECROISSANT,
+          MENU_ORDRE_HAUTEUR_CROISSANT,
+          MENU_ORDRE_HAUTEUR_DECROISSANT,
+          MENU_ORDRE_ORIGINAL
     };
     JMenuBar menuBar = this.getJMenuBar();
     if (menuBar == null) {
@@ -451,6 +480,11 @@ public class ApplicationSwing extends JFrame {
 		menu.getItem(4).addActionListener(new OrderByType());        
 		menu.getItem(5).addActionListener(new OrderByTypeInverse());        
 		menu.getItem(6).addActionListener(new OrderByDistance());        
+		menu.getItem(7).addActionListener(new OrderByWidthAscending());        
+		menu.getItem(8).addActionListener(new OrderByWidthDescending());        
+		menu.getItem(9).addActionListener(new OrderByHeightAscending());        
+		menu.getItem(10).addActionListener(new OrderByHeightDescending());        
+		menu.getItem(11).addActionListener(new OrderByOriginal());        
     menuBar.add(menu);
 
     return menu;
@@ -507,6 +541,11 @@ public class ApplicationSwing extends JFrame {
       MENU_ORDRE_TYPE = "app.frame.menus.order.by_type",
       MENU_ORDRE_TYPE_INVERSE = "app.frame.menus.order.by_type_reverse",
       MENU_ORDRE_DISTANCE = "app.frame.menus.order.by_distance",
+      MENU_ORDRE_LARGEUR_CROISSANT = "app.frame.menus.order.by_width_increase",
+      MENU_ORDRE_LARGEUR_DECROISSANT = "app.frame.menus.order.by_width_decrease",
+      MENU_ORDRE_HAUTEUR_CROISSANT = "app.frame.menus.order.by_height_increase",
+      MENU_ORDRE_HAUTEUR_DECROISSANT = "app.frame.menus.order.by_height_decrease",
+      MENU_ORDRE_ORIGINAL = "app.frame.menus.order.by_original",
   		MENU_DESSIN_TITRE = "app.frame.menus.draw.title",
   		MENU_DESSIN_DEMARRER = "app.frame.menus.draw.start",
   		MENU_DESSIN_ARRETER = "app.frame.menus.draw.stop",

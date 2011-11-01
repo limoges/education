@@ -70,10 +70,12 @@ class ShapeCanvas extends JPanel {
       int i = 0;
       Link<Shape> en = shapes.getFirst();
       do {
+        if (en == null)
+          break;
         en.get().draw(g2d);
         en = en.next();
       }
-      while (en.hasNext());
+      while (true);
       return;
     }
 
@@ -83,8 +85,15 @@ class ShapeCanvas extends JPanel {
     }
 
     Link<Shape> en = shapes.getFirst();
-    for (int x = 0, y = 0; en.hasNext(); en = en.next(), y += 40, x += 40)
-      en.get().drawAt(g2d, x, y);
+    System.out.println("------Sort by " + sortType + "--------");
+
+    for (int x = 0, y = 0;; en = en.next(), y += 40, x += 40) {
+      if (en == null)
+        break;
+      Shape sh = en.get();
+      sh.drawAt(g2d, x, y);
+      sh.debug();
+    }
 	}
 
   /*

@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<project name="log120-tp3" default="assemble" basedir=".">
+  <description>
+    Travail Pratique 3 - LOG120
+  </description>
+
+  <!-- program entry point -->
+  <property name="main-class" value="" />
+
+  <!-- properties -->
+  <property name="name" value="poker.jar" />
+  <property name="src.dir"    location="src" />
+  <property name="build.dir"  location="build" />
+  <property name="docs.dir"   location="docs" />
+  <property name="lib.dir"    location="lib" />
+  <property name="tests.dir"  location="tests" />
+
+
+  <!-- external dependencies -->
+  <path id="external">
+    <fileset dir="${lib.dir}">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <!-- targets-->
+  <target name="all" depends="assemble, tests">
+  </target>
+
+  <target name="tests" depends="assemble">
+    <mkdir dir="${build.dir/tests.dir}" />
+    <javac includeantruntim="false" srcdir="${tests.dir}"
+      destdir="${build.dir/tests.dir}">
+      <classpath refid="external" />
+    </javac>
+  </target>
+
+  <target name="assemble-tests" depends="compile-tests">
+    <jar jarfile="${name}" basedir="${build.dir}">
+      <manifest>
+        <attribute name="Built-by" value="${user.name}" />
+        <attribute name="Main-Class" value="Test.class" />
+      </manifest>
+      <zipgroupfileset dir="${lib.dir}" />
+    </jar>
+  </target>
+
+  <target name="compile-tests" depends="compile">
+    <mkdir dir="${build.dir/tests.dir}" />
+    <javac includeantruntime="false" srcdir="${tests.dir}"
+      destdir="${build.dir/tests.dir}">
+    </javac>
+  </target>
+
+  <target name="compile">
+    <mkdir dir="${build.dir}" />
+    <javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}">
+      <classpath refid="external" />
+    </javac>
+  </target>
+
+  <target name="assemble" depends="compile" description="assembles file into a jar">
+    <jar jarfile="${name}" basedir="${build.dir}" >
+      <manifest>
+        <attribute name="Built-by" value="${user.name}" />
+      </manifest>
+      <zipgroupfileset dir="${lib.dir}" />
+    </jar>
+  </target>
+
+  <target name="doc" description="builds documentation from javadocs in source">
+    <mkdir dir="${docs.dir}" />
+    <javadoc destdir="${docs.dir}" Public="true" Overview="true" Locale="en_US">
+      <fileset dir="${src.dir}" includes="**/*.java" />
+    </javadoc>
+  </target>
+
+  <target name="run" depends="assemble" description="runs the created jar">
+    <java jar="${name}" fork="true" />
+  </target>
+  <target name="clean">
+    <delete verbose="true">
+      <fileset dir="${build.dir}">
+        <exclude name="**/*.properties" />
+      </fileset>
+    </delete>
+  </target>
+</project>

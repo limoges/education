@@ -1,43 +1,60 @@
+// Julien Limoges (2011) LIMJ23049109
+// julien.limoges.2 (at) ens.etsmtl.ca
+public final class Card implements Comparable {
 
-public class Card {
-  Rank rank;
-  Suit suit;
+  // Members
+  private final Rank rank;
+  private final Suit suit;
 
-  Card(Suits s, Ranks r) {
-    this.suit = new Suit(s);
-    this.rank = new Rank(r);
+  // Methods
+  public Card(Suit suit, Rank rank) {
+    this.suit = suit;
+    this.rank = rank;
   }
 
-  //TODO: check how to implement this...
-  int compareTo(Object o) {
+  // What is the relative value of a Joker?
+  public int compareTo(Object o) {
+    // TODO: standard value for different types
+    if (!(o instanceof Card))
+      return -1;
+    
+    Card c = (Card) o;
 
+    if (this.rank == c.rank)
+      return 0;
+    if (this.rank > c.rank)
+      return 1;
+    
+    return -1;
   }
 
-  boolean equals(Object o) {
-    if (o instanceof Card) {
-      if (o.rank != this.rank)
-        return false;
-      if (o.suit != this.suit)
-        return false;
-      else
-        return true;
-    }
-    else
+  public boolean equals(Object o) {
+    if (!(o instanceof Card)
       return false;
+
+    Card c = (Card) o;
+
+    if (this.rank != c.rank)
+      return false;
+    if (this.suit != c.suit)
+      return false;
+
+    return true;
   }
 
-  Suit getSuit() {
+  public Suit getSuit() {
     return suit;
   }
 
-  Rank getRank() {
+  public Rank getRank() {
     return rank;
   }
 
-  String toString() {
-    if (s.equals(new Rank(Ranks.Joker)))
-      return rank.getName();
+  public String toString() {
+    if (this.rank == Rank.Joker)
+      return rank.toString();
     else
-      return rank.getName() + " of " + suit.getName();
+      return rank.toString() + " of " + suit.toString();
   }
+
 }

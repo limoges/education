@@ -1,35 +1,30 @@
-
-import java.util.Vector;
-
+// Julien Limoges (2011) LIMJ23049109
+// julien.limoges.2 (at) ens.etsmtl.ca
 public class Hand implements Comparable {
 
-  Suit suit;
-  Rank rank;
-  PokerRank poker;
+  // Members
+  PokerRank pokerRank;
   Vector<Card> cards;
 
-  Hand() {
+  // Methods
+  public Hand() {}
+
+  public void add(Card card) {
+    cards.add(card);
   }
 
-  void add() {
-  }
-
-  //TODO: check how we order different objects
-  int compareTo(Object o) {
+  public int compareTo(Object o) {
     if (!(o instanceof Hand))
       return -1;
 
     Hand h = (Hand) o;
-    return this.poker.compareTo(h.poker);
-  }
 
-  int compareTo(Hand h) {
-    return this.poker.compareTo(h.poker);
-  }
-
-
-  boolean isValid() {
-    // ?
+    if (this.pokerRank == h.pokerRank)
+      return 0;
+    if (this.pokerRank > h.pokerRank)
+      return 1;
+    
+    return -1;
   }
 
 }

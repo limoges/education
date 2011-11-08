@@ -1,50 +1,28 @@
+// Julien Limoges (2011) LIMJ23049109
+// julien.limoges.2 (at) ens.etsmtl.ca
+public enum Suit {
 
-public enum Suits implements Comparable {
-  // Possible values of an enum
-  None, Club, Diamond, Heart, Spade;
+  // toString() already defined through Enum
+  // compareTo() already defined through Enum
+  // equals() already defined through Enum
 
-  private String
-    NONE = "suit.none",
-    CLUBS = "suit.clubs",
-    DIAMONDS = "suit.diamonds",
-    HEARTS = "suit.hearts",
-    SPADES = "suit.spades";
-}
+  // Values
+  None    ("Suit.None"), // Joker doesn't have any suit
+  Clubs   ("Suit.Clubs"),
+  Diamonds("Suit.Diamonds"),
+  Hearts  ("Suit.Hearts"),
+  Spades  ("Suit.Spades");
 
-public class Suit implements Comparable {
-  Suits suit;
-  
-  Suit(Suits value) {
-    this.suit = value;
-  } 
+  // Members
+  private final String name;
 
-  boolean equals(Object o) {
-    if (o instanceof Suit)
-      return false;
-    if (o.suit == this.suit)
-      return true;
-    else
-      return false;
+  // Methods
+  private Suit(String name) {
+    this.name = ApplicationSupport.getResource(name);
   }
 
-  //TODO: this function fails hard.
-  int compareTo(Object o) {
-    System.err.println("Should fix suit.compareTo before using");
-    if (o instanceof Suit) {
-      if (o.suit == this.suit)
-        return 0;
-      else
-        return 1;
-    }
-    else
-      return -1;
+  public String getName() {
+    return name;
   }
 
-  String getName() {
-    return suit.toString();
-  }        
-
-  String toString() {
-    return suit.toString();
-  }       
 }

@@ -1,7 +1,11 @@
+// Julien Limoges (2011) LIMJ23049109
+// julien.limoges.2 (at) ens.etsmtl.ca
+public abstract class AbstractHandAnalyser {
+  protected AbstractHandAnalyser successor;
 
-public abstract class AbstractRankAnalyser {
-  public abstract void getNext(){}
-  public abstract void analyseHand(){}
-  public abstract void setNext(){}
-  public abstract void handleRequest(){}
+  public void setSuccessor(AbstractHandAnalyser successor) {
+    this.successor = successor;
+  }
+
+  private abstract boolean analyseHand(Vector<Card> cards);
 }

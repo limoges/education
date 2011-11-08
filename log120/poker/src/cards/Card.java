@@ -1,6 +1,15 @@
 // Julien Limoges (2011) LIMJ23049109
 // julien.limoges.2 (at) ens.etsmtl.ca
+package poker.cards;
+
+import poker.ApplicationSupport;
+
 public final class Card implements Comparable {
+
+  private static String KW_RANK_OF_SUIT = "Keyword.RankOfSuit";
+  static {
+    KW_RANK_OF_SUIT = ApplicationSupport.getResource(KW_RANK_OF_SUIT);
+  };
 
   // Members
   private final Rank rank;
@@ -13,10 +22,9 @@ public final class Card implements Comparable {
   }
 
   // What is the relative value of a Joker?
-  public int compareTo(Object o) {
-    // TODO: standard value for different types
+  public int compareTo(Object o) throws ClassCastException {
     if (!(o instanceof Card))
-      return -1;
+      throw new ClassCastException();
     
     Card c = (Card) o;
 
@@ -49,7 +57,7 @@ public final class Card implements Comparable {
     if (this.rank == Rank.Joker)
       return rank.toString();
     else
-      return rank.toString() + " of " + suit.toString();
+      return rank.toString() +  KW_RANK_OF_SUIT + suit.toString();
   }
 
 }

@@ -1,5 +1,9 @@
+// Julien Limoges (2011) LIMJ23049109
+// julien.limoges.2 (at) ens.etsmtl.ca
+package poker.hands;
 
 import java.util.Vector;
+import poker.cards.Card;
 
 public class HandAnalyser {
 

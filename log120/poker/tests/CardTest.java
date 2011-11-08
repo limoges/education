@@ -29,16 +29,16 @@ public class CardTest extends TestCase {
   }
 
   public void testCompareTo() {
-    assertEquals(0, c1.compareTo(c2));
-    assertEquals(1, c2.compareTo(c3));
-    assertEquals(-1, c3.compareTo(c2));
-    assertEquals(-1, c2.compareTo(Suit.Hearts));
+    assertTrue( c1.compareTo(c2) == 0 );
+    assertTrue( c2.compareTo(c3)  > 0 );
+    assertTrue( c3.compareTo(c2)  < 0 );
   }
 
   public void testToString() {
     c5 = new Card(Suit.None, Rank.Joker);
 
     assertEquals(Rank.Joker.toString(), c5.toString());
-    assertEquals(Rank.Ace.toString() + " of " + Suit.Hearts.toString());
+    assertEquals(Rank.Ace.toString() + " of " + Suit.Hearts.toString(),
+        "Ace of Hearts");
   }
 }

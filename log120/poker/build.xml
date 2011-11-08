@@ -11,8 +11,9 @@
   <property name="name"       value="lib-poker.jar" />
   <property name="src.dir"    location="src" />
   <property name="build.dir"  location="build" />
+  <property name="properties.dir" location="properties" />
   <property name="docs.dir"   location="docs" />
-  <property name="lib.dir"    location="lib" />
+  <property name="lib.dir"    value="lib" />
   <property name="tests.dir"  value="tests" />
 
   <path id="external">
@@ -54,11 +55,13 @@
 
   <target name="jar-lib" depends="compile"
     description="creates a jar for the lib">
-    <jar jarfile="${name}" basedir="${build.dir}" >
+    <mkdir dir="${build.dir}" />
+    <jar jarfile="${lib.dir}/${name}" >
+      <fileset dir="${build.dir}" />
+      <fileset dir="${properties.dir}" />
       <manifest>
         <attribute name="Built-by" value="${user.name}" />
       </manifest>
-      <zipgroupfileset dir="${build.dir}" />
     </jar>
   </target>
 
@@ -69,14 +72,16 @@
     </javadoc>
   </target>
 
-  <target name="run" depends="tests" description="runs the created jar">
+  <target name="run-tests" depends="tests" description="runs the created jar">
     <java jar="tests-${name}" fork="true" />
   </target>
+
   <target name="clean">
     <delete verbose="true">
       <fileset dir="${build.dir}">
         <exclude name="**/*.properties" />
       </fileset>
+      <fileset dir="${build.dir}/${tests.dir}" />
     </delete>
   </target>
 </project>

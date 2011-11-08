@@ -11,11 +11,14 @@
  * implement a façade that encapsulates much of the grunt work involved in setting 
  * up a Swing application.
  */
+package poker;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.text.MessageFormat;
 import java.util.*;
 import javax.swing.*;
+
 
 public final class ApplicationSupport {
    static private final String PREFS_BUNDLE_BASENAME = "prefs";

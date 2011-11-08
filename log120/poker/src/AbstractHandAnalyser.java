@@ -1,5 +1,8 @@
 // Julien Limoges (2011) LIMJ23049109
 // julien.limoges.2 (at) ens.etsmtl.ca
+
+import java.util.Vector;
+
 public abstract class AbstractHandAnalyser {
   protected AbstractHandAnalyser successor;
 
@@ -7,5 +10,6 @@ public abstract class AbstractHandAnalyser {
     this.successor = successor;
   }
 
-  private abstract boolean analyseHand(Vector<Card> cards);
+  public abstract void processRequest(RequestHandAnalysis request);
+  protected abstract boolean analyseHand(Vector<Card> cards);
 }

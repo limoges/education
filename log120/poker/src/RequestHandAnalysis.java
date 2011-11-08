@@ -1,10 +1,12 @@
 // Julien Limoges (2011) LIMJ23049109
 // julien.limoges.2 (at) ens.etsmtl.ca
+import java.util.Vector;
+
 public class RequestHandAnalysis {
 
   // Members
   private final Hand hand;
-  private final PokerRank pokerRank;
+  private PokerRank pokerRank;
 
   // Methods
   public RequestHandAnalysis(Hand hand) {

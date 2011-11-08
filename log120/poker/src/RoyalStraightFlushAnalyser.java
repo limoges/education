@@ -1,16 +1,20 @@
 // Julien Limoges (2011) LIMJ23049109
 // julien.limoges.2 (at) ens.etsmtl.ca
-public class RoyalStraightFlushAnalyser {
+
+import java.util.Vector;
+
+public class RoyalStraightFlushAnalyser extends AbstractHandAnalyser {
 
   public void processRequest(RequestHandAnalysis request) {
-    if (analyseHand(request.getCardsInHand()) {
+    if (analyseHand(request.getCardsInHand())) {
       request.setPokerRank(PokerRank.RoyalStraightFlush);
     }
     else if (successor != null)
       successor.processRequest(request);
   }
 
-  private boolean analyseHand(Vector<Card> cards) { 
+  protected boolean analyseHand(Vector<Card> cards) { 
+    return true;
   }
 
 }

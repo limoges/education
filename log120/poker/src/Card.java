@@ -20,16 +20,11 @@ public final class Card implements Comparable {
     
     Card c = (Card) o;
 
-    if (this.rank == c.rank)
-      return 0;
-    if (this.rank > c.rank)
-      return 1;
-    
-    return -1;
+    return this.rank.compareTo(c.rank);
   }
 
   public boolean equals(Object o) {
-    if (!(o instanceof Card)
+    if (!(o instanceof Card))
       return false;
 
     Card c = (Card) o;

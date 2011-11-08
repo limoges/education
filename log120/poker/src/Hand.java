@@ -1,5 +1,7 @@
 // Julien Limoges (2011) LIMJ23049109
 // julien.limoges.2 (at) ens.etsmtl.ca
+import java.util.Vector;
+
 public class Hand implements Comparable {
 
   // Members
@@ -19,12 +21,14 @@ public class Hand implements Comparable {
 
     Hand h = (Hand) o;
 
-    if (this.pokerRank == h.pokerRank)
-      return 0;
-    if (this.pokerRank > h.pokerRank)
-      return 1;
-    
-    return -1;
+    return this.pokerRank.compareTo(h.pokerRank);
   }
 
+  public void setPokerRank(PokerRank pokerRank) {
+    this.pokerRank = pokerRank;
+  }
+
+  public Vector<Card> getCards() {
+    return cards;
+  }
 }

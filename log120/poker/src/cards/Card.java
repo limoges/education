@@ -57,7 +57,7 @@ public final class Card implements Comparable {
     if (this.rank == Rank.Joker)
       return rank.toString();
     else
-      return rank.toString() +  KW_RANK_OF_SUIT + suit.toString();
+      return rank.getName() +  KW_RANK_OF_SUIT + suit.toString();
   }
 
 }

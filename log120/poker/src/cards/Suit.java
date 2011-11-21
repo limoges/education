@@ -29,4 +29,8 @@ public enum Suit {
     return name;
   }
 
+  public String toString() {
+    return name;
+  }
+
 }

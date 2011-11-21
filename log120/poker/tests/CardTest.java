@@ -8,7 +8,11 @@ public class CardTest extends TestCase {
     c1 = new Card(Suit.Hearts, Rank.Ace);  
     c2 = new Card(Suit.Hearts, Rank.Ace);  
     c3 = new Card(Suit.Hearts, Rank.Two);  
-    c4 = new Card(Suit.Clubs, Rank.Two);   
+    c4 = new Card(Suit.Clubs, Rank.Two);
+
+    for (Suit s : Suit.values()) {
+      System.out.printf("Suit %s is %f%n", s, s.getName());
+    }
   }
 
   public void tearDown() {

@@ -13,5 +13,6 @@ public abstract class AbstractHandAnalyser {
   }
 
   public abstract void processRequest(RequestHandAnalysis request);
-  protected abstract boolean analyseHand(Vector<Card> cards);
+
+  protected abstract boolean analyseHand(RequestHandAnalysis request);
 }

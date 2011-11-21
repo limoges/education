@@ -9,7 +9,7 @@ public class Hand implements Comparable {
 
   // Members
   PokerRank pokerRank;
-  Vector<Card> cards;
+  ArrayList<Card> cards;
 
   // Methods
   public Hand() {}
@@ -31,7 +31,11 @@ public class Hand implements Comparable {
     this.pokerRank = pokerRank;
   }
 
-  public Vector<Card> getCards() {
+  public ArrayList<Card> getCards() {
     return cards;
+  }
+
+  public Iterator<Card> iterator() {
+    return cards.iterator();
   }
 }

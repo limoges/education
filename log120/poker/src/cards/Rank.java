@@ -10,7 +10,7 @@ public enum Rank {
   // compareTo() already defined through Enum
   // equals() already defined through Enum
 
-  // Values         
+  // Values
   Joker ('0', "Rank.Joker"),  
   Two   ('2', "Rank.Two"),      
   Three ('3', "Rank.Three"),
@@ -24,7 +24,7 @@ public enum Rank {
   Jack  ('J', "Rank.Jack"),   
   Queen ('Q', "Rank.Queen"), 
   King  ('K', "Rank.King"),   
-  Ace   ('A', "Rank.Ace");     
+  Ace   ('A', "Rank.Ace");
 
   // Members
   private final char symbol;
@@ -48,4 +48,5 @@ public enum Rank {
   public String toString() {
     return name;
   }
+
 }

@@ -1,8 +1,10 @@
 // Julien Limoges (2011) LIMJ23049109
 // julien.limoges.2 (at) ens.etsmtl.ca
-package poker.hands;
+package poker.analyser;
 
 import java.util.Vector;
+
+import poker.RequestHandAnalysis;
 import poker.cards.Card;
 
 public abstract class AbstractHandAnalyser {
@@ -13,6 +15,6 @@ public abstract class AbstractHandAnalyser {
   }
 
   public abstract void processRequest(RequestHandAnalysis request);
-
   protected abstract boolean analyseHand(RequestHandAnalysis request);
+
 }

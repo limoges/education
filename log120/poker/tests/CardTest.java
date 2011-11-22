@@ -1,5 +1,7 @@
 import junit.framework.*;
 
+import poker.cards.*;
+
 public class CardTest extends TestCase {
 
   private Card c1, c2, c3, c4, c5, c6;

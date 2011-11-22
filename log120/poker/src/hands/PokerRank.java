@@ -9,7 +9,7 @@ public enum PokerRank {
   // Values
   HighCard          ("PokerRank.HighCard"),
   Pair              ("PokerRank.Pair"),
-  TwoPair           ("PokerRank.TwoPair"),
+  TwoPairs          ("PokerRank.TwoPairs"),
   ThreeOfAKind      ("PokerRank.ThreeOfAKind"),
   Straight          ("PokerRank.Straight"),
   Flush             ("PokerRank.Flush"),

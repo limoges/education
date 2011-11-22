@@ -4,23 +4,33 @@ package poker.analyser;
 
 import java.util.EnumMap;
 import java.util.Iterator;
+import java.util.ArrayList;
+
 import poker.RequestHandAnalysis;
+import poker.HandAnalyser;
 import poker.cards.Card;
 import poker.cards.Rank; 
 import poker.cards.Suit; 
 import poker.hands.PokerRank;
 
-public class ThreeOfAKindAnalyser extends AbstractHandAnalyser {
+public class StraightFlushAnalyser extends AbstractHandAnalyser {
 
   public void processRequest(RequestHandAnalysis request) {
     if (analyseHand(request))
-      request.setPokerRank(PokerRank.ThreeOfAKind);
+      request.setPokerRank(PokerRank.StraightFlush);
     else if (successor != null)
       successor.processRequest(request);
   }
 
   protected boolean analyseHand(RequestHandAnalysis request) {
-    return request.getRanks().containsValue(new Integer(3));
+    Suit flush = request.isFlush();
+    if (flush != Suit.None){
+      ArrayList<Card> cards = request.getCardsBySuits().get(flush);
+      Rank highCard = HandAnalyser.hasStraight(cards);
+      return !highCard.equals(Rank.None);
+    }
+    else
+      return false;    
   }
 
 }

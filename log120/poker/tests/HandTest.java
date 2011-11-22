@@ -1,5 +1,7 @@
 import junit.framework.*;
 
+import poker.hands.*;
+
 public class HandTest extends TestCase {
   
   private Hand h1, h2, h3;

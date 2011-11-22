@@ -1,5 +1,7 @@
 import junit.framework.*;
 
+import poker.cards.Rank;
+
 public class RankTest extends TestCase {
 
   private Rank r1;

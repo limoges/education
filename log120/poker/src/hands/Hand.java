@@ -2,7 +2,8 @@
 // julien.limoges.2 (at) ens.etsmtl.ca
 package poker.hands;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Iterator;
 import poker.cards.Card;
 
 public class Hand implements Comparable {
@@ -12,7 +13,10 @@ public class Hand implements Comparable {
   ArrayList<Card> cards;
 
   // Methods
-  public Hand() {}
+  public Hand() {
+    pokerRank = null;
+    cards = new ArrayList<Card>();
+  }
 
   public void add(Card card) {
     cards.add(card);
@@ -27,11 +31,15 @@ public class Hand implements Comparable {
     return this.pokerRank.compareTo(h.pokerRank);
   }
 
+  public PokerRank getPokerRank() {
+    return pokerRank;
+  }
+
   public void setPokerRank(PokerRank pokerRank) {
     this.pokerRank = pokerRank;
   }
 
-  public ArrayList<Card> getCards() {
+  public ArrayList<Card> list() {
     return cards;
   }
 

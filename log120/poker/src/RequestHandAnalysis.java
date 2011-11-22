@@ -1,56 +1,84 @@
 // Julien Limoges (2011) LIMJ23049109
 // julien.limoges.2 (at) ens.etsmtl.ca
-package poker.hands;
+package poker;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import poker.HandAnalyser;
+import poker.hands.Hand;
+import poker.hands.PokerRank;
+import poker.cards.Rank;
+import poker.cards.Suit;
 import poker.cards.Card;
 
 public class RequestHandAnalysis {
 
   // Members
-  private final Hand hand;
-  private PokerRank pokerRank;
-  private EnumMap<Rank, int> ranks;
-  private EnumMap<Suit, int> suits;
-  private int consecutives;
-  private boolean shamAllowed;
-  private int shams;
+  private Hand hand;
+  private EnumMap<Rank, Integer> ranks;
+  private EnumMap<Rank, ArrayList<Card>> cardsByRanks;
+  private EnumMap<Suit, Integer> suits;
+  private EnumMap<Suit, ArrayList<Card>> cardsBySuits;
+  private boolean straight;
 
   // Methods
-  // Post condition :
-  // Sorted ascending
-  // Contains no sham
   public RequestHandAnalysis(Hand hand) {
     this.hand = hand;
-    Collections.sort(hand.getCards());
-    ranks = new EnumMap<Rank, int>();
-    suits = new EnumMap<Suit, int>();
-    find(cards(), ranks);
-    find(cards(), suits);
-    consecutive = consecutives(cards());
-    shamAllowed = true;
-    if (ranks.containsKey(Rank.Joker)) {
-      shams = ranks.get(Rank.Joker);
-      ranks.remove(Rank.Joker);
+    Collections.sort(this.cards(), Collections.reverseOrder());
+    ranks = new EnumMap<Rank, Integer>(Rank.class);
+    cardsByRanks = new EnumMap<Rank, ArrayList<Card>>(Rank.class);
+    suits = new EnumMap<Suit, Integer>(Suit.class);
+    cardsBySuits = new EnumMap<Suit, ArrayList<Card>>(Suit.class);
+    HandAnalyser.cardsByRanks(this.cards(), ranks, cardsByRanks);
+    HandAnalyser.cardsBySuits(this.cards(), suits, cardsBySuits);
+    straight = !HandAnalyser.hasStraight(this.cards()).equals(Rank.None);
+  }
+
+  public EnumMap<Rank, Integer> getRanks() {
+    return ranks;
+  }
+
+  public EnumMap<Rank, ArrayList<Card>> getCardsByRanks() {
+    return cardsByRanks;
+  }
+
+  public EnumMap<Suit, Integer> getSuits() {
+    return suits;
+  }
+
+  public EnumMap<Suit, ArrayList<Card>> getCardsBySuits() {
+    return cardsBySuits;
+  }
+  
+  public boolean isStraight() {
+    return straight;
+  }
+
+  public Suit isFlush() {
+    Iterator<Map.Entry<Suit, Integer>> occurence = suits.entrySet().iterator();
+    while (occurence.hasNext()) {
+      Map.Entry<Suit, Integer> entry = occurence.next();
+      if (entry.getValue() >= 5)
+        return entry.getKey();
     }
-    else
-      shams = 0;
+
+    return Suit.None;
   }
 
-  public int shams() {
-    return shams
-  }
-
-  public Iterator<Card> cards() {
-    return hand.iterator(); 
+  public ArrayList<Card> cards() {
+    return hand.list();
   }
 
   public PokerRank getPokerRank() {
-    return pokerRank;
+    return hand.getPokerRank();
   }
 
   public void setPokerRank(PokerRank pokerRank) {
-    this.pokerRank = pokerRank;
+    hand.setPokerRank(pokerRank);
   }
 
 }

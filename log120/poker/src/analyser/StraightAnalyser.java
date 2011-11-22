@@ -1,47 +1,30 @@
 // Julien Limoges (2011) LIMJ23049109
 // julien.limoges.2 (at) ens.etsmtl.ca
-package poker.hands;
+package poker.analyser;
 
 import java.util.EnumMap;
-import java.util.Set;
 import java.util.Iterator;
-import poker.cards.Card;
+import java.util.ArrayList;
 
-public class ThreeOfAKindAnalyser extends AbstractHandAnalyser {
+import poker.RequestHandAnalysis;
+import poker.HandAnalyser;
+import poker.cards.Card;
+import poker.cards.Rank; 
+import poker.cards.Suit; 
+import poker.hands.PokerRank;
+
+public class StraightAnalyser extends AbstractHandAnalyser {
 
   public void processRequest(RequestHandAnalysis request) {
     if (analyseHand(request))
-      request.setPokerRank(PokerRank.ThreeOfAKindAnalyser);
+      request.setPokerRank(PokerRank.Straight);
     else if (successor != null)
       successor.processRequest(request);
   }
 
-  protected boolean analyseHand(RequestHandAnalysis request) { 
-    EnumMap<Rank, int> ranks = request.ranks();
-    Set<Map.Entry<Rank, int>> counts = ranks.entrySet();
-
-    int numberOfThrees = 0;
-    int shamsLeft = request.shams();
-    Iterator<Map.Entry<Rank, int>> it;
-    for (it = counts.iterator(); it.hasNext();) {
-      Map.Entry<Rank, int> entry = it.next();
-
-      if (entry.getValue() == 3)
-        ++numberOfThrees;
-      // We should have maximum of 2 shams
-      else if (request.shamAllowed() && shamsLeft != 0) {
-        int required = 3 - shamsLeft; // this should be 1
-        if (entry.getValue() == (3 - shamsLeft)) {
-          ++numberOfPairs;
-          shamsLeft = 0;
-        }
-      }
-    }
-
-    if (numberOfThrees >= 1)
-      return true;
-    else
-      return false;
+  protected boolean analyseHand(RequestHandAnalysis request) {
+    ArrayList<Card> cards = request.cards();
+    return !HandAnalyser.hasStraight(cards).equals(Rank.None);
   }
 
 }

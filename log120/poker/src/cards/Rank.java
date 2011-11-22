@@ -11,7 +11,8 @@ public enum Rank {
   // equals() already defined through Enum
 
   // Values
-  Joker ('0', "Rank.Joker"),  
+  None  ('N', "None"),
+  Joker ('Z', "Rank.Joker"),  
   Two   ('2', "Rank.Two"),      
   Three ('3', "Rank.Three"),
   Four  ('4', "Rank.Four"),    

@@ -8,6 +8,7 @@ public class Tests {
     tests.addTest(new TestSuite(CardTest.class));
     tests.addTest(new TestSuite(HandTest.class));
     tests.addTest(new TestSuite(RankTest.class));
+    tests.addTest(new TestSuite(SuitTest.class));
 
     TestRunner.run(tests);
   }

@@ -36,6 +36,7 @@ public class RequestHandAnalysis {
     HandAnalyser.cardsByRanks(this.cards(), ranks, cardsByRanks);
     HandAnalyser.cardsBySuits(this.cards(), suits, cardsBySuits);
     straight = !HandAnalyser.hasStraight(this.cards()).equals(Rank.None);
+    flush = !HandAnalyser.hasFlush(this.cards()).equals(Suit.None);
   }
 
   public EnumMap<Rank, Integer> getRanks() {

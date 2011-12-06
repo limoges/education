@@ -58,17 +58,19 @@ public class ImagePanel extends JPanel {
 
   private class ZoomListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
+      view.zoom(2);
     }
   }
 
   private class MoveUpListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
+      view.translate(0, 1);
     }
   }
 
   private class MoveDownListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
-
+      view.translate(0, -1);
     }
   }
 

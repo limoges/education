@@ -11,7 +11,7 @@ public enum Suit {
   // equals() already defined through Enum
 
   // Values
-  None    ("None"), // Joker doesn't have any suit
+  None    ("None"),
   Clubs   ("Suit.Clubs"),
   Diamonds("Suit.Diamonds"),
   Hearts  ("Suit.Hearts"),

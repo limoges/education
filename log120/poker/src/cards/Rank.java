@@ -35,7 +35,6 @@ public enum Rank {
   private Rank(char symbol, String name) {
     this.symbol = symbol;
     this.name = ApplicationSupport.getResource(name);
-    System.out.println("Rank");
   }
 
   public String getName() {

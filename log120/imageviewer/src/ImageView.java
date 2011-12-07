@@ -29,8 +29,15 @@ public class ImageView extends JLabel /*implements ImageObserver, Observer*/ {
     // Update from the image
   }
 
-  public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
+  public boolean imageUpdate(Image img, int infoflags, int x, int y,
+      int width, int height) {
     return (infoflags & ALLBITS) != 0;
+  }
+
+  public void zoom(int factor) { 
+  }
+
+  public void translate(int x, int y) {
   }
 
 }

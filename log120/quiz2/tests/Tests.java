@@ -1,3 +1,5 @@
+package tests;
+
 import junit.textui.TestRunner;
 import junit.framework.*;
 
@@ -8,7 +10,7 @@ public class Tests {
     tests.addTest(new TestSuite(CardTest.class));
     tests.addTest(new TestSuite(HandTest.class));
     tests.addTest(new TestSuite(RankTest.class));
-    tests.addTest(new TestSuite(SuitTest.class));
+    tests.addTest(new TestSuite(RequestHandAnalysisTest.class));
 
     TestRunner.run(tests);
   }

@@ -1,6 +1,6 @@
 
 import javax.swing.JFrame;
-import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -13,73 +13,86 @@ import java.awt.event.ActionEvent;
 
 public class ImageViewer extends JFrame {
 	
-  private static int IV_WIDTH = 580;
-  private static int IV_HEIGHT = 660;
-  private static String IV_NAME = "ImageViewer";
   private JFrame framePointer;
 
   public ImageViewer() {
+    super();
     framePointer = this;
-    this.setSize(new Dimension(IV_WIDTH, IV_HEIGHT + 40));
+
+    this.setSize(new Dimension(IV_WIDTH, IV_HEIGHT));
     this.setTitle(IV_NAME);
     this.setLocationRelativeTo(null);
     this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-    this.loadMenuBar();
-    this.getContentPane().setLayout(new FlowLayout());
-    this.getContentPane().add(new ImagePanel());
-    this.getContentPane().add(new ImagePanel());
-    this.getContentPane().add(new ImagePanel());
-    this.getContentPane().add(new ImagePanel());
-    this.getContentPane().setSize(new Dimension(IV_WIDTH, IV_HEIGHT));
+    this.setJMenuBar(loadMenuBar());
+    this.setContentPane(loadContentPane());
+
     this.validate();
     this.setVisible(true);
 	}
 
-  private void loadMenuBar() {
-    JMenuBar bar = new JMenuBar();
+  private JPanel loadContentPane() {
+    JPanel contentPane = new EditorPane();
 
+    return contentPane;
+  }
+
+  private JMenuBar loadMenuBar() {
     JMenu fileMenu = new JMenu("File");
-    bar.add(fileMenu);
-
-    JMenuItem exitAction = new JMenuItem("Exit");
-    JMenuItem debugAction = new JMenuItem("Debug");
-    debugAction.addActionListener(new DebugListener());
-    JMenuItem newAction = new JMenuItem("New image");
-    newAction.addActionListener(new NewImageListener());
-    fileMenu.add(newAction);
-    fileMenu.add(debugAction);
-    fileMenu.add(exitAction);
-
     JMenu editMenu = new JMenu("Edit");
-    bar.add(editMenu);
 
+    // Exit
+    JMenuItem exitAction = new JMenuItem("Exit");
+    exitAction.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        System.out.println("Exit");
+      }
+    });
+    fileMenu.add(exitAction);
+    // Debug
+    JMenuItem debugAction = new JMenuItem("Debug");
+    debugAction.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        System.out.println("Debug");
+      }
+    });
+    fileMenu.add(debugAction);
+    // New image
+    JMenuItem newAction = new JMenuItem("New image");
+    newAction.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        System.out.println("New image");
+      }
+    });
+    fileMenu.add(newAction);
+    // Undo
     JMenuItem undoAction = new JMenuItem("Undo");
-    JMenuItem redoAction = new JMenuItem("Redo");
+    undoAction.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        System.out.println("Undo");
+      }
+    });
     editMenu.add(undoAction);
+    // Redo
+    JMenuItem redoAction = new JMenuItem("Redo");
+    redoAction.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        System.out.println("Redo");
+      }
+    });
     editMenu.add(redoAction);
 
-    this.setJMenuBar(bar);
+    // Populate a menubar
+    JMenuBar bar = new JMenuBar();
+    bar.add(fileMenu);
+    bar.add(editMenu);
+
+    return bar;
   }
 
-  // ActionListener for adding ImageView
-  private class NewImageListener implements ActionListener {
-
-    public void actionPerformed(ActionEvent e) {
-      framePointer.getContentPane().add(new ImagePanel());
-      framePointer.validate();
-    }
-
-  }
-
-  private class DebugListener implements ActionListener {
-
-    public void actionPerformed(ActionEvent e) {
-      System.out.println("Dimension(" + framePointer.getContentPane().getWidth() + ", "
-          + framePointer.getContentPane().getHeight() + ")");
-    }
-
-  }
+  private static int    IV_WIDTH = 800;          
+  private static int    IV_HEIGHT = 600;         
+  private static String IV_NAME = "ImageViewer"; 
 
 	public static void main(String[] args) {
 		ImageViewer frame = new ImageViewer();

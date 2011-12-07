@@ -5,7 +5,7 @@
   </description>
 
   <!-- program entry point -->
-  <property name="main-class" value="ImageViewer" />
+  <property name="main-class" value="Viewer" />
 
   <!-- properties -->
   <property name="name" value="tp4.jar" />

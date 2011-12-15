@@ -2,11 +2,15 @@
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseMotionListener;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.JSlider;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.Point;
 
-public class PerspectiveController implements MouseListener, MouseWheelListener, MouseMotionListener {
+public class PerspectiveController implements MouseListener, MouseWheelListener,
+       MouseMotionListener, ChangeListener {
 
   private Perspective model;
   private PerspectiveView view;
@@ -21,8 +25,15 @@ public class PerspectiveController implements MouseListener, MouseWheelListener,
     this.view.addMouseListener(this);
     this.view.addMouseMotionListener(this);
     this.view.addMouseWheelListener(this);
+    this.view.getSlider().addChangeListener(this);
     this.start = new Point(0, 0);
     this.current = new Point(0, 0);
+  }
+
+  public void stateChanged(ChangeEvent e) {
+    //System.out.println("stateChanged");
+    JSlider slider = (JSlider) e.getSource();
+    model.setZoom(slider.getValue());
   }
 
   public void mouseClicked(MouseEvent e) {
@@ -71,12 +82,10 @@ public class PerspectiveController implements MouseListener, MouseWheelListener,
   public void mouseWheelMoved(MouseWheelEvent e) {
     //System.out.println("mouseWheelMoved");
     int notches = e.getWheelRotation();
-    System.out.println(notches);
     if (notches > 0)
       model.zoomIn();
     else
       model.zoomOut();
-    //model.setZoom(model.getZoom() + notches);
   }
 
 }

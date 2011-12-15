@@ -5,10 +5,12 @@ import java.awt.image.ImageObserver;
 import java.awt.Point;
 import java.awt.Image;
 
-public class Perspective extends Observable implements ImageObserver {
+public class Perspective extends Observable {
 
-  public static float BASE_FACTOR = 1000.0f;
-  private static float ZOOM_STEP = 10.0f;
+  public static float BASE_FACTOR = 5000.0f;
+  public static float ZOOM_STEP = 100.0f;
+  public static float ZOOM_MIN = 1.0f;
+  public static float ZOOM_MAX = 10000.0f;
   private Point coordinates;
   private float zoom;
   private Image image;
@@ -44,25 +46,34 @@ public class Perspective extends Observable implements ImageObserver {
     notifyObservers();                    
   }                                       
 
+  public void setZoom(float zoom) {
+    if (zoom > ZOOM_MAX)
+      this.zoom = ZOOM_MAX;
+    else if (zoom < ZOOM_MIN)
+      this.zoom = ZOOM_MIN;
+    else
+      this.zoom = zoom;
+
+    setChanged();
+    notifyObservers();
+  }
+
   public void zoomIn() {
-    this.zoom += ZOOM_STEP;
+    if ((this.zoom + ZOOM_STEP) > ZOOM_MAX)
+      this.zoom = ZOOM_MAX;
+    else
+      this.zoom += ZOOM_STEP;
     setChanged();
     notifyObservers();                    
   }
 
   public void zoomOut() {
-    if (this.zoom <= ZOOM_STEP)
-      return;
-    this.zoom -= ZOOM_STEP;
+    if ((this.zoom - ZOOM_STEP) < ZOOM_MIN)
+      this.zoom = ZOOM_STEP;
+    else
+      this.zoom -= ZOOM_STEP;
     setChanged();
     notifyObservers();                    
-  }
-
-  public void setZoom(float factor) {
-    this.zoom = factor;
-
-    setChanged();
-    notifyObservers();
   }
 
   public void reset() {

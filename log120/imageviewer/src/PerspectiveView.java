@@ -11,16 +11,21 @@ import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JSlider;
 
 public class PerspectiveView extends /*JLabel*/ JPanel implements Observer {
 
   private Perspective model;
+  private JSlider slider;
 
   public PerspectiveView(Perspective model) {
     this.model = model;
     Image img = model.getImage();
     Dimension dimension = new Dimension(img.getWidth(model), img.getHeight(model));
     //setIcon(new ImageIcon(img));
+    slider = new JSlider((int) Perspective.ZOOM_MIN, (int) Perspective.ZOOM_MAX,
+        (int) Perspective.BASE_FACTOR);
+    add(slider);
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
     setSize(dimension);
     setMinimumSize(dimension);
@@ -30,7 +35,12 @@ public class PerspectiveView extends /*JLabel*/ JPanel implements Observer {
 
   public void update(Observable o, Object arg) {
     //System.out.println("Update");
+    slider.setValue((int)model.getZoom());
     repaint();
+  }
+
+  public JSlider getSlider() {
+    return slider;
   }
 
   public void paintComponent(Graphics g) {

@@ -2,10 +2,14 @@
 import java.util.Observable;
 import java.util.Observer;
 import java.awt.image.ImageObserver;
+import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 import java.awt.Point;
 import java.awt.Image;
 
-public class Perspective extends Observable {
+public class Perspective extends Observable implements Serializable {
 
   public static int BASE_FACTOR = 50;
   public static int ZOOM_STEP = 10;
@@ -79,6 +83,17 @@ public class Perspective extends Observable {
   public void reset() {
     this.coordinates = new Point(0, 0);
     this.zoom = 0;
+    setChanged();
+    notifyObservers();
+  }
+
+  public PerspectiveState toPerspectiveState() {
+    return new PerspectiveState(coordinates.x, coordinates.y, zoom);
+  }
+
+  public void fromPerspectiveState(PerspectiveState state) {
+    this.coordinates = new Point(state.x, state.y);
+    this.zoom = state.zoom;
     setChanged();
     notifyObservers();
   }

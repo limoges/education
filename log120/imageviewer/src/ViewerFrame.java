@@ -1,5 +1,5 @@
 
-import java.io.File;
+import java.io.*;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -79,6 +79,43 @@ public class ViewerFrame extends JFrame {
         System.exit(0);
       }                                                         
     });                                                         
+    JMenuItem serialAction = new JMenuItem("Save Perspective");                
+    serialAction.addActionListener(new ActionListener() {          
+      public void actionPerformed(ActionEvent e) {               
+        try {
+          FileOutputStream fout = new FileOutputStream("data.pers");
+          ObjectOutputStream oos = new ObjectOutputStream(fout);
+          Perspective p = editorPane.getPerspective();
+          if (p == null)
+            return;
+          oos.writeObject(p.toPerspectiveState());
+          oos.close();
+        }
+        catch (Exception ex) {
+          System.err.println("Error writing the perspective to 'data.pers'");
+        }
+      }                                                          
+    });                                                          
+    fileMenu.add(serialAction);                                    
+    JMenuItem loadAction = new JMenuItem("Load Perspective");                 
+    loadAction.addActionListener(new ActionListener() {                       
+      public void actionPerformed(ActionEvent e) {                              
+        try {                                                                
+          FileInputStream fin = new FileInputStream("data.pers");         
+          ObjectInputStream ois = new ObjectInputStream(fin);             
+          PerspectiveState state = (PerspectiveState) ois.readObject();
+          ois.close();                                                       
+          Perspective p = editorPane.getPerspective();
+          if (p == null)
+            return;
+          p.fromPerspectiveState(state);
+        }                                                                    
+        catch (Exception ex) {
+          System.out.println("Error loading the perspective from 'data.pers'");
+        }                       
+      }                                                                         
+    });                                                                         
+    fileMenu.add(loadAction);                                                 
     fileMenu.add(exitAction);                                   
     // Undo                                                     
     JMenuItem undoAction = new JMenuItem("Undo");               

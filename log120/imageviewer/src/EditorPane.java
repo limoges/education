@@ -12,15 +12,14 @@ public class EditorPane extends JPanel {
 
   private EditorPane pane;
   private JPanel editingArea;
-  private JPanel thumbnailArea;;
-  private int current;
+  private JPanel thumbnailArea;
+  private PerspectiveView current;
   private Hashtable<ThumbnailView, PerspectiveView> perspectives;
   
   public EditorPane() {
     super();
     pane = this;
     
-    current = 0;
     Dimension dimension = new Dimension(EP_WIDTH, EP_HEIGHT);
     setPreferredSize(dimension);
     setMinimumSize(dimension);
@@ -54,9 +53,14 @@ public class EditorPane extends JPanel {
 
   public void setEditingView(PerspectiveView view) {
     editingArea.removeAll();
+    current = view;
     editingArea.add(view, BorderLayout.CENTER);
     editingArea.validate();
     editingArea.repaint();
+  }
+
+  public Perspective getPerspective() {
+    return current.getPerspective();
   }
 
   private JPanel createThumbnailArea() {

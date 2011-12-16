@@ -1,4 +1,7 @@
 
+import java.awt.Container;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentAdapter;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JPanel;
@@ -8,6 +11,7 @@ public class EditorPane extends JPanel {
 
   private JPanel editingArea;
   private JPanel thumbnailArea;;
+  private PerspectiveView view;
   
   public EditorPane() {
     super();
@@ -19,6 +23,9 @@ public class EditorPane extends JPanel {
     setLayout(new BorderLayout());
 
     editingArea = createEditingArea();
+    editingArea.setPreferredSize(
+        new Dimension(EP_WIDTH - EP_THUMBNAIL_WIDTH, EP_HEIGHT)
+    );
     thumbnailArea = createThumbnailArea();
     add(thumbnailArea, BorderLayout.LINE_START);
     add(editingArea, BorderLayout.LINE_END);
@@ -29,8 +36,11 @@ public class EditorPane extends JPanel {
   }
 
   public void setEditingView(PerspectiveView view) {
+    this.view = view;
     editingArea.removeAll();
-    editingArea.add(view);
+    editingArea.add(view, BorderLayout.CENTER);
+    //view.setPreferredSize(editingArea.getSize());
+    //editingArea.validate();
   }
 
   private JPanel createThumbnailArea() {

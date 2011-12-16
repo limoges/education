@@ -1,4 +1,6 @@
 
+import java.util.ArrayList;
+import java.util.ListIterator;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseMotionListener;
@@ -10,82 +12,78 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.Point;
 
 public class PerspectiveController implements MouseListener, MouseWheelListener,
-       MouseMotionListener, ChangeListener {
+       MouseMotionListener {
 
   private Perspective model;
   private PerspectiveView view;
-  // Missing command history
+  private CommandHistory history;
 
   private Point start;
   private Point current;
 
-  public PerspectiveController(Perspective model, PerspectiveView view) {
+  public PerspectiveController(Perspective model, PerspectiveView view,
+      CommandHistory history) {
     this.model = model;
     this.view = view;
     this.view.addMouseListener(this);
     this.view.addMouseMotionListener(this);
     this.view.addMouseWheelListener(this);
-    this.view.getSlider().addChangeListener(this);
     this.start = new Point(0, 0);
     this.current = new Point(0, 0);
-  }
-
-  public void stateChanged(ChangeEvent e) {
-    //System.out.println("stateChanged");
-    JSlider slider = (JSlider) e.getSource();
-    model.setZoom(slider.getValue());
+    this.history = history;
   }
 
   public void mouseClicked(MouseEvent e) {
-    //System.out.println("mouseClicked");
     e.consume();
     return;
   }
 
   public void mouseDragged(MouseEvent e) {
-    //System.out.println("mouseDragged");
-    //this.current = e.getPoint();
-    //this.model.translate(current.x - start.x, current.y - start.y);
+    e.consume();
     return;
   }
 
   public void mouseEntered(MouseEvent e) {
-    //System.out.println("mouseEntered");
     e.consume();
     return;
   }
 
   public void mouseExited(MouseEvent e) {
-    //System.out.println("mouseExited");
     e.consume();
     return;
   }
 
   public void mouseMoved(MouseEvent e) {
-    //System.out.println("mouseMoved");
     e.consume();
     return;
   }
 
   public void mousePressed(MouseEvent e) {
-    //System.out.println("mousePressed");
     this.start = e.getPoint();
     this.current = start;
   }
 
   public void mouseReleased(MouseEvent e) {
-    //System.out.println("mouseReleased");
     this.current = e.getPoint();
-    this.model.translate(current.x - start.x, current.y - start.y);
+    translate(current.x - start.x, current.y - start.y);
   }
 
   public void mouseWheelMoved(MouseWheelEvent e) {
-    //System.out.println("mouseWheelMoved");
     int notches = e.getWheelRotation();
     if (notches > 0)
-      model.zoomIn();
+      zoom(model.getZoom() + Perspective.ZOOM_STEP);
     else
-      model.zoomOut();
+      zoom(model.getZoom() - Perspective.ZOOM_STEP);
+  }
+
+  private void zoom(int zoom) {
+    ZoomCommand cmd = new ZoomCommand(model, zoom);
+    history.execute(cmd);
+  }
+
+  private void translate(int dx, int dy) {
+    TranslateCommand cmd = new TranslateCommand(model, dx, dy);
+    history.execute(cmd);
   }
 
 }

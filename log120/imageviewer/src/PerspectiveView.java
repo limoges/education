@@ -13,35 +13,32 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 
-public class PerspectiveView extends /*JLabel*/ JPanel implements Observer {
+public class PerspectiveView extends JPanel implements Observer {
 
   private Perspective model;
-  private JSlider slider;
 
-  public PerspectiveView(Perspective model) {
-    this.model = model;
+  public PerspectiveView(Image image, CommandHistory history) {
+    this.model = new Perspective(image);
+
     setBackground(Color.BLACK);
     Image img = model.getImage();
     Dimension dimension = new Dimension(img.getWidth(this), img.getHeight(this));
-    //setIcon(new ImageIcon(img));
-    slider = new JSlider((int) Perspective.ZOOM_MIN, (int) Perspective.ZOOM_MAX,
-        (int) Perspective.BASE_FACTOR);
-    add(slider);
+
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
-    setSize(dimension);
+    setPreferredSize(
+        new Dimension(dimension.width * 2, dimension.height * 2)
+    );
     setMinimumSize(dimension);
-    setPreferredSize(dimension);
+    PerspectiveController controller=new PerspectiveController(model, this, history);
     model.addObserver(this);
   }
 
-  public void update(Observable o, Object arg) {
-    //System.out.println("Update");
-    slider.setValue((int)model.getZoom());
-    repaint();
+  public Perspective getPerspective() {
+    return model;
   }
 
-  public JSlider getSlider() {
-    return slider;
+  public void update(Observable o, Object arg) {
+    repaint();
   }
 
   public void paintComponent(Graphics g) {
@@ -49,11 +46,12 @@ public class PerspectiveView extends /*JLabel*/ JPanel implements Observer {
 
     Image image = model.getImage();
     Point coord = model.getCoordinates();
-    float factor = model.getZoom() / Perspective.BASE_FACTOR;
-    float height = (float) image.getHeight(this) * factor;
-    float width = (float) image.getWidth(this) * factor;
-    //System.out.println("x:" + coord.x + " y:" + coord.y + " width:" + width + " height:" + height);
-    g.drawImage(image, coord.x, coord.y, (int) width, (int) height, null);
+    float base = Perspective.BASE_FACTOR;
+    float zoom = model.getZoom();
+    float factor = zoom / base;
+    int height = (int) (image.getHeight(this) * factor);
+    int width = (int) (image.getWidth(this) * factor);
+    g.drawImage(image, coord.x, coord.y, width, height, null);
   }
 
   private static int PV_WIDTH = 800;

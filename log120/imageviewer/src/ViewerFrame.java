@@ -7,8 +7,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.KeyStroke;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.Dimension;
 import java.awt.Image;
 
@@ -16,10 +20,12 @@ public class ViewerFrame extends JFrame {
 
   private JFrame framePointer;
   private EditorPane editorPane;
+  private CommandHistory history;
 
   public ViewerFrame() {
     super();
     framePointer = this;
+    history = new CommandHistory();
     setTitle(VF_NAME);
     setJMenuBar(createMenuBar());
     editorPane = createEditorPane();
@@ -39,39 +45,30 @@ public class ViewerFrame extends JFrame {
     JMenu fileMenu = new JMenu("File");                         
     JMenu editMenu = new JMenu("Edit");                         
                                                                 
-    // Debug                                                    
-    JMenuItem debugAction = new JMenuItem("Debug");             
-    debugAction.addActionListener(new ActionListener() {        
-      public void actionPerformed(ActionEvent e) {              
-        System.out.println("Debug");                            
-      }                                                         
-    });                                                         
-    fileMenu.add(debugAction);                                  
     // New image                                                
     JMenuItem newAction = new JMenuItem("New image");           
+    newAction.setAccelerator(
+        KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK)
+    );
     newAction.addActionListener(new ActionListener() {          
       public void actionPerformed(ActionEvent e) {              
-        System.out.println("New image");                        
-        String path = "images/test2.jpg";
+        String path = "images/test2.png";
 
-        /*JFileChooser fc = new JFileChooser();
+        JFileChooser fc = new JFileChooser();
         int val = fc.showOpenDialog(framePointer);
         if (val == JFileChooser.APPROVE_OPTION) {
           File file = fc.getSelectedFile();
           path = file.getPath();
         }
         else return;
-        */
+        
         Image img = new ImageIcon(path).getImage();
         if (img == null)
           return;
         
-        Perspective model = new Perspective(img);
-        PerspectiveView view = new PerspectiveView(model);
-        PerspectiveController controller = new PerspectiveController(model, view);
-        editorPane.addThumbnail(new ThumbnailView(model));
+        PerspectiveView view = new PerspectiveView(img, history);
+        editorPane.addThumbnail(new ThumbnailView(view.getPerspective()));
         editorPane.setEditingView(view);
-        framePointer.getContentPane().add(view);
         framePointer.validate();
       }                                                         
     });                                                         
@@ -80,7 +77,7 @@ public class ViewerFrame extends JFrame {
     JMenuItem exitAction = new JMenuItem("Exit");               
     exitAction.addActionListener(new ActionListener() {         
       public void actionPerformed(ActionEvent e) {              
-        System.out.println("Exit");                             
+        System.exit(0);
       }                                                         
     });                                                         
     fileMenu.add(exitAction);                                   
@@ -88,17 +85,23 @@ public class ViewerFrame extends JFrame {
     JMenuItem undoAction = new JMenuItem("Undo");               
     undoAction.addActionListener(new ActionListener() {         
       public void actionPerformed(ActionEvent e) {              
-        System.out.println("Undo");                             
+        history.undo();
       }                                                         
     });                                                         
+    undoAction.setAccelerator(                                       
+        KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK) 
+    );                                                              
     editMenu.add(undoAction);                                   
     // Redo                                                     
     JMenuItem redoAction = new JMenuItem("Redo");               
     redoAction.addActionListener(new ActionListener() {         
       public void actionPerformed(ActionEvent e) {              
-        System.out.println("Redo");                             
+        history.redo();
       }                                                         
     });                                                         
+    redoAction.setAccelerator(                                       
+        KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK) 
+    );                                                              
     editMenu.add(redoAction);                                   
                                                                 
     JMenuBar menuBar = new JMenuBar();                              

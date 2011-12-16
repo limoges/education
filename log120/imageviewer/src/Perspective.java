@@ -7,12 +7,12 @@ import java.awt.Image;
 
 public class Perspective extends Observable {
 
-  public static float BASE_FACTOR = 5000.0f;
-  public static float ZOOM_STEP = 100.0f;
-  public static float ZOOM_MIN = 1.0f;
-  public static float ZOOM_MAX = 10000.0f;
+  public static int BASE_FACTOR = 50;
+  public static int ZOOM_STEP = 10;
+  public static int ZOOM_MIN = 1;
+  public static int ZOOM_MAX = 100;
   private Point coordinates;
-  private float zoom;
+  private int zoom;
   private Image image;
 
   public Perspective(Image image) {
@@ -27,7 +27,7 @@ public class Perspective extends Observable {
     this.image = p.image;
   }
 
-  public float getZoom() {  
+  public int getZoom() {  
     return zoom;            
   }                         
                             
@@ -46,7 +46,7 @@ public class Perspective extends Observable {
     notifyObservers();                    
   }                                       
 
-  public void setZoom(float zoom) {
+  public void setZoom(int zoom) {
     if (zoom > ZOOM_MAX)
       this.zoom = ZOOM_MAX;
     else if (zoom < ZOOM_MIN)
@@ -82,17 +82,6 @@ public class Perspective extends Observable {
     setChanged();
     notifyObservers();
   }
-
-  public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
-    return false;
-  }
-
-  /*
-  public static Perspective create(String path) {
-    // Create new perspective from the given path, which is supposedly an
-    // image.
-  }
-  */
 
 }
 

@@ -20,8 +20,9 @@ public class PerspectiveView extends /*JLabel*/ JPanel implements Observer {
 
   public PerspectiveView(Perspective model) {
     this.model = model;
+    setBackground(Color.BLACK);
     Image img = model.getImage();
-    Dimension dimension = new Dimension(img.getWidth(model), img.getHeight(model));
+    Dimension dimension = new Dimension(img.getWidth(this), img.getHeight(this));
     //setIcon(new ImageIcon(img));
     slider = new JSlider((int) Perspective.ZOOM_MIN, (int) Perspective.ZOOM_MAX,
         (int) Perspective.BASE_FACTOR);
@@ -49,8 +50,8 @@ public class PerspectiveView extends /*JLabel*/ JPanel implements Observer {
     Image image = model.getImage();
     Point coord = model.getCoordinates();
     float factor = model.getZoom() / Perspective.BASE_FACTOR;
-    float height = (float) image.getHeight(model) * factor;
-    float width = (float) image.getWidth(model) * factor;
+    float height = (float) image.getHeight(this) * factor;
+    float width = (float) image.getWidth(this) * factor;
     //System.out.println("x:" + coord.x + " y:" + coord.y + " width:" + width + " height:" + height);
     g.drawImage(image, coord.x, coord.y, (int) width, (int) height, null);
   }

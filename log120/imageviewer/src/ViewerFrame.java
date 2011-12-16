@@ -1,10 +1,12 @@
 
+import java.io.File;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
@@ -13,23 +15,22 @@ import java.awt.Image;
 public class ViewerFrame extends JFrame {
 
   private JFrame framePointer;
+  private EditorPane editorPane;
 
   public ViewerFrame() {
     super();
     framePointer = this;
     setTitle(VF_NAME);
-    Dimension dimension = new Dimension(VF_WIDTH, VF_HEIGHT);
-    setSize(dimension);
-    setMinimumSize(dimension);
     setJMenuBar(createMenuBar());
-    setContentPane(createContentPane());
+    editorPane = createEditorPane();
+    setContentPane(editorPane);
     setLocationRelativeTo(null);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     pack();
   }
 
-  private JPanel createContentPane() {
-    JPanel contentPane = new JPanel();
+  private EditorPane createEditorPane() {
+    EditorPane contentPane = new EditorPane();
     contentPane.setOpaque(true);
     return contentPane;
   }
@@ -51,11 +52,25 @@ public class ViewerFrame extends JFrame {
     newAction.addActionListener(new ActionListener() {          
       public void actionPerformed(ActionEvent e) {              
         System.out.println("New image");                        
+        String path = "images/test2.jpg";
 
-        Image img = new ImageIcon("images/test.png").getImage();
+        /*JFileChooser fc = new JFileChooser();
+        int val = fc.showOpenDialog(framePointer);
+        if (val == JFileChooser.APPROVE_OPTION) {
+          File file = fc.getSelectedFile();
+          path = file.getPath();
+        }
+        else return;
+        */
+        Image img = new ImageIcon(path).getImage();
+        if (img == null)
+          return;
+        
         Perspective model = new Perspective(img);
         PerspectiveView view = new PerspectiveView(model);
         PerspectiveController controller = new PerspectiveController(model, view);
+        editorPane.addThumbnail(new ThumbnailView(model));
+        editorPane.setEditingView(view);
         framePointer.getContentPane().add(view);
         framePointer.validate();
       }                                                         

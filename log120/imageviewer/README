@@ -1,1 +1,28 @@
+Pour compiler un jar executable
+  ant
+
+Pour executer le jar
+  java -jar tp4.jar
+
+On peut ouvrir plusieurs images dans l'application. On selectionne l'image à 
+afficher en cliquant sur le thumbnail correspondant.
+
+Pour effectuer une translation, cliquer et bouger l'image.
+Pour effectuer un zoom, utiliser la roulette de souris.
+
+Enregistrer une perspective pour sauvegarder la translation et le zoom de la 
+perspective courante.
+
+Charger une perspective appliquera l'etat de la perspective sauvegarder 
+prealablement.
+
+(Enregistrer et charger la perspective dans le fichier data.pers)
+
+Vous pouvez utiliser le Undo/Redo avec Ctrl-Z, Ctrl-Y.
+
+Les commandes seront executer/defaite dans l'ordre effectue (si vous avez des
+modifications sur plusieurs perspectives, il faudra se deplacer manuellement
+sur la perspective pour voir les changements.)
+
+Bonne correction!
 

@@ -67,8 +67,7 @@ public class ViewerFrame extends JFrame {
           return;
         
         PerspectiveView view = new PerspectiveView(img, history);
-        editorPane.addThumbnail(new ThumbnailView(view.getPerspective()));
-        editorPane.setEditingView(view);
+        editorPane.addPerspective(view);
         framePointer.validate();
       }                                                         
     });                                                         

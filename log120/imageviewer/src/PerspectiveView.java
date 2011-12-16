@@ -17,7 +17,7 @@ public class PerspectiveView extends JPanel implements Observer {
 
   private Perspective model;
 
-  public PerspectiveView(Image image, CommandHistory history) {
+  public PerspectiveView(Image image, CommandHistory history)  {
     this.model = new Perspective(image);
 
     setBackground(Color.BLACK);
